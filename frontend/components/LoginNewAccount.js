@@ -9,7 +9,7 @@ class LoginNewAccount extends Component {
         <form>
           <input type="text" placeholder="First name" />
           <input type="text" placeholder="Last name" />
-          <input type="text" placeholder="Mobile number or Email" />
+          <input type="text" placeholder="Email" />
           <input type="text" placeholder="New password" />
         </form>
       </div>
@@ -18,4 +18,3 @@ class LoginNewAccount extends Component {
 }
 
 export default LoginNewAccount;
-

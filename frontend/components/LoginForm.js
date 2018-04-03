@@ -9,10 +9,14 @@ class LoginForm extends Component {
       password: ''
     };
   }
+  onSubmit(e) {
+    e.preventDefault();
+    console.log(this.state);
+  }
   render() {
     return (
       <div className="nav-login-container">
-        <form className="nav-login-form">
+        <form className="nav-login-form" onSubmit={this.onSubmit.bind(this)}>
           <div>
             <label>Email or Phone</label>
             <br />

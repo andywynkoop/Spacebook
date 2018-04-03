@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import NavSession from './NavSession';
 
 class Feed extends Component {
   render() {
-    return <h1>I am the page for showing the news feed</h1>;
+    return (
+      <div>
+        <NavSession />
+        <h1>This is the page for showing the news feed</h1>
+      </div>
+    );
   }
 }
 
 export default Feed;
-

@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import NavMain from './NavMain';
+import { HashRouter, Switch, Route } from 'react-router-dom';
 import Feed from './Feed';
-import Login from './Login';
+import Profile from './Profile';
 
 class App extends Component {
   render() {
     return (
       <div className="app">
-        <NavMain />
-        <BrowserRouter>
+        <HashRouter>
           <Switch>
-            <Route exact to="/login" component={Login} />
+            <Route to="/:userURL" component={Profile} />
             <Route exact to="/" component={Feed} />
           </Switch>
-        </BrowserRouter>
+        </HashRouter>
       </div>
     );
   }
 }
+//render a 404 page if not found
 
 export default App;

@@ -1,5 +1,5 @@
 .nav-main-blue-bar {
-  width: 100%;
+  min-width: 980px;
   background: linear-gradient(to bottom, #49679e, #375895);
   color: white;
 }
