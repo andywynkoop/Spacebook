@@ -3,6 +3,7 @@ import NavSession from './session/NavSession';
 
 class Feed extends Component {
   render() {
+    console.log(this.props.currentUser);
     return (
       <div>
         <NavSession />

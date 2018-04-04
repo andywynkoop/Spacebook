@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  validates :password_digest, :session_token, :firstname, :lastname, presence: true
+  validates :password_digest, :session_token, presence: true
   validates :email, :user_url, presence: true, uniqueness: true
-  before_validation :ensure_session_token, :ensure_user_url
+  after_initialize :ensure_session_token, :ensure_user_url
   attr_reader :password
 
   def password=(password)
@@ -34,7 +34,9 @@ class User < ApplicationRecord
   end
 
   def ensure_user_url
-    self.user_url ||= "#{self.firstname}#{self.lastname}"
+    self.firstname ||= "ThoughtSpot User"
+    self.lastname ||= " "
+    self.user_url ||= "user#{self.firstname}#{self.lastname}"
   end
 
 end
