@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavSession from './NavSession';
+import NavSession from './session/NavSession';
 
 class Feed extends Component {
   render() {

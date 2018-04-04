@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-  validates :firstname, :lastname, :email, :password_digest, presence: true
-  before_validation :ensure_session_token
+  validates :password_digest, :session_token, :firstname, :lastname, presence: true
+  validates :email, :user_url, presence: true, uniqueness: true
+  before_validation :ensure_session_token, :ensure_user_url
   attr_reader :password
 
   def password=(password)
@@ -30,6 +31,10 @@ class User < ApplicationRecord
 
   def ensure_session_token
     self.session_token ||= new_token
+  end
+
+  def ensure_user_url
+    self.user_url ||= "#{self.firstname}#{self.lastname}"
   end
 
 end

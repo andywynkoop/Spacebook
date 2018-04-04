@@ -9,8 +9,8 @@ class App extends Component {
       <div className="app">
         <HashRouter>
           <Switch>
-            <Route to="/:userURL" component={Profile} />
-            <Route exact to="/" component={Feed} />
+            <Route path="/:userURL" component={Profile} />
+            <Route path="/" component={Feed} />
           </Switch>
         </HashRouter>
       </div>
