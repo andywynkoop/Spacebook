@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import RecentLogins from './LoginRecentLogins';
-import SignUp from './LoginNewAccount';
+import NavSession from './NavSession';
+import RecentLogins from './RecentLogins';
+import SignUpForm from './SignUpForm';
 
 class SignUp extends Component {
   render() {
     return (
-      <div className="login-main">
-        <RecentLogins />
-        <SignUp />
+      <div>
+        <NavSession />
+        <main className="signup-container">
+          <RecentLogins />
+          <SignUpForm />
+        </main>
       </div>
     );
   }

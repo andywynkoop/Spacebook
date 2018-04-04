@@ -3,8 +3,16 @@ import ReactDOM from 'react-dom';
 import Root from './components/Root';
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.currentUser) {
-    console.log(currentUser);
-  }
-  ReactDOM.render(<Root />, document.querySelector('#root'));
+  const preloadedState = window.currentUser
+    ? {
+        session: {
+          currentUser: window.currentUser
+        }
+      }
+    : {};
+
+  ReactDOM.render(
+    <Root preloadedState={preloadedState} />,
+    document.querySelector('#root')
+  );
 });

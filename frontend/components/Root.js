@@ -5,12 +5,18 @@ import reduxThunk from 'redux-thunk';
 import rootReducer from '../reducers';
 import App from './App';
 
-const store = createStore(rootReducer, {}, applyMiddleware(reduxThunk));
+const Root = ({ preloadedState }) => {
+  const store = createStore(
+    rootReducer,
+    preloadedState,
+    applyMiddleware(reduxThunk)
+  );
 
-const Root = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+};
 
 export default Root;

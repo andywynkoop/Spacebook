@@ -1,0 +1,47 @@
+.signup-container {
+  width: 980px;
+  display: flex;
+  margin: auto;
+  padding: 20px 0px;
+  color: #333;
+}
+.signup {
+  width: 400px;
+  height: 700px;
+  background: #fcc;
+}
+
+.signup > h2 {
+  font-size: 34px;
+  font-weight: 500;
+}
+.signup > h4 {
+  font-size: 19px;
+  margin-bottom: 20px;
+  font-weight: 300;
+  line-height: 125%;
+}
+
+.signup input {
+  border: solid 1px #bdc7d8;
+  box-sizing: border-box;
+  height: 39px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 8px 10px;
+}
+.signup input:first-of-type {
+  margin-right: 11px;
+}
+.input-large {
+  width: 399px;
+}
+.input-small {
+  width: 194px;
+}
+
+.recent-logins {
+  width: 580px;
+  height: 700px;
+  background: #cfc;
+}

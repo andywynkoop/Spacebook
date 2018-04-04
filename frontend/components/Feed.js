@@ -3,11 +3,14 @@ import NavSession from './session/NavSession';
 
 class Feed extends Component {
   render() {
-    console.log(this.props.currentUser);
+    const { currentUser } = this.props.session;
+    const message = !!currentUser
+      ? `Logged in as ${currentUser.email}`
+      : 'Not logged in';
     return (
       <div>
         <NavSession />
-        <h1>This is the page for showing the news feed</h1>
+        <h1 onClick={this.props.logout}>{message}</h1>
       </div>
     );
   }
