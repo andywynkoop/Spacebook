@@ -5,10 +5,10 @@ import { Link, withRouter } from 'react-router-dom';
 class NavSession extends Component {
   render() {
     return (
-      <div className="nav-main-blue-bar">
-        <nav className="nav-main">
+      <div className="nav-session-blue-bar">
+        <nav className="nav-session">
           <Link to="/A/Andy">
-            <h1 className="logo-main">facebook</h1>
+            <h1 className="logo-session">thoughtbook</h1>
           </Link>
           <LoginForm />
         </nav>

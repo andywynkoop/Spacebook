@@ -1,0 +1,59 @@
+.nav-session-blue-bar {
+  min-width: 980px;
+  background: linear-gradient(to bottom, #49679e, #375895);
+  color: white;
+}
+.nav-session {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 980px;
+  height: 78px;
+  margin: auto;
+}
+
+.logo-session {
+  font-size: 34px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  margin-top: 25px;
+}
+
+.nav-login-container {
+  margin-top: 15px;
+}
+
+.nav-login-form {
+  font-size: 11px;
+  display: flex;
+}
+
+.nav-login-form > div {
+  margin-right: 15px;
+}
+
+.nav-login-form > div input {
+  margin-top: 5px;
+  background: #fff;
+  padding: 3px 2px;
+  color: black;
+  width: 150px;
+}
+
+.nav-login-form > button {
+  padding: 0;
+  background: #3c66af;
+  border: solid 1px #24477a;
+  border-radius: 2px;
+  color: #fff;
+  height: 20px;
+  margin-top: 16px;
+  padding: 2px 5px 4px 5px;
+}
+
+.nav-login-container a {
+  font-size: 11px;
+  color: #9cb4d8;
+  text-decoration: none;
+  margin-left: 165px;
+}

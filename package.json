@@ -14,19 +14,23 @@
     "redux-thunk": "^2.2.0",
     "webpack": "^3.10.0"
   },
-  "description":
-    "This README would normally document whatever steps are necessary to get the application up and running.",
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
   "version": "1.0.0",
   "main": "index.js",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
+  "engines": {
+    "node": "8.9.3",
+    "npm": "5.6.0"
+  },
   "scripts": {
     "open": "open http://localhost:3000",
     "server": "rails s",
     "frontend": "webpack --watch",
-    "dev": "concurrently \"npm run server\" \"npm run frontend\""
+    "dev": "concurrently \"npm run server\" \"npm run frontend\"",
+    "postinstall": "webpack"
   },
   "author": "Andy Wynkoop",
   "license": "ISC"
