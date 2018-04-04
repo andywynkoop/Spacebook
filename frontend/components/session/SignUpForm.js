@@ -52,7 +52,7 @@ class LoginNewAccount extends Component {
             onChange={this.update('email')}
           />
           <input
-            type="text"
+            type="password"
             className="input-large"
             placeholder="New password"
             value={this.state.password}

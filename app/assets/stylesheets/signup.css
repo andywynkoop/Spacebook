@@ -101,6 +101,45 @@
   font-size: 26px;
   font-weight: 500;
   width: 420px;
+  padding-top: 42px;
+  padding-bottom: 24px;
+}
+
+.intro-feature-box {
+  display: flex;
+  padding: 5px;
+}
+.intro-feature-box > div {
+  margin-right: 10px;
+}
+.intro-feature-box > h4 {
+  font-weight: bold;
+  margin: 10px 5px;
+  font-size: 16px;
+}
+.intro-feature-box > p {
+  margin: 11.5px 5px;
+  color: #666;
+  font-size: 14px;
+}
+.img-box {
+  width: 55px;
+  height: 55px;
+}
+#main1 {
+  background-image: url('main1.png');
+  height: 43px;
+  width: 48px;
+}
+#main2 {
+  background-image: url('main2.png');
+  height: 44px;
+  width: 45px;
+}
+#main3 {
+  background-image: url('main3.png');
+  height: 51px;
+  width: 55px;
 }
 
 .recent-logins {

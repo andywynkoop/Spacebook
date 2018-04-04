@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import FeedContainer from './FeedContainer';
-import SignUpContainer from './session/SignUpContainer';
+import MainPage from './session/MainPage';
 import Profile from './Profile';
 
 class App extends Component {
@@ -11,7 +11,7 @@ class App extends Component {
         <HashRouter>
           <Switch>
             <Route path="/:userURL" component={Profile} />
-            <Route path="/" component={SignUpContainer} />
+            <Route path="/" component={MainPage} />
           </Switch>
         </HashRouter>
       </div>

@@ -8,7 +8,7 @@ class NavSession extends Component {
       <div className="nav-main-blue-bar">
         <nav className="nav-main">
           <Link to="/A/Andy">
-            <h1 className="logo-main">thoughtspot</h1>
+            <h1 className="logo-main">facebook</h1>
           </Link>
           <LoginForm />
         </nav>
