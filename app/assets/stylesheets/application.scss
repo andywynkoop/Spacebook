@@ -18,3 +18,12 @@ body {
   font-family: Helvetica Neue, Helvetica, Liberation Sans, Arial, sans-serif;
   background: #e9ebee;
 }
+.pseudo-link {
+  font-size: 11px;
+  color: #365899;
+}
+
+.pseudo-link:hover {
+  text-decoration: underline;
+}
+

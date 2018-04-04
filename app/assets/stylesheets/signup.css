@@ -8,7 +8,6 @@
 .signup {
   width: 400px;
   height: 700px;
-  background: #fcc;
 }
 
 .signup > h2 {
@@ -20,7 +19,7 @@
   margin-bottom: 20px;
 }
 
-.signup input {
+.signup form > input {
   border: solid 1px #bdc7d8;
   box-sizing: border-box;
   height: 39px;
@@ -28,7 +27,7 @@
   border-radius: 5px;
   padding: 8px 10px;
 }
-.signup input:first-of-type {
+.signup form > input:first-of-type {
   margin-right: 11px;
 }
 .input-large {
@@ -38,6 +37,9 @@
   width: 194px;
 }
 
+.birthday-container {
+  display: flex;
+}
 .signup-birthday > select {
   padding: 5px;
   height: 30px;
@@ -45,6 +47,60 @@
 }
 .signup-birthday {
   padding: 5px 0px;
+  margin-right: 10px;
+}
+.birthday-info {
+  width: 150px;
+  height: 30px;
+  padding-top: 5px;
+}
+.sex {
+  margin-top: 10px;
+}
+.sex input {
+  height: 15px;
+  width: 14px;
+  margin: 3px 3.2px;
+}
+.sex > span {
+  margin-right: 15px;
+}
+.sign-up-disclaimer {
+  margin: 20px 0px;
+  font-size: 11px;
+  color: #777;
+  width: 316px;
+}
+
+.signup-button {
+  color: white;
+  font-weight: 700;
+  text-shadow: 1px 1px 5px #2c5115;
+  background: linear-gradient(#67ae55, #578843);
+  background-color: #3b6e22;
+  box-sizing: border-box;
+  text-align: center;
+  height: 40px;
+  width: 200px;
+  border-radius: 5px;
+  border: solid 1px #2c5115;
+  overflow: hidden;
+}
+.signup-button:hover {
+  background: linear-gradient(#a4e388, #578843);
+  background-color: #3b6e22;
+}
+
+/* left side of sign up page */
+.no-recent-logins {
+  width: 580px;
+  height: 700px;
+}
+
+.no-recent-logins h2 {
+  font-size: 26px;
+  font-weight: 500;
+  width: 420px;
 }
 
 .recent-logins {

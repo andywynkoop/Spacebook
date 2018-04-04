@@ -12,7 +12,8 @@ class LoginNewAccount extends Component {
       password: '',
       birthdayMonth: 'Month',
       birthdayDay: 'Day',
-      birthdayYear: 'Year'
+      birthdayYear: 'Year',
+      sex: null
     };
   }
   update(field) {
@@ -58,45 +59,83 @@ class LoginNewAccount extends Component {
             onChange={this.update('password')}
           />
           <h4>Birthday</h4>
-          <div className="signup-birthday">
-            <select
-              value={this.state.birthdayMonth}
-              onChange={this.update('birthdayMonth')}
-            >
-              <option value={null}>Month</option>
-              {Array.from(new Array(12), (val, index) => index).map(month => (
-                <option key={`mo${month}`} value={month}>
-                  {monthNames[month]}
-                </option>
-              ))}
-            </select>
-            <select
-              value={this.state.birthdayDay}
-              onChange={this.update('birthdayDay')}
-            >
-              <option value={null}>Day</option>
-              {Array.from(new Array(31), (val, index) => index + 1).map(day => (
-                <option key={`da${day}`} value={day}>
-                  {day}
-                </option>
-              ))}
-            </select>
-            <select
-              value={this.state.birthdayYear}
-              onChange={this.update('birthdayYear')}
-            >
-              <option value={null}>Year</option>
-              {Array.from(new Array(100), (val, index) => index)
-                .reverse()
-                .map(num => num + 1918)
-                .map(year => (
-                  <option key={`yr${year}`} value={year}>
-                    {year}
+          <div className="birthday-container">
+            <div className="signup-birthday">
+              <select
+                value={this.state.birthdayMonth}
+                onChange={this.update('birthdayMonth')}
+              >
+                <option value={null}>Month</option>
+                {Array.from(new Array(12), (val, index) => index).map(month => (
+                  <option key={`mo${month}`} value={month}>
+                    {monthNames[month]}
                   </option>
                 ))}
-            </select>
+              </select>
+              <select
+                value={this.state.birthdayDay}
+                onChange={this.update('birthdayDay')}
+              >
+                <option value={null}>Day</option>
+                {Array.from(new Array(31), (val, index) => index + 1).map(
+                  day => (
+                    <option key={`da${day}`} value={day}>
+                      {day}
+                    </option>
+                  )
+                )}
+              </select>
+              <select
+                value={this.state.birthdayYear}
+                onChange={this.update('birthdayYear')}
+              >
+                <option value={null}>Year</option>
+                {Array.from(new Array(100), (val, index) => index)
+                  .reverse()
+                  .map(num => num + 1918)
+                  .map(year => (
+                    <option key={`yr${year}`} value={year}>
+                      {year}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="birthday-info pseudo-link">
+              <p>Why do I need to provide my birthday?</p>
+            </div>
           </div>
-          <button type="submit">Create Account</button>
+          <div className="sex">
+            <span>
+              <label>
+                <input
+                  type="radio"
+                  checked={this.state.sex === 'Female'}
+                  value={'Female'}
+                  onChange={this.update('sex')}
+                />
+                Female
+              </label>
+            </span>
+            <label>
+              <input
+                type="radio"
+                checked={this.state.sex === 'Male'}
+                value={'Male'}
+                onChange={this.update('sex')}
+              />
+              Male
+            </label>
+          </div>
+          <div className="sign-up-disclaimer">
+            By clicking Create Account, you agree to our{' '}
+            <span className="pseudo-link">Terms</span> and that you have read
+            our <span className="pseudo-link">Data Policy</span>, including our{' '}
+            <span className="pseudo-link">Cookie Use</span>. You may receive SMS
+            Notifications from Facebook and can opt out at any time.
+          </div>
+          <button type="submit" className="signup-button">
+            Create Account
+          </button>
         </form>
       </div>
     );

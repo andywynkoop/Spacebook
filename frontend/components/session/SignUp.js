@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import NavSession from './NavSession';
-import RecentLogins from './RecentLogins';
+import NoRecentLogins from './NoRecentLogins';
 import SignUpForm from './SignUpForm';
 
 class SignUp extends Component {
@@ -9,7 +9,7 @@ class SignUp extends Component {
       <div>
         <NavSession />
         <main className="signup-container">
-          <RecentLogins />
+          <NoRecentLogins />
           <SignUpForm signup={this.props.signup} />
         </main>
       </div>
