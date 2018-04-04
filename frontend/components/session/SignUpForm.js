@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { createUserFromState, monthNames } from '../../util/signup_form_util';
 
 class LoginNewAccount extends Component {
   constructor(props) {
@@ -19,25 +20,8 @@ class LoginNewAccount extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    const {
-      firstname,
-      lastname,
-      email,
-      password,
-      birthdayMonth: month,
-      birthdayDay: day,
-      birthdayYear: year
-    } = this.state;
 
-    const userData = {
-      firstname,
-      lastname,
-      email,
-      password,
-      birthday: new Date(year, month, day)
-    };
-
-    this.props.signup(userData);
+    this.props.signup(createUserFromState(this.state));
   }
   render() {
     return (
@@ -74,14 +58,15 @@ class LoginNewAccount extends Component {
             onChange={this.update('password')}
           />
           <h4>Birthday</h4>
-          <div>
+          <div className="signup-birthday">
             <select
               value={this.state.birthdayMonth}
               onChange={this.update('birthdayMonth')}
             >
+              <option value={null}>Month</option>
               {Array.from(new Array(12), (val, index) => index).map(month => (
                 <option key={`mo${month}`} value={month}>
-                  {month + 1}
+                  {monthNames[month]}
                 </option>
               ))}
             </select>
@@ -89,7 +74,8 @@ class LoginNewAccount extends Component {
               value={this.state.birthdayDay}
               onChange={this.update('birthdayDay')}
             >
-              {Array.from(new Array(31), (val, index) => index).map(day => (
+              <option value={null}>Day</option>
+              {Array.from(new Array(31), (val, index) => index + 1).map(day => (
                 <option key={`da${day}`} value={day}>
                   {day}
                 </option>
@@ -99,6 +85,7 @@ class LoginNewAccount extends Component {
               value={this.state.birthdayYear}
               onChange={this.update('birthdayYear')}
             >
+              <option value={null}>Year</option>
               {Array.from(new Array(100), (val, index) => index)
                 .reverse()
                 .map(num => num + 1918)

@@ -38,6 +38,15 @@
   width: 194px;
 }
 
+.signup-birthday > select {
+  padding: 5px;
+  height: 30px;
+  font-size: 12px;
+}
+.signup-birthday {
+  padding: 5px 0px;
+}
+
 .recent-logins {
   width: 580px;
   height: 700px;
