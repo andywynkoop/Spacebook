@@ -10,7 +10,7 @@ class SignUp extends Component {
         <NavSession />
         <main className="signup-container">
           <RecentLogins />
-          <SignUpForm />
+          <SignUpForm signup={this.props.signup} />
         </main>
       </div>
     );
