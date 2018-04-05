@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from '../../actions/session';
+import ErrorModal from './ErrorModal';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -8,14 +9,24 @@ class LoginForm extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      message: ''
     };
   }
   onSubmit(e) {
+    const { email, password } = this.state;
     e.preventDefault();
-    this.props.login(this.state);
+    let message = '';
+    if (!email || !password || this.props.errors) {
+      console.log(email, password, this.props.errors);
+      message = 'The email or password you entered is incorrect.';
+    }
+    this.setState({ message }, () => {
+      if (!message) this.props.login(this.state);
+    });
   }
   render() {
+    if (this.props.errors) console.log(this.props.errors);
     return (
       <div className="nav-login-container">
         <form className="nav-login-form" onSubmit={this.onSubmit.bind(this)}>
@@ -40,11 +51,12 @@ class LoginForm extends Component {
           <button type="submit">Log In</button>
         </form>
         <a href="#">Forgot Account?</a>
+        <ErrorModal field={'nav-session'} message={this.state.message} />
       </div>
     );
   }
 }
-
+const mapStateToProps = ({ errors }) => ({ errors });
 const mapDispatchToProps = dispatch => ({
   login: user => dispatch(login(user))
 });

@@ -87,6 +87,8 @@ export const getYPositionOfErrorModal = field => {
       return 180;
     case 'sex':
       return 280;
+    case 'nav-session':
+      return 0;
     default:
       return 245;
   }
@@ -104,6 +106,8 @@ export const getXPositionOfErrorModal = field => {
       return -520;
     case 'sex':
       return -400;
+    case 'nav-session':
+      return -300;
     default:
       return -370;
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import DemoModal from './DemoModal';
 
 export default () => {
   return (
@@ -25,6 +26,7 @@ export default () => {
         <h4>{'Find more'}</h4>
         <p>{"of what you're looking for with Thoughtspot Search."}</p>
       </div>
+      <DemoModal />
     </div>
   );
 };
