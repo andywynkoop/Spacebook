@@ -26,7 +26,6 @@ class LoginForm extends Component {
     });
   }
   render() {
-    if (this.props.errors) console.log(this.props.errors);
     return (
       <div className="nav-login-container">
         <form className="nav-login-form" onSubmit={this.onSubmit.bind(this)}>
@@ -61,4 +60,4 @@ const mapDispatchToProps = dispatch => ({
   login: user => dispatch(login(user))
 });
 
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
