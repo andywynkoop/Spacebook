@@ -10,7 +10,6 @@ export const login = formUser => dispatch =>
   SessionApi.login(formUser).then(user => dispatch(receiveCurrentUser(user)));
 
 export const logout = () => dispatch => {
-  console.log('action');
   SessionApi.logout().then(() => dispatch(logoutCurrentUser()));
 };
 
