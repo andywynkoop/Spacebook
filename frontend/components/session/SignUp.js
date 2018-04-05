@@ -5,12 +5,14 @@ import SignUpForm from './SignUpForm';
 
 class SignUp extends Component {
   render() {
+    const { signup, errors } = this.props;
+    const message = Object.keys(errors).length === 0 ? '' : errors[0];
     return (
       <div>
         <NavSession />
         <main className="signup-container">
           <NoRecentLogins />
-          <SignUpForm signup={this.props.signup} />
+          <SignUpForm signup={signup} serverErrors={errors} />
         </main>
       </div>
     );

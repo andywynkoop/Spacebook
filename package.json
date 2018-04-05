@@ -6,7 +6,6 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "file-loader": "^1.1.11",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
@@ -15,7 +14,8 @@
     "redux-thunk": "^2.2.0",
     "webpack": "^3.10.0"
   },
-  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "description":
+    "This README would normally document whatever steps are necessary to get the application up and running.",
   "version": "1.0.0",
   "main": "index.js",
   "directories": {

@@ -12,7 +12,6 @@ export default (state = _nullSession, action) => {
       newState.currentUser = action.user;
       return newState;
     case LOGOUT_CURRENT_USER:
-      console.log('reducer hit');
       return _nullSession;
     default:
       return state;

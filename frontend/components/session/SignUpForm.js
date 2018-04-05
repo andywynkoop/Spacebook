@@ -51,14 +51,24 @@ class LoginNewAccount extends Component {
       }
     });
   }
+  serverErrors() {
+    const { serverErrors } = this.props;
+    const message =
+      Object.keys(serverErrors).length === 0 ? '' : serverErrors[0];
+    if (message) {
+      return <div className="server-errors">{message}</div>;
+    } else {
+      return <div />;
+    }
+  }
   render() {
     //handle errors
     const { errors } = this.state;
-
     return (
       <div className="signup">
         <h2>Sign Up</h2>
         <h4>{"It's free and always will be."}</h4>
+        {this.serverErrors.bind(this)()}
         <form onSubmit={this.handleSubmit.bind(this)}>
           <input
             type="text"
