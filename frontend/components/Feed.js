@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NavMain from './NavMain';
+import image from '../../app/assets/images/no_face.png';
 
 class Feed extends Component {
   render() {
@@ -13,6 +14,7 @@ class Feed extends Component {
       <div>
         <NavMain currentUser={currentUser} logout={logout} />
         <h1>{message}</h1>
+        <img src={image} />
       </div>
     );
   }
