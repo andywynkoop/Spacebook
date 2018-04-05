@@ -8,6 +8,7 @@
 .signup {
   width: 400px;
   height: 700px;
+  position: relative;
 }
 
 .signup > h2 {
@@ -26,6 +27,9 @@
   margin-bottom: 10px;
   border-radius: 5px;
   padding: 8px 10px;
+}
+.error {
+  border: solid 1px #c64b4b !important;
 }
 .signup form > input:first-of-type {
   margin-right: 11px;
@@ -62,8 +66,12 @@
   width: 14px;
   margin: 3px 3.2px;
 }
-.sex > span {
-  margin-right: 15px;
+
+.sex label {
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 5px;
+  box-sizing: border-box;
 }
 .sign-up-disclaimer {
   margin: 20px 0px;
@@ -141,7 +149,33 @@
   height: 51px;
   width: 55px;
 }
-
+.error-modal {
+  background-color: #c64b4b;
+  border: solid 1px #a1363b;
+  box-shadow: 1px 1px 3px #a1363b;
+  color: white;
+  font-size: 12px;
+  padding: 15px;
+  min-height: 50px;
+  min-width: 90px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  position: absolute;
+  top: 280px;
+  left: -115px;
+}
+.error-modal-triangle {
+  height: 20px;
+  width: 20px;
+  background: #c64b4b;
+  border-width: 1px 1px 0px 0px;
+  border-style: solid;
+  border-color: #a1363b;
+  transform: rotate(45deg);
+  position: absolute;
+  right: -10px;
+  top: 15px;
+}
 .recent-logins {
   width: 580px;
   height: 700px;

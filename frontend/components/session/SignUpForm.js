@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { createUserFromState, monthNames } from '../../util/signup_form_util';
+import {
+  createUserFromState,
+  monthNames,
+  validateUser,
+  errorMessages
+} from '../../util/signup_form_util';
+import ErrorModal from './ErrorModal';
 
 class LoginNewAccount extends Component {
   constructor(props) {
@@ -13,18 +19,42 @@ class LoginNewAccount extends Component {
       birthdayMonth: 'Month',
       birthdayDay: 'Day',
       birthdayYear: 'Year',
-      sex: null
+      sex: null,
+      errors: {},
+      activeField: null
     };
   }
   update(field) {
-    return e => this.setState({ [field]: e.target.value });
+    return e => {
+      this.setState({ [field]: e.target.value }, () => {
+        const { errors } = this.state;
+        if (!this.state[field]) errors[field] = errorMessages[field];
+        if (this.state[field]) delete errors[field];
+
+        if (['birthdayMonth', 'birthdayDay', 'birthdayYear'].includes(field))
+          delete errors.birthday;
+
+        this.setState({ errors });
+      });
+    };
   }
   handleSubmit(e) {
     e.preventDefault();
-
-    this.props.signup(createUserFromState(this.state));
+    let errors = {};
+    this.setState({ errors });
+    errors = validateUser(this.state);
+    this.setState({ errors }, () => {
+      if (Object.keys(errors).length === 0) {
+        this.props.signup(createUserFromState(this.state));
+      } else {
+        console.log(this.state.errors);
+      }
+    });
   }
   render() {
+    //handle errors
+    const { errors } = this.state;
+
     return (
       <div className="signup">
         <h2>Sign Up</h2>
@@ -32,38 +62,46 @@ class LoginNewAccount extends Component {
         <form onSubmit={this.handleSubmit.bind(this)}>
           <input
             type="text"
-            className="input-small"
+            className={errors.firstname ? 'input-small error' : 'input-small'}
             placeholder="First name"
             value={this.state.firstname}
             onChange={this.update('firstname')}
+            onClick={() => this.setState({ activeField: 'firstname' })}
           />
           <input
             type="text"
-            className="input-small"
+            className={errors.lastname ? 'input-small error' : 'input-small'}
             placeholder="Last name"
             value={this.state.lastname}
             onChange={this.update('lastname')}
+            onClick={() => this.setState({ activeField: 'lastname' })}
           />
           <input
             type="text"
-            className="input-large"
+            className={errors.email ? 'input-large error' : 'input-large'}
             placeholder="Mobile number or email"
             value={this.state.email}
             onChange={this.update('email')}
+            onClick={() => this.setState({ activeField: 'email' })}
           />
           <input
             type="password"
-            className="input-large"
+            className={errors.password ? 'input-large error' : 'input-large'}
             placeholder="New password"
             value={this.state.password}
             onChange={this.update('password')}
+            onClick={() => this.setState({ activeField: 'password' })}
           />
           <h4>Birthday</h4>
           <div className="birthday-container">
-            <div className="signup-birthday">
+            <div
+              className="signup-birthday"
+              onClick={() => this.setState({ activeField: 'birthday' })}
+            >
               <select
                 value={this.state.birthdayMonth}
                 onChange={this.update('birthdayMonth')}
+                className={errors.birthday ? 'error' : ''}
               >
                 <option value={null}>Month</option>
                 {Array.from(new Array(12), (val, index) => index).map(month => (
@@ -75,6 +113,7 @@ class LoginNewAccount extends Component {
               <select
                 value={this.state.birthdayDay}
                 onChange={this.update('birthdayDay')}
+                className={errors.birthday ? 'error' : ''}
               >
                 <option value={null}>Day</option>
                 {Array.from(new Array(31), (val, index) => index + 1).map(
@@ -88,6 +127,7 @@ class LoginNewAccount extends Component {
               <select
                 value={this.state.birthdayYear}
                 onChange={this.update('birthdayYear')}
+                className={errors.birthday ? 'error' : ''}
               >
                 <option value={null}>Year</option>
                 {Array.from(new Array(100), (val, index) => index)
@@ -104,19 +144,21 @@ class LoginNewAccount extends Component {
               <p>Why do I need to provide my birthday?</p>
             </div>
           </div>
-          <div className="sex">
-            <span>
-              <label>
-                <input
-                  type="radio"
-                  checked={this.state.sex === 'Female'}
-                  value={'Female'}
-                  onChange={this.update('sex')}
-                />
-                Female
-              </label>
-            </span>
-            <label>
+          <div
+            className="sex"
+            onClick={() => this.setState({ activeField: 'sex' })}
+          >
+            <label className={errors.sex ? 'error' : ''}>
+              <input
+                type="radio"
+                checked={this.state.sex === 'Female'}
+                value={'Female'}
+                onChange={this.update('sex')}
+              />
+              Female
+            </label>
+
+            <label className={errors.sex ? 'error' : ''}>
               <input
                 type="radio"
                 checked={this.state.sex === 'Male'}
@@ -136,6 +178,10 @@ class LoginNewAccount extends Component {
           <button type="submit" className="signup-button">
             Create Account
           </button>
+          <ErrorModal
+            message={this.state.errors[this.state.activeField]}
+            field={this.state.activeField}
+          />
         </form>
       </div>
     );

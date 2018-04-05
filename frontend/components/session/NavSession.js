@@ -7,7 +7,7 @@ class NavSession extends Component {
     return (
       <div className="nav-session-blue-bar">
         <nav className="nav-session">
-          <Link to="/A/Andy">
+          <Link to="/">
             <h1 className="logo-session">thoughtbook</h1>
           </Link>
           <LoginForm />
