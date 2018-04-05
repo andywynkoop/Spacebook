@@ -9,14 +9,16 @@ export const signup = formUser => dispatch =>
 export const login = formUser => dispatch =>
   SessionApi.login(formUser).then(user => dispatch(receiveCurrentUser(user)));
 
-export const logout = () => dispatch =>
+export const logout = () => dispatch => {
+  console.log('action');
   SessionApi.logout().then(() => dispatch(logoutCurrentUser()));
+};
 
 export const receiveCurrentUser = user => ({
   type: RECEIVE_CURRENT_USER,
   user
 });
 
-export const logoutCurrentUser = user => ({
+export const logoutCurrentUser = () => ({
   type: LOGOUT_CURRENT_USER
 });

@@ -4,10 +4,20 @@ import { logout } from '../actions/session';
 
 class NavMain extends Component {
   render() {
+    const { currentUser } = this.props;
     return (
       <div className="nav-main">
-        <h1>{currentUser.email}</h1>
-        <button onClick={this.props.logout}>Log Out</button>
+        <nav>
+          <h1>Hello, {currentUser.email}</h1>
+          <button
+            onClick={() => {
+              console.log('logging out');
+              this.props.logout();
+            }}
+          >
+            Log Out
+          </button>
+        </nav>
       </div>
     );
   }
