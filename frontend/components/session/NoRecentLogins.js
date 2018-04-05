@@ -3,7 +3,7 @@ import React from 'react';
 export default () => {
   return (
     <div className="no-recent-logins">
-      <h2>Connect with friends and the world around you on Facebook.</h2>
+      <h2>Connect with friends and the world around you on Thoughtbook.</h2>
       <div className="intro-feature-box">
         <div className="img-box">
           <div id="main1" />
