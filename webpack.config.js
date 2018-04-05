@@ -21,7 +21,7 @@ module.exports = {
         test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg)(\?.*)?$/,
         loader: 'file-loader',
         query: {
-          name: 'assets/[name].[ext]?[hash:8]'
+          name: 'assets/[name].[ext]'
         }
       }
     ]
