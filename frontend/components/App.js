@@ -10,7 +10,7 @@ class App extends Component {
       <div className="app">
         <HashRouter>
           <Switch>
-            <Route path="/:userURL" component={Profile} />
+            <Route path="/:userUrl" component={Profile} />
             <Route path="/" component={MainPage} />
           </Switch>
         </HashRouter>

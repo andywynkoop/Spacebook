@@ -6,12 +6,22 @@ import ProfileNav from './ProfileNav';
 import MainPage from './MainPage';
 import About from './About';
 import NavMain from '../NavMain';
+import { fetchUser } from '../../actions/user';
 
 class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null
+    };
+  }
   componentDidMount() {
-    if (!this.props.currentUser) this.props.history.push('/');
+    const { userUrl } = this.props.match.params;
+    console.log(userUrl);
+    this.props.fetchUser(this.props.match.params.userUrl);
   }
   render() {
+    console.log(this.props.users);
     return (
       <div>
         <NavMain />
@@ -27,6 +37,12 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = ({ session: { currentUser } }) => ({ currentUser });
+const mapStateToProps = ({
+  session: { currentUser },
+  entities: { users }
+}) => ({ currentUser, users });
+const mapDispatchToProps = dispatch => ({
+  fetchUser: userUrl => dispatch(fetchUser(userUrl))
+});
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

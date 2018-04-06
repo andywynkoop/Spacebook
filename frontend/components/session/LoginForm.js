@@ -27,7 +27,7 @@ class LoginForm extends Component {
     const { message, email, password } = this.state;
     if (email && password) {
       this.props.login({ email, password }).then(
-        res => this.props.history.push(`/${currentUser.userUrl}`),
+        res => null,
         err =>
           this.setState({
             message: 'The email or password you entered is incorrect.'

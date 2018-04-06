@@ -46,17 +46,18 @@ class NavMain extends Component {
             </form>
           </div>
           <ul>
-            <li style={{ display: 'flex' }}>
-              <img
-                src={
-                  'http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_367/v1522968300/20170422_150306.jpg'
-                }
-                className="nav-main-img"
-              />
-              <Link to={`/${currentUser.userUrl}`}>
+            <Link to={`/${currentUser.userUrl}`}>
+              <li style={{ display: 'flex' }}>
+                <img
+                  src={
+                    'http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_367/v1522968300/20170422_150306.jpg'
+                  }
+                  className="nav-main-img"
+                />
+
                 {currentUser.firstname}
-              </Link>
-            </li>
+              </li>
+            </Link>
             |
             <li>Home</li>
             <li>About</li>
