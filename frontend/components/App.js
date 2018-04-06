@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import FeedContainer from './FeedContainer';
 import MainPage from './MainPage';
-import Profile from './Profile';
+import Profile from './profile/Profile';
 
 class App extends Component {
   render() {

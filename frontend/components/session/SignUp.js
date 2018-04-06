@@ -6,7 +6,6 @@ import SignUpForm from './SignUpForm';
 class SignUp extends Component {
   render() {
     const { signup, errors } = this.props;
-    const message = Object.keys(errors).length === 0 ? '' : errors[0];
     return (
       <div>
         <NavSession />

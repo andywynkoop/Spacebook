@@ -55,7 +55,7 @@ class LoginNewAccount extends Component {
     const { serverErrors } = this.props;
     const message =
       Object.keys(serverErrors).length === 0 ? '' : serverErrors[0];
-    if (message) {
+    if (message && message != 'Invalid credentials') {
       return <div className="server-errors">{message}</div>;
     } else {
       return <div />;

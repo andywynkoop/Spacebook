@@ -1,20 +1,83 @@
-.nav-main {
-  height: 42px;
-  background: #3c66af;
+.nav-main-wrapper {
   width: 100%;
-  color: white;
+  height: 42px;
+  background: #3b5998;
+  position: fixed;
 }
-
-.nav-main nav {
-  width: 980px;
+.nav-main {
   display: flex;
   justify-content: space-between;
+  color: white;
+  width: 980px;
+  box-sizing: border-box;
+  z-index: 3;
   margin: auto;
-  padding: 5px 0px;
+}
+.nav-main-header-wrapper {
+  display: flex;
+}
+.nav-search {
+  margin-top: 9px;
+  margin-left: 2px;
+  font-size: 14px;
+}
+.nav-search input {
+  display: inline;
+  height: 24px;
+  width: 400px;
+  border-radius: 3px 0px 0px 3px;
+  color: #333;
+  box-sizing: border-box;
+  padding: 0px 5px;
+}
+.nav-search button {
+  display: inline;
+  height: 24px;
+  width: 46px;
+  background-color: #f6f7f9;
+  color: #4b4f56;
+  border-radius: 0px 3px 3px 0px;
+  box-sizing: border-box;
+  text-align: center;
+}
+.nav-header {
+  font-size: 16px;
+  margin: 5px;
+  margin-top: 9px;
+}
+.nav-header div {
+  background: white;
+  color: #3b5998;
+  height: 24px;
+  width: 24px;
+  font-size: 24px;
+  font-weight: 900;
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: inline-block;
+  text-align: right;
+  padding: 0px 3px 0px 4px;
 }
 
-.nav-main nav > button {
-  background-color: #1e3357;
-  padding: 5px;
-  border-radius: 5px;
+.nav-main ul {
+  display: flex;
+  vertical-align: middle;
+}
+.nav-main-img {
+  height: 24px;
+  width: 24px;
+  border-radius: 100%;
+  margin-right: 10px;
+  margin-top: -5px;
+}
+
+.nav-main ul li {
+  padding: 15px 5px 0px 5px;
+  font-size: 12px;
+  font-weight: 400;
+  box-sizing: border-box;
+}
+
+.nav-main ul li:hover {
+  background: #2f4779;
 }

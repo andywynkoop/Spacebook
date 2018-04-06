@@ -1,0 +1,14 @@
+.cover-img {
+  height: 315px;
+  background: #983b59;
+  box-sizing: border-box;
+  border: none;
+  width: 850px;
+  margin: auto;
+}
+
+.main-content {
+  width: 850px;
+  margin: auto;
+  display: flex;
+}

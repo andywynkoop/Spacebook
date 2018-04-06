@@ -10,14 +10,6 @@ class Api::SessionsController < ApplicationController
   end
 
   def destroy
-    puts "logging out"
-    puts "logging out"
-    puts "logging out"
-    puts "logging out"
-    puts "logging out"
-    puts "logging out"
-    puts "logging out"
-    puts "logging out"
     logout! if current_user
     render json: ["Logged out"], status: 200
   end

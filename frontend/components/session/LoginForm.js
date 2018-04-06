@@ -13,17 +13,31 @@ class LoginForm extends Component {
       message: ''
     };
   }
-  onSubmit(e) {
-    const { email, password } = this.state;
-    e.preventDefault();
+  componentWillReceiveProps() {
+    const { errors } = this.props;
     let message = '';
-    if (!email || !password || this.props.errors) {
-      console.log(email, password, this.props.errors);
+    if (errors.length > 0) {
+      console.log(errors);
       message = 'The email or password you entered is incorrect.';
     }
-    this.setState({ message }, () => {
-      if (!message) this.props.login(this.state);
-    });
+    this.setState({ message });
+  }
+  onSubmit(e) {
+    e.preventDefault();
+    const { message, email, password } = this.state;
+    if (email && password) {
+      this.props.login({ email, password }).then(
+        res => this.props.history.push(`/${currentUser.userUrl}`),
+        err =>
+          this.setState({
+            message: 'The email or password you entered is incorrect.'
+          })
+      );
+    } else {
+      this.setState({
+        message: 'The email or password you entered is incorrect.'
+      });
+    }
   }
   render() {
     return (

@@ -1,5 +1,3 @@
-require 'faker'
-
 class Api::UsersController < ApplicationController
   def create
     user = User.new(user_params)
@@ -21,6 +19,6 @@ class Api::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:firstname, :lastname, :email, :password, :birthday)
+    params.require(:user).permit(:firstname, :lastname, :email, :password, :birthday, :sex)
   end
 end
