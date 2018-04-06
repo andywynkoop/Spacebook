@@ -7,6 +7,8 @@ import MainPage from './MainPage';
 import About from './About';
 import NavMain from '../NavMain';
 import { fetchUser } from '../../actions/user';
+const NULL_PROFILE =
+  'http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_653/v1523046075/no_face.png';
 
 class Profile extends Component {
   constructor(props) {
@@ -17,17 +19,16 @@ class Profile extends Component {
   }
   componentDidMount() {
     const { userUrl } = this.props.match.params;
-    console.log(userUrl);
     this.props.fetchUser(this.props.match.params.userUrl);
   }
   render() {
-    console.log(this.props.users);
+    const { user } = this.props;
     return (
       <div>
         <NavMain />
         <div style={{ paddingTop: '42px' }}>
           <Cover />
-          <ProfileNav />
+          <ProfileNav profile={user ? user.profileImgUrl : NULL_PROFILE} />
           <MainPage>
             <About />
           </MainPage>
@@ -37,10 +38,17 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = ({
-  session: { currentUser },
-  entities: { users }
-}) => ({ currentUser, users });
+const mapStateToProps = (
+  { session: { currentUser }, entities: { users, userIdMap } },
+  ownProps
+) => {
+  const id = userIdMap[ownProps.match.params.userUrl];
+  return {
+    currentUser,
+    user: users[id]
+  };
+};
+
 const mapDispatchToProps = dispatch => ({
   fetchUser: userUrl => dispatch(fetchUser(userUrl))
 });

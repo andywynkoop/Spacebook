@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 
 class NavMain extends Component {
   render() {
+    const { profile } = this.props;
     return (
       <nav className="profile-nav">
         <div className="profile-img">
-          <img
-            src={
-              'http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_446/v1522968300/20170422_150306.jpg'
-            }
-          />
+          <img src={profile} />
         </div>
         <h1 className="profile-nav-header">Andy Wynkoop</h1>
         <ul className="profile-nav-items">
