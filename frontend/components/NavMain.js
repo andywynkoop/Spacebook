@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { logout } from '../actions/session';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
+import NavSession from './session/NavSession';
 
 class NavMain extends Component {
   constructor(props) {
@@ -11,12 +12,13 @@ class NavMain extends Component {
       query: ''
     };
   }
-  componentDidMount() {
+  componentWillReceiveProps() {
+    console.log('called');
     if (!this.props.currentUser) this.props.history.push('/');
   }
   render() {
     const { currentUser, logout } = this.props;
-    if (!currentUser) return <div />;
+    if (!currentUser) return <NavSession />;
     return (
       <div className="nav-main-wrapper">
         <nav className="nav-main">

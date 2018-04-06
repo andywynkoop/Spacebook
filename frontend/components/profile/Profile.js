@@ -7,8 +7,7 @@ import MainPage from './MainPage';
 import About from './About';
 import NavMain from '../NavMain';
 import { fetchUser } from '../../actions/user';
-const NULL_PROFILE =
-  'http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_653/v1523046075/no_face.png';
+import MissingPage from './MissingPage';
 
 class Profile extends Component {
   constructor(props) {
@@ -21,14 +20,23 @@ class Profile extends Component {
     const { userUrl } = this.props.match.params;
     this.props.fetchUser(this.props.match.params.userUrl);
   }
+  componentWillReceiveProps() {
+    console.log('called');
+    if (!this.props.currentUser) this.props.history.push('/');
+  }
   render() {
-    const { user } = this.props;
+    const { user, currentUser } = this.props;
+    if (!user) return <MissingPage />;
+    if (!currentUser) return <MissingPage />;
     return (
       <div>
         <NavMain />
         <div style={{ paddingTop: '42px' }}>
-          <Cover />
-          <ProfileNav profile={user ? user.profileImgUrl : NULL_PROFILE} />
+          <Cover src={user.coverPhotoUrl} />
+          <ProfileNav
+            profile={user ? user.profileImgUrl : null}
+            name={`${user.firstname} ${user.lastname}`}
+          />
           <MainPage>
             <About />
           </MainPage>

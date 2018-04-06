@@ -1,3 +1,9 @@
 import React from 'react';
+import NavMain from '../NavMain';
 
-export default props => <h1>{"This page isn't available"}</h1>;
+export default props => (
+  <div>
+    <NavMain />
+    <h1>This page is not available.</h1>
+  </div>
+);

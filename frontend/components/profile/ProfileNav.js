@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+const NULL_PROFILE =
+  'http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_653/v1523046075/no_face.png';
 
 class NavMain extends Component {
   render() {
-    const { profile } = this.props;
+    const { profile, name } = this.props;
     return (
       <nav className="profile-nav">
         <div className="profile-img">
-          <img src={profile} />
+          <img src={profile || NULL_PROFILE} />
         </div>
-        <h1 className="profile-nav-header">Andy Wynkoop</h1>
+        <h1 className="profile-nav-header">{name}</h1>
         <ul className="profile-nav-items">
           <li>Timeline</li>
           <li>About</li>
