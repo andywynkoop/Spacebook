@@ -1,7 +1,7 @@
 .nav-main-wrapper {
   width: 100%;
   height: 42px;
-  background: #3b5998;
+  background: #3c66af;
   position: fixed;
 }
 .nav-main {
@@ -71,13 +71,58 @@
   margin-top: -5px;
 }
 
-.nav-main ul li {
-  padding: 15px 5px 0px 5px;
-  font-size: 12px;
+.nav-main-list-item {
+  padding: 5px;
+  margin: 10px 0px 0px 0px;
+  font-size: 11.5px;
   font-weight: 400;
+  letter-spacing: 1px;
   box-sizing: border-box;
 }
-
-.nav-main ul li:hover {
-  background: #2f4779;
+.nav-break {
+  color: #355088;
+  margin: 0px 10px;
+  margin-top: 12px;
 }
+#nav-home {
+  margin-right: 20px;
+}
+.nav-icon-container {
+  margin: 5px 0px 10px 0px;
+}
+.nav-icon {
+  height: 24px;
+  width: 24px;
+  background-size: contain;
+}
+.ni-friend {
+  background-image: image-url('icon-users');
+}
+.ni-friend:hover {
+  background-image: image-url('icon-users-hover');
+}
+.ni-friend-active {
+  background-image: image-url('icon-users-active');
+}
+.ni-message {
+  background-image: image-url('icon-message');
+}
+.ni-message:hover {
+  background-image: image-url('icon-message-hover');
+}
+.ni-message-active {
+  background-image: image-url('icon-message-active');
+}
+.ni-notification {
+  background-image: image-url('icon-earth');
+}
+.ni-notification:hover {
+  background-image: image-url('icon-earth-hover');
+}
+.ni-notification-active {
+  background-image: image-url('icon-earth-active');
+}
+
+// .nav-main-list-item:hover {
+//   background: #2f4779;
+// }
