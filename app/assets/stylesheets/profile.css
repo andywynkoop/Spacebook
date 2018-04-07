@@ -5,6 +5,7 @@
   border: none;
   width: 850px;
   margin: auto;
+  cursor: pointer;
 }
 
 .main-content {

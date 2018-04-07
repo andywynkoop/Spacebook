@@ -35,7 +35,7 @@ class User < ApplicationRecord
   end
 
   def ensure_user_url
-    self.firstname ||= "ThoughtSpot User"
+    self.firstname ||= "User"
     self.lastname ||= " "
     self.user_url ||= "#{self.firstname}#{self.lastname}_#{rand(100000)}"
   end

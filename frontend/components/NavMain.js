@@ -6,6 +6,8 @@ import { withRouter } from 'react-router-dom';
 import NavSession from './session/NavSession';
 import NavIcon from './NavIcon';
 import NavMainSearch from './NavMainSearch';
+const NULL_PROFILE =
+  'http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_653/v1523046075/no_face.png';
 
 class NavMain extends Component {
   constructor(props) {
@@ -37,7 +39,9 @@ class NavMain extends Component {
                 history.push('/');
               }}
             >
-              <div>t</div>
+              <div className="header-t">
+                <p>t</p>
+              </div>
             </div>
             <NavMainSearch />
           </div>
@@ -45,9 +49,7 @@ class NavMain extends Component {
             <Link to={`/${currentUser.userUrl}`}>
               <li className="nav-main-list-item" style={{ display: 'flex' }}>
                 <img
-                  src={
-                    'http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_367/v1522968300/20170422_150306.jpg'
-                  }
+                  src={currentUser.profileImgUrl || NULL_PROFILE}
                   className="nav-main-img"
                 />
 
@@ -74,6 +76,16 @@ class NavMain extends Component {
               selected={selected}
             />
             <span className="nav-break">|</span>
+            <NavIcon
+              type="question"
+              select={this.selectIcon}
+              selected={selected}
+            />
+            <NavIcon
+              type="dropdown"
+              select={this.selectIcon}
+              selected={selected}
+            />
           </ul>
         </nav>
       </div>

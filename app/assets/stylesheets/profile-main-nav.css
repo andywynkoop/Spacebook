@@ -17,6 +17,7 @@
   background-position: -20px -40px;
   box-shadow: 3px 3px 10px #23355b;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .profile-nav-header {

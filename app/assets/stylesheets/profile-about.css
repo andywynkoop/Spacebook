@@ -2,6 +2,7 @@
   width: 300px;
   background: #fff;
   border-radius: 5px;
+  border: solid 1px #ddd;
   margin-top: 15px;
   padding: 15px;
   font-size: 12px;
@@ -9,6 +10,10 @@
 }
 
 .about h1 {
-  font-size: 14px;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.about-label {
+  font-weight: bold;
   margin-bottom: 10px;
 }

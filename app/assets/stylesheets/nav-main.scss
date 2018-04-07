@@ -45,18 +45,22 @@
   margin: 5px;
   margin-top: 9px;
 }
-.nav-header div {
+.header-t {
   background: white;
   color: #3b5998;
   height: 24px;
   width: 24px;
-  font-size: 24px;
-  font-weight: 900;
   border-radius: 3px;
   box-sizing: border-box;
   display: inline-block;
-  text-align: right;
-  padding: 0px 3px 0px 4px;
+  position: relative;
+}
+.header-t p {
+  font-size: 24px;
+  font-weight: 900;
+  position: absolute;
+  bottom: -4px;
+  right: 3px;
 }
 
 .nav-main ul {
@@ -93,36 +97,55 @@
 .nav-icon {
   height: 24px;
   width: 24px;
-  background-size: contain;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: image-url('icon-sprite');
 }
 .ni-friend {
-  background-image: image-url('icon-users');
+  background-position: 0px 0px;
 }
 .ni-friend:hover {
-  background-image: image-url('icon-users-hover');
+  background-position: 0px -24px;
 }
 .ni-friend-active {
-  background-image: image-url('icon-users-active');
+  background-position: 0px -48px;
 }
 .ni-message {
-  background-image: image-url('icon-message');
+  background-position: 0px -72px;
 }
 .ni-message:hover {
-  background-image: image-url('icon-message-hover');
+  background-position: 0px -96px;
 }
 .ni-message-active {
-  background-image: image-url('icon-message-active');
+  background-position: 0px -120px;
 }
 .ni-notification {
-  background-image: image-url('icon-earth');
+  background-position: 0px -168px;
 }
 .ni-notification:hover {
-  background-image: image-url('icon-earth-hover');
+  background-position: 0px -192px;
 }
 .ni-notification-active {
-  background-image: image-url('icon-earth-active');
+  background-position: 0px -216px;
 }
-
+.ni-question {
+  background-position: 0px -240px;
+}
+.ni-question:hover {
+  background-position: 0px -264px;
+}
+.ni-question-active {
+  background-position: 0px -288px;
+}
+.ni-dropdown {
+  background-position: 0px -312px;
+}
+.ni-dropdown:hover {
+  background-position: 0px -336px;
+}
+.ni-dropdown-active {
+  background-position: 0px -360px;
+}
 // .nav-main-list-item:hover {
 //   background: #2f4779;
 // }

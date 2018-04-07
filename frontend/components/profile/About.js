@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import AboutItem from './AboutItem';
 
 class About extends Component {
   render() {
+    const { birthday, bio } = this.props.user;
     return (
       <div className="about">
-        <h1>About</h1>
-        <p>{"Here is a description of this page's user"}</p>
+        <h1>Intro</h1>
+        <AboutItem label="Birthday" value={new Date(birthday).toDateString()} />
+        <AboutItem label="About Me" value={bio} />
       </div>
     );
   }
