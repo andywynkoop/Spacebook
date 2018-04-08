@@ -26,3 +26,19 @@ body {
 .pseudo-link:hover {
   text-decoration: underline;
 }
+
+.item-container {
+  width: 300px;
+  background: #fff;
+  border-radius: 5px;
+  border: solid 1px #ddd;
+  margin-top: 15px;
+  padding: 15px;
+  font-size: 12px;
+  margin-right: 25px;
+}
+
+.item-container h1 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}

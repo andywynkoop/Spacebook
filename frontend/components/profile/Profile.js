@@ -26,7 +26,6 @@ class Profile extends Component {
     if (!this.props.currentUser) this.props.history.push('/');
   }
   componentDidUpdate() {
-    console.log(this.props.user);
     if (!this.props.user) {
       this.fetchUser();
       this.props.fetchCurrentUser();
@@ -38,10 +37,7 @@ class Profile extends Component {
   }
   render() {
     const { user, currentUser } = this.props;
-    console.log(currentUser);
     if (!user) return <MissingPage />;
-    if (!currentUser) return <MissingPage />;
-    console.log(user);
     return (
       <div>
         <NavMain />

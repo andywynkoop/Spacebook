@@ -8,6 +8,7 @@ export default (state = _nullSession, action) => {
   Object.freeze(state);
   switch (action.type) {
     case RECEIVE_CURRENT_USER:
+      // console.log(`setting current user: ${action.user.firstname}`);
       const newState = Object.assign({}, state);
       newState.currentUser = action.user;
       return newState;

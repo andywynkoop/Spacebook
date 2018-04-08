@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     : {};
-
   ReactDOM.render(
     <Root preloadedState={preloadedState} />,
     document.querySelector('#root')

@@ -57,9 +57,11 @@ class NavMain extends Component {
               </li>
             </Link>
             <span className="nav-break">|</span>
+
             <li className="nav-main-list-item nav-main-home">
-              <span>Home</span>
+              <Link to="/">Home</Link>
             </li>
+
             <NavIcon
               type="friend"
               select={this.selectIcon}
