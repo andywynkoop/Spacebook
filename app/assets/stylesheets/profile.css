@@ -8,6 +8,33 @@
   cursor: pointer;
 }
 
+.gray-page-button {
+  position: absolute;
+  height: 28px;
+  width: 105px;
+  border: solid 1px #fff;
+  text-align: center;
+  border-radius: 2px;
+  background: #f6f7f9;
+  border: solid 1px #7b7b7c;
+  color: #4a4f55;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 0px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.gray-page-button:hover {
+  background: #dddee0;
+}
+.friend-button {
+  bottom: 60px;
+  right: 180px;
+}
+.message-button {
+  bottom: 60px;
+  right: 60px;
+}
 .main-content {
   width: 850px;
   margin: auto;

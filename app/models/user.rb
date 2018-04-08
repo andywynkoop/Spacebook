@@ -4,7 +4,7 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6, allow_nil: true }
   after_initialize :ensure_session_token, :ensure_user_url
   attr_reader :password
-
+  ##Session
   def password=(password)
     @password = password
     self.password_digest = BCrypt::Password.create(password)
@@ -39,5 +39,62 @@ class User < ApplicationRecord
     self.lastname ||= " "
     self.user_url ||= "#{self.firstname}#{self.lastname}_#{rand(100000)}"
   end
+  # End of Session
+
+  #Friends
+  #to other users
+  has_many :requests_to_friends,
+    foreign_key: :requesting_user_id,
+    class_name: :Friendship
+  #from other users
+  has_many :requests_from_friends,
+    foreign_key: :requested_user_id,
+    class_name: :Friendship
+
+  #friends the user has requested
+  has_many :friends_requested,
+    through: :requests_to_friends,
+    source: :requested_user
+
+  #friends who requested user
+  has_many :requesting_friends,
+    through: :requests_from_friends,
+    source: :requesting_user
+
+  def approved_friends_to
+    User.find_by_sql(<<-SQL)
+    SELECT
+      users.*
+    FROM
+      users
+    JOIN
+      friendships ON users.id = friendships.requested_user_id
+    WHERE
+      friendships.requesting_user_id = #{self.id}
+    AND
+      friendships.approved = true
+    SQL
+  end
+
+  def approved_friends_from
+    User.find_by_sql(<<-SQL)
+    SELECT
+      users.*
+    FROM
+      users
+    JOIN
+      friendships ON users.id = friendships.requesting_user_id
+    WHERE
+      friendships.requested_user_id = #{self.id}
+    AND
+      friendships.approved = true
+    SQL
+  end
+
+  def friends
+    approved_friends_from.concat(approved_friends_to)
+  end
+
+  ##End of Friends
 
 end

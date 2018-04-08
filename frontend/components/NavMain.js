@@ -47,18 +47,18 @@ class NavMain extends Component {
           </div>
           <ul>
             <Link to={`/${currentUser.userUrl}`}>
-              <li className="nav-main-list-item" style={{ display: 'flex' }}>
+              <li className="nav-main-list-item nav-main-profile-btn">
                 <img
                   src={currentUser.profileImgUrl || NULL_PROFILE}
                   className="nav-main-img"
                 />
 
-                {currentUser.firstname}
+                <span>{currentUser.firstname}</span>
               </li>
             </Link>
             <span className="nav-break">|</span>
-            <li className="nav-main-list-item" id="nav-home">
-              Home
+            <li className="nav-main-list-item nav-main-home">
+              <span>Home</span>
             </li>
             <NavIcon
               type="friend"
@@ -75,7 +75,7 @@ class NavMain extends Component {
               select={this.selectIcon}
               selected={selected}
             />
-            <span className="nav-break">|</span>
+            <span className="nav-break nav-break-2">|</span>
             <NavIcon
               type="question"
               select={this.selectIcon}
@@ -95,7 +95,9 @@ class NavMain extends Component {
 
 const mapStateToProps = ({ session: { currentUser } }) => ({ currentUser });
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
+  requestFriend: (currentUserId, targetUserId) =>
+    dispatch(requestFriend(currentUserId, targetUserId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

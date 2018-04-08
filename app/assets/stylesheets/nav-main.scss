@@ -77,22 +77,43 @@
 
 .nav-main-list-item {
   padding: 5px;
-  margin: 10px 0px 0px 0px;
+  padding-top: 10px;
+  margin: 5px 0px 0px 0px;
   font-size: 11.5px;
   font-weight: 400;
   letter-spacing: 1px;
   box-sizing: border-box;
+  cursor: pointer;
+  height: 34px;
+  border-radius: 3px;
+}
+.nav-main-profile-btn {
+  display: flex;
+  padding-right: 10px;
+}
+.nav-main-list-item:hover {
+  background-color: #2a5089;
+}
+.nav-main-home {
+  margin-right: 20px;
+  padding-left: 10px;
 }
 .nav-break {
   color: #355088;
-  margin: 0px 10px;
+  margin: 0px;
   margin-top: 12px;
 }
-#nav-home {
-  margin-right: 20px;
+.nav-break-2 {
+  margin-left: 10px;
+  margin-right: 10px;
 }
+
 .nav-icon-container {
   margin: 5px 0px 10px 0px;
+  padding-top: 5px;
+}
+.nav-icon-container:hover {
+  background-color: #3c66af;
 }
 .nav-icon {
   height: 24px;

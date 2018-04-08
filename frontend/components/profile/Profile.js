@@ -26,6 +26,7 @@ class Profile extends Component {
   }
   render() {
     const { user, currentUser } = this.props;
+    console.log(currentUser);
     if (!user) return <MissingPage />;
     if (!currentUser) return <MissingPage />;
     console.log(user);
@@ -34,9 +35,11 @@ class Profile extends Component {
         <NavMain />
         <div style={{ paddingTop: '42px' }}>
           <Cover cover={user.coverPhotoUrl} />
+
           <ProfileNav
             profile={user.profileImgUrl}
             name={`${user.firstname} ${user.lastname}`}
+            currentUser={currentUser}
           />
           <MainPage>
             <About user={user} />
