@@ -21,6 +21,10 @@ class FriendButton extends Component {
       approveFriendship,
       cancelRequest
     } = this.props;
+
+    // debug
+    console.log(userUrl);
+    console.log('current: ', currentUser.userUrl);
     //the current user is looking at their own page
     if (userUrl === currentUser.userUrl) {
       return {

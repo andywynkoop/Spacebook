@@ -7,6 +7,7 @@ import MainPage from './MainPage';
 import About from './About';
 import NavMain from '../NavMain';
 import { fetchUser } from '../../actions/user';
+import { fetchCurrentUser } from '../../actions/session';
 import MissingPage from './MissingPage';
 
 class Profile extends Component {
@@ -17,15 +18,19 @@ class Profile extends Component {
     };
     this.fetchUser = this.fetchUser.bind(this);
   }
-  componentDidMount() {
+  componentWillMount() {
     this.fetchUser();
+    this.props.fetchCurrentUser();
   }
   componentWillUpdate() {
     if (!this.props.currentUser) this.props.history.push('/');
   }
   componentDidUpdate() {
     console.log(this.props.user);
-    if (!this.props.user) this.fetchUser();
+    if (!this.props.user) {
+      this.fetchUser();
+      this.props.fetchCurrentUser();
+    }
   }
   fetchUser() {
     const { userUrl } = this.props.match.params;
@@ -70,7 +75,8 @@ const mapStateToProps = (
 };
 
 const mapDispatchToProps = dispatch => ({
-  fetchUser: userUrl => dispatch(fetchUser(userUrl))
+  fetchUser: userUrl => dispatch(fetchUser(userUrl)),
+  fetchCurrentUser: () => dispatch(fetchCurrentUser())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

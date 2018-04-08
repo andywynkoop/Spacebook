@@ -23,3 +23,10 @@ export const fetchUser = id =>
     method: 'GET',
     url: `api/users/${id}`
   });
+
+export const fetchCurrentUser = () =>
+  $.ajax({
+    method: 'GET',
+    url: '/api/session'
+  });
+

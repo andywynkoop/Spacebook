@@ -20,6 +20,12 @@ export const logout = () => dispatch => {
   SessionApiUtils.logout().then(() => dispatch(logoutCurrentUser()));
 };
 
+export const fetchCurrentUser = () => dispatch => {
+  SessionApiUtils.fetchCurrentUser().then(user =>
+    dispatch(receiveCurrentUser(user))
+  );
+};
+
 export const receiveCurrentUser = user => ({
   type: RECEIVE_CURRENT_USER,
   user
