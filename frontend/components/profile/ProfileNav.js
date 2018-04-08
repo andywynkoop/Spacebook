@@ -6,7 +6,7 @@ const NULL_PROFILE =
 
 class NavMain extends Component {
   render() {
-    const { profile, name, currentUser } = this.props;
+    const { profile, name, currentUser, user } = this.props;
     return (
       <nav className="profile-nav">
         <div className="profile-img">
@@ -22,7 +22,7 @@ class NavMain extends Component {
             More <i className="fas fa-caret-down" />
           </li>
         </ul>
-        <FriendButton data={currentUser.friendshipData} />
+        <FriendButton user={user} />
         <MessageButton />
       </nav>
     );

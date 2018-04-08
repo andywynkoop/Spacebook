@@ -2,26 +2,29 @@ class Api::FriendshipsController < ApplicationController
   def create
     @friendship = Friendship.new(friendship_params)
     if @friendship.save
-      render "api/users/user.json.jbuilder", user: current_user
+      @user = current_user
+      render "api/users/show"
     else
       render ["Error Creating Friendship"], status: 422
     end
   end
 
   def update
-    @friendship = Friendship.find_by(params[:id])
+    @friendship = Friendship.find(params[:id])
     @friendship.approved = true
     if @friendship.save
-      render "api/users/user.json.jbuilder", user: current_user
+      @user = current_user
+      render "api/users/show"
     else
       render ["Error Approving Friendship"], status: 422
     end
   end
 
   def destroy
-    @friendship = Friendship.find_by(params[:id])
+    @friendship = Friendship.find(params[:id])
     @friendship.destroy
-    render "api/users/user.json.jbuilder", user: current_user
+    @user = current_user
+    render "api/users/show"
   end
 
 

@@ -15,14 +15,21 @@ class Profile extends Component {
     this.state = {
       user: null
     };
+    this.fetchUser = this.fetchUser.bind(this);
   }
   componentDidMount() {
+    this.fetchUser();
+  }
+  componentWillUpdate() {
+    if (!this.props.currentUser) this.props.history.push('/');
+  }
+  componentDidUpdate() {
+    console.log(this.props.user);
+    if (!this.props.user) this.fetchUser();
+  }
+  fetchUser() {
     const { userUrl } = this.props.match.params;
     this.props.fetchUser(this.props.match.params.userUrl);
-  }
-  componentWillReceiveProps() {
-    console.log('called');
-    if (!this.props.currentUser) this.props.history.push('/');
   }
   render() {
     const { user, currentUser } = this.props;
@@ -39,6 +46,7 @@ class Profile extends Component {
           <ProfileNav
             profile={user.profileImgUrl}
             name={`${user.firstname} ${user.lastname}`}
+            user={user}
             currentUser={currentUser}
           />
           <MainPage>
