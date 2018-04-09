@@ -61,7 +61,7 @@ class Profile extends Component {
               <About user={user} />
               <Friends friends={user.friendshipData.friends} />
             </SidePanel>
-            <ProfilePostsContainer user={user} />
+            <ProfilePostsContainer user={user} currentUser={currentUser} />
           </MainPage>
         </div>
       </div>

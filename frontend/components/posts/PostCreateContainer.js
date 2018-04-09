@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { createPost } from '../../actions/post';
 import PostForm from './PostForm';
 
-const mapStateToProps = (state, { postCreator, targetWall }) => ({
+const mapStateToProps = (state, { postAuthorId, wallId }) => ({
   post: { body: '' },
-  postCreator,
-  targetWall
+  postAuthorId,
+  wallId
 });
 
 const mapDispatchToProps = dispatch => ({

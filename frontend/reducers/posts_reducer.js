@@ -8,6 +8,7 @@ export default (state = {}, action) => {
     case RECEIVE_POST:
       const { post } = action;
       wall = post.wallId;
+      if (!newState[wall]) newState[wall] = {};
       newState[wall][post.id] = post;
       return newState;
     case RECEIVE_WALL_POSTS:
