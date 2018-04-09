@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import FriendButton from './FriendButton';
 import MessageButton from './MessageButton';
-const NULL_PROFILE =
-  'http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_653/v1523046075/no_face.png';
+import { NULL_PROFILE } from '../../util/img_util';
 
 class NavMain extends Component {
   render() {

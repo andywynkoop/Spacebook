@@ -5,6 +5,7 @@ import Cover from './Cover';
 import ProfileNav from './ProfileNav';
 import MainPage from './MainPage';
 import About from './About';
+import Friends from '../friends/Friends';
 import NavMain from '../NavMain';
 import { fetchUser } from '../../actions/user';
 import { fetchCurrentUser } from '../../actions/session';
@@ -52,6 +53,7 @@ class Profile extends Component {
           />
           <MainPage>
             <About user={user} />
+            <Friends friends={user.friendshipData.friends} />
           </MainPage>
         </div>
       </div>

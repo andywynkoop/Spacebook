@@ -1,0 +1,18 @@
+.friends-list {
+  display: flex;
+  margin: 0px -12.5px;
+}
+.friend-card {
+  height: 101px;
+  width: 104px;
+  position: relative;
+  background: #bbb;
+  margin: 2.5px;
+}
+.friend-card > p {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  color: white;
+  text-shadow: 1px 1px 2px #000;
+}
