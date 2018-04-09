@@ -41,7 +41,6 @@ class Profile extends Component {
   }
   render() {
     const { user, currentUser, errors } = this.props;
-    console.log(errors);
     if (!user && errors.length === 0) return <NavMain />;
     if (!user) return <MissingPage />;
     return (
