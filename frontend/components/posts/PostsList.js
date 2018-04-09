@@ -15,9 +15,10 @@ class PostsList extends Component {
     console.log(posts);
     return (
       <div className="item-container-post">
-        <div className="item-container item-container-post">
-          This will be the post form
-        </div>
+        <PostCreateContainer
+          postCreator={currentUser.id}
+          targetWall={user.id}
+        />
         <ul>{this.renderPostsList.bind(this)()}</ul>
       </div>
     );
