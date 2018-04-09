@@ -28,14 +28,19 @@ body {
 }
 
 .item-container {
-  width: 300px;
+  width: 331px;
+  box-sizing: border-box;
   background: #fff;
-  border-radius: 5px;
+  border-radius: 3px;
   border: solid 1px #ddd;
   margin-top: 15px;
   padding: 15px;
   font-size: 12px;
-  margin-right: 25px;
+  margin-right: 15px;
+}
+
+.item-container-post {
+  width: 505px;
 }
 
 .item-container h1 {

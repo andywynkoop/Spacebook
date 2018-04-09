@@ -16,7 +16,6 @@ class Post < ApplicationRecord
     user = User.find(id)
     friend_ids = user.friends.map { |friend| friend.id }
     friend_ids << user.id
-    puts friend_ids
     id_string = "(#{friend_ids.join(', ')})"
     Post.find_by_sql(<<-SQL)
       SELECT

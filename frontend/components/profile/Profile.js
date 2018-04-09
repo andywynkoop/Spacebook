@@ -5,6 +5,7 @@ import Cover from './Cover';
 import ProfileNav from './ProfileNav';
 import MainPage from './MainPage';
 import SidePanel from './SidePanel';
+import ProfilePostsContainer from './ProfilePostsContainer';
 import About from './About';
 import Friends from '../friends/Friends';
 import NavMain from '../NavMain';
@@ -60,6 +61,7 @@ class Profile extends Component {
               <About user={user} />
               <Friends friends={user.friendshipData.friends} />
             </SidePanel>
+            <ProfilePostsContainer user={user} />
           </MainPage>
         </div>
       </div>
