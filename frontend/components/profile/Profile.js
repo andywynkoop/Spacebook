@@ -5,7 +5,7 @@ import Cover from './Cover';
 import ProfileNav from './ProfileNav';
 import MainPage from './MainPage';
 import SidePanel from './SidePanel';
-import ProfilePostsContainer from './ProfilePostsContainer';
+import ProfilePostsContainer from '../posts/ProfilePostsContainer';
 import About from './About';
 import Friends from '../friends/Friends';
 import NavMain from '../NavMain';

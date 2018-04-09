@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PostsList from '../PostsList';
+import PostsList from './PostsList';
 import { fetchWallPosts } from '../../actions/post';
 
 const ProfilePosts = ({ user }) => <PostsList user={user} />;
