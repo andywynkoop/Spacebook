@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Cover from './Cover';
 import ProfileNav from './ProfileNav';
 import MainPage from './MainPage';
+import SidePanel from './SidePanel';
 import About from './About';
 import Friends from '../friends/Friends';
 import NavMain from '../NavMain';
@@ -14,9 +15,6 @@ import MissingPage from './MissingPage';
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      user: null
-    };
     this.fetchUser = this.fetchUser.bind(this);
   }
   componentWillMount() {
@@ -30,6 +28,11 @@ class Profile extends Component {
     const { user, errors } = this.props;
     if (!user && errors.length === 0) {
       this.fetchUser();
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.match.params.userUrl !== nextProps.match.params.userUrl) {
+      this.props.fetchUser(nextProps.match.params.userUrl);
     }
   }
   fetchUser() {
@@ -54,8 +57,10 @@ class Profile extends Component {
             currentUser={currentUser}
           />
           <MainPage>
-            <About user={user} />
-            <Friends friends={user.friendshipData.friends} />
+            <SidePanel>
+              <About user={user} />
+              <Friends friends={user.friendshipData.friends} />
+            </SidePanel>
           </MainPage>
         </div>
       </div>
