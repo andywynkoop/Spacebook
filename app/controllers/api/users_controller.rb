@@ -16,6 +16,10 @@ class Api::UsersController < ApplicationController
     @user = User.find_by(user_url: params[:userUrl])
   end
 
+  def index
+    @users = User.all
+  end
+
   def destroy
   end
 

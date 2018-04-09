@@ -9,9 +9,7 @@ class Friends extends Component {
   renderNineFriends() {
     const { friends } = this.props;
     delete friends['ownId'];
-    console.log(friends);
     const firstNine = Object.values(friends).slice(0, 9);
-    console.log(firstNine);
     return firstNine.map(friend => (
       <FriendCard key={friend.id} data={friend} />
     ));

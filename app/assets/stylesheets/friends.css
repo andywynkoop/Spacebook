@@ -1,13 +1,15 @@
 .friends-list {
   display: flex;
-  margin: 0px -12.5px;
+  margin: 0px -15px;
+  padding: 0px 2.5px;
 }
 .friend-card {
   height: 101px;
-  width: 104px;
+  width: 103px;
   position: relative;
   background: #bbb;
   margin: 2.5px;
+  overflow: hidden;
 }
 .friend-card > p {
   position: absolute;

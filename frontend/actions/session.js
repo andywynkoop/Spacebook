@@ -1,4 +1,5 @@
 import * as SessionApiUtils from '../util/session_api_util';
+import { fetchAllUsers } from './user';
 
 export const RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER';
 export const LOGOUT_CURRENT_USER = 'LOGOUT_CURRENT_USER';
@@ -12,7 +13,10 @@ export const signup = formUser => dispatch =>
 
 export const login = formUser => dispatch =>
   SessionApiUtils.login(formUser).then(
-    user => dispatch(receiveCurrentUser(user)),
+    user => {
+      dispatch(receiveCurrentUser(user));
+      dispatch(fetchAllUsers());
+    },
     err => dispatch(receiveErrors(err.responseJSON))
   );
 

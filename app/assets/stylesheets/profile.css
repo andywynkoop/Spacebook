@@ -1,9 +1,9 @@
 .cover-img {
   height: 315px;
-  background: #983b59;
   box-sizing: border-box;
   border: none;
   width: 850px;
+  overflow: hidden;
   margin: auto;
   cursor: pointer;
 }

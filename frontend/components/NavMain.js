@@ -17,7 +17,6 @@ class NavMain extends Component {
     this.selectIcon = this.selectIcon.bind(this);
   }
   componentWillReceiveProps() {
-    console.log('called');
     if (!this.props.currentUser) this.props.history.push('/');
   }
   selectIcon(selected) {
