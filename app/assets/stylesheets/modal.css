@@ -1,0 +1,9 @@
+.modal-main {
+  position: absolute;
+  top: 42px;
+  left: 0px;
+  right: 0px;
+  height: 100vh;
+  background: #ccc;
+  opacity: 0.8;
+}

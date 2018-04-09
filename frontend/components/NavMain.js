@@ -1,30 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../actions/session';
+import { openModal } from '../actions/ui';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import NavSession from './session/NavSession';
 import NavIcon from './NavIcon';
 import NavMainSearch from './NavMainSearch';
 import { NULL_PROFILE } from '../util/img_util';
+import NavModal from './navmodals/NavModal';
 
 class NavMain extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selected: null
-    };
-    this.selectIcon = this.selectIcon.bind(this);
   }
   componentWillReceiveProps() {
     if (!this.props.currentUser) this.props.history.push('/');
   }
-  selectIcon(selected) {
-    this.setState({ selected });
-  }
   render() {
     const { currentUser, logout, history } = this.props;
-    const { selected } = this.state;
+    const { modalType, openModal } = this.props;
     if (!currentUser) return <NavSession />;
     return (
       <div className="nav-main-wrapper">
@@ -60,44 +55,31 @@ class NavMain extends Component {
               <Link to="/">Home</Link>
             </li>
 
-            <NavIcon
-              type="friend"
-              select={this.selectIcon}
-              selected={selected}
-            />
-            <NavIcon
-              type="message"
-              select={this.selectIcon}
-              selected={selected}
-            />
+            <NavIcon type="friend" select={openModal} selected={modalType} />
+            <NavIcon type="message" select={openModal} selected={modalType} />
             <NavIcon
               type="notification"
-              select={this.selectIcon}
-              selected={selected}
+              select={openModal}
+              selected={modalType}
             />
             <span className="nav-break nav-break-2">|</span>
-            <NavIcon
-              type="question"
-              select={this.selectIcon}
-              selected={selected}
-            />
-            <NavIcon
-              type="dropdown"
-              select={this.selectIcon}
-              selected={selected}
-            />
+            <NavIcon type="question" select={openModal} selected={modalType} />
+            <NavIcon type="dropdown" select={openModal} selected={modalType} />
           </ul>
         </nav>
+        <NavModal />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ session: { currentUser } }) => ({ currentUser });
+const mapStateToProps = ({ session: { currentUser }, ui }) => ({
+  currentUser,
+  modalType: ui.modal.type
+});
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
-  requestFriend: (currentUserId, targetUserId) =>
-    dispatch(requestFriend(currentUserId, targetUserId))
+  openModal: type => dispatch(openModal(type))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
