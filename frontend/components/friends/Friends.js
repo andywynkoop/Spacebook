@@ -15,7 +15,9 @@ class Friends extends Component {
     ));
   }
   render() {
-    const friendCount = Object.keys(this.props.friends).length;
+    const friendCount = Object.values(this.props.friends).filter(
+      el => typeof el !== 'number'
+    ).length;
     return (
       <div className="item-container">
         <h1>
