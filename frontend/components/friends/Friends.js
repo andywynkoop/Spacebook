@@ -15,9 +15,12 @@ class Friends extends Component {
     ));
   }
   render() {
+    const friendCount = Object.keys(this.props.friends).length;
     return (
       <div className="item-container">
-        <h1>Friends</h1>
+        <h1>
+          Friends · <span style={{ color: '#8F949B' }}>{friendCount}</span>
+        </h1>
         <ul className="friends-list">{this.renderNineFriends()}</ul>
       </div>
     );

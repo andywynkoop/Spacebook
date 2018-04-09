@@ -27,9 +27,9 @@ class Profile extends Component {
     if (!this.props.currentUser) this.props.history.push('/');
   }
   componentDidUpdate() {
-    if (!this.props.user) {
+    const { user, errors } = this.props;
+    if (!user && errors.length === 0) {
       this.fetchUser();
-      this.props.fetchCurrentUser();
     }
   }
   fetchUser() {
@@ -37,7 +37,9 @@ class Profile extends Component {
     this.props.fetchUser(this.props.match.params.userUrl);
   }
   render() {
-    const { user, currentUser } = this.props;
+    const { user, currentUser, errors } = this.props;
+    console.log(errors);
+    if (!user && errors.length === 0) return <NavMain />;
     if (!user) return <MissingPage />;
     return (
       <div>
@@ -62,13 +64,14 @@ class Profile extends Component {
 }
 
 const mapStateToProps = (
-  { session: { currentUser }, entities: { users, userIdMap } },
+  { session: { currentUser }, entities: { users, userIdMap }, errors },
   ownProps
 ) => {
   const id = userIdMap[ownProps.match.params.userUrl];
   return {
     currentUser,
-    user: users[id]
+    user: users[id],
+    errors
   };
 };
 
