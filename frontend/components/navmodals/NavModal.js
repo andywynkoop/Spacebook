@@ -34,7 +34,7 @@ class NavModal extends Component {
     if (type === null) return <div />;
     return (
       <div onClick={closeModal} className="modal-main">
-        {this.renderModal(type)}
+        <div className="modal-position-holder">{this.renderModal(type)}</div>
       </div>
     );
   }
