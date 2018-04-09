@@ -6,7 +6,11 @@ class FriendRequestItem extends Component {
     console.log(data);
     console.log(user);
     if (data === null)
-      return <div className="request-item null-request">No new requests</div>;
+      return (
+        <div className="request-item null-request">
+          <p>No new requests</p>
+        </div>
+      );
     return (
       <div className="request-item">
         <div className="modal-user-info">

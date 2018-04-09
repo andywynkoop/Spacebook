@@ -96,6 +96,9 @@
 .null-request {
   background: #f6f7f9;
   color: #8f949b;
-  text-align: center;
   padding-top: 20px;
+}
+.null-request p {
+  text-align: center;
+  width: 100%;
 }
