@@ -1,18 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createPost } from '../../actions/post';
+import { createPost, fetchWallPosts } from '../../actions/post';
 import PostForm from './PostForm';
 
-const mapStateToProps = (state, { postAuthorId, author, wallId, refresh }) => ({
+const mapStateToProps = (state, { postAuthorId, author, wallId }) => ({
   post: { body: '' },
   postAuthorId,
   author,
-  wallId,
-  refresh
+  wallId
 });
 
 const mapDispatchToProps = dispatch => ({
-  action: post => dispatch(createPost(post))
+  action: post => dispatch(createPost(post)),
+  fetchPosts: id => dispatch(fetchWallPosts(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostForm);

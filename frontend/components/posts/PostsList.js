@@ -27,7 +27,6 @@ class PostsList extends Component {
           postAuthorId={currentUser.id}
           author={currentUser}
           wallId={user.id}
-          refresh={() => this.setState({ refresh: true })}
         />
         <ul>{this.renderPostsList.bind(this)()}</ul>
       </div>

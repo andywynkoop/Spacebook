@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addComment } from '../../actions/comment';
+import { fetchWallPosts } from '../../actions/post';
 
 class CommentForm extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class CommentForm extends Component {
     this.state = {
       body: ''
     };
+
     this.update = this.update.bind(this);
     this.submit = this.submit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -17,10 +19,20 @@ class CommentForm extends Component {
     return e => this.setState({ [field]: e.target.value });
   }
   submit() {
-    const { postId: post_id, user: { id: author_id } } = this.props;
+    const {
+      post,
+      post: { id: post_id },
+      user: { id: author_id },
+      addComment,
+      fetchPosts
+    } = this.props;
     const { body } = this.state;
 
-    this.props.addComment({ author_id, post_id, body });
+    addComment({ author_id, post_id, body }).then(() =>
+      this.setState({ body: '' }, () => {
+        fetchPosts(post.wallId);
+      })
+    );
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -51,7 +63,8 @@ const mapStateToProps = ({ session: { currentUser: user } }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addComment: comment => dispatch(addComment(comment))
+  addComment: comment => dispatch(addComment(comment)),
+  fetchPosts: id => dispatch(fetchWallPosts(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentForm);

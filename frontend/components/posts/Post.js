@@ -22,7 +22,7 @@ class Post extends Component {
           </div>
         </div>
         <p className="post-body">{data.body}</p>
-        <Comments postId={data.id} comments={data.comments} />
+        <Comments post={data} comments={data.comments} />
       </li>
     );
   }

@@ -4,12 +4,11 @@ import CommentForm from './CommentForm';
 
 class Comments extends Component {
   render() {
-    const { postId, comments } = this.props;
-    console.log(comments);
+    const { post, comments } = this.props;
     return (
       <div className="comments">
         <CommentsList comments={comments} />
-        <CommentForm postId={postId} />
+        <CommentForm post={post} />
       </div>
     );
   }
