@@ -10,16 +10,13 @@ User.create(
 firstname: "Andy",
 lastname: "Wynkoop",
 email: "demo_user@email.com",
-created_at: Thu, 05 Apr 2018 16:50:50 UTC +00:00,
-updated_at: Mon, 09 Apr 2018 03:04:05 UTC +00:00,
 user_url: "AndyWynkoop",
 profile_img_url:
  "http://res.cloudinary.com/dmynah8jz/image/upload/v1523080236/andyprofile.jpg",
 cover_photo_url:
  "http://res.cloudinary.com/dmynah8jz/image/upload/c_scale,w_1254/v1523082791/20151109_155823.jpg",
 bio: "Software engineer working in San Francisco, CA.",
-birthday: Tue, 28 Apr 1992 07:00:00 UTC +00:00,
-sex: "Male">
+sex: "Male"
 )
 
 User.create(
@@ -27,14 +24,11 @@ User.create(
  lastname: "Garcia",
  email: "jerry@email.com",
  password: "password",
- created_at: Sun, 08 Apr 2018 21:46:22 UTC +00:00,
- updated_at: Mon, 09 Apr 2018 02:01:25 UTC +00:00,
  user_url: "JerryGarcia",
  profile_img_url: "https://upload.wikimedia.org/wikipedia/commons/9/97/Jerry-Garcia-01.jpg",
  cover_photo_url: "https://upload.wikimedia.org/wikipedia/commons/1/10/Grateful_Dead_%289139238416%29.jpg",
  bio: nil,
- birthday: Wed, 04 Feb 1953 08:00:00 UTC +00:00,
- sex: "Male">
+ sex: "Male"
 )
 
 User.create(
@@ -42,12 +36,21 @@ User.create(
  lastname: "Garcia",
  email: "jerry@email.com",
  password: "password",
- created_at: Sun, 08 Apr 2018 21:46:22 UTC +00:00,
- updated_at: Mon, 09 Apr 2018 02:01:25 UTC +00:00,
  user_url: "JerryGarcia",
  profile_img_url: "https://upload.wikimedia.org/wikipedia/commons/9/97/Jerry-Garcia-01.jpg",
  cover_photo_url: "https://upload.wikimedia.org/wikipedia/commons/1/10/Grateful_Dead_%289139238416%29.jpg",
  bio: nil,
- birthday: Wed, 04 Feb 1953 08:00:00 UTC +00:00,
- sex: "Male">
+ sex: "Male"
+)
+
+User.create(
+ firstname: "Danny W.",
+ lastname: "Peng",
+ email: "danny@email.com",
+ password: "password",
+ user_url: "DannyWPeng",
+ profile_img_url: "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/19748628_10105116560528514_928545978395585021_n.jpg?_nc_cat=0&oh=4300167ae91a3dbb0e9d59cacc387c50&oe=5B5C4ABD",
+ cover_photo_url: "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/19732187_10105116555104384_5365679968007041198_n.jpg?_nc_cat=0&oh=7610a6e845d1fb2020cd25492ce5f340&oe=5B288001",
+ bio: "Keep your logic above your sentiments. Or else you're headed for regrets.",
+ sex: "Male"
 )
