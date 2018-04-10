@@ -9,7 +9,7 @@ import ProfilePostsContainer from '../posts/ProfilePostsContainer';
 import About from './About';
 import Friends from '../friends/Friends';
 import NavMain from '../NavMain';
-import { fetchUser } from '../../actions/user';
+import { fetchUser, fetchAllUsers } from '../../actions/user';
 import { fetchCurrentUser } from '../../actions/session';
 import MissingPage from './MissingPage';
 
@@ -17,6 +17,9 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.fetchUser = this.fetchUser.bind(this);
+  }
+  componentDidMount() {
+    this.props.fetchAllUsers();
   }
   componentWillMount() {
     this.fetchUser();
@@ -83,7 +86,8 @@ const mapStateToProps = (
 
 const mapDispatchToProps = dispatch => ({
   fetchUser: userUrl => dispatch(fetchUser(userUrl)),
-  fetchCurrentUser: () => dispatch(fetchCurrentUser())
+  fetchCurrentUser: () => dispatch(fetchCurrentUser()),
+  fetchAllUsers: () => dispatch(fetchAllUsers())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
