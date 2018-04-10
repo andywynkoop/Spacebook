@@ -8,6 +8,10 @@ class Post < ApplicationRecord
     foreign_key: :wall_id,
     class_name: :User
 
+  has_many :comments,
+    foreign_key: :post_id,
+    class_name: :Comment
+
   def self.find_by_wall_id(id)
     Post.all.where(wall_id: id)
   end

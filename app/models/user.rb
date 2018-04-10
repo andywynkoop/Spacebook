@@ -96,5 +96,17 @@ class User < ApplicationRecord
   end
 
   ##End of Friends
+  has_many :authored_posts,
+    foreign_key: :author_id,
+    class_name: :Post
+
+  has_many :wall_posts,
+    foreign_key: :wall_id,
+    class_name: :Post
+
+  has_many :authored_comments,
+    foreign_key: :author_id,
+    class_name: :Comment
+
 
 end
