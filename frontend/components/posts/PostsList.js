@@ -9,7 +9,6 @@ class PostsList extends Component {
   renderPostsList() {
     const { posts, users } = this.props;
     if (!posts || !users) return <div />;
-    console.log(users);
     return Object.values(posts)
       .sort((p1, p2) => {
         if (p1.createdAt < p2.createdAt) return 1;
@@ -27,6 +26,7 @@ class PostsList extends Component {
           postAuthorId={currentUser.id}
           author={currentUser}
           wallId={user.id}
+          refresh={() => this.setState({ refresh: true })}
         />
         <ul>{this.renderPostsList.bind(this)()}</ul>
       </div>

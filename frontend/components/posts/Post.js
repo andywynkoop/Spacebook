@@ -4,7 +4,6 @@ class Post extends Component {
   render() {
     const { data, author } = this.props;
     if (!author) return <div />;
-    console.log(data);
     return (
       <li className="item-container item-container-post post">
         <div className="post-header">

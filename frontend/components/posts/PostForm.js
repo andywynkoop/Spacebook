@@ -23,7 +23,7 @@ class PostForm extends Component {
         wall_id,
         body
       })
-      .then(() => this.setState({ body: '' }));
+      .then(() => this.setState({ body: '' }, () => this.props.refresh()));
   }
   render() {
     const { author } = this.props;
