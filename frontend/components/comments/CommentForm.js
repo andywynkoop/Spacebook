@@ -48,6 +48,7 @@ class CommentForm extends Component {
         <div style={{ backgroundImage: `url("${user.profileImgUrl}")` }} />
         <textarea
           type="text"
+          rows={1}
           placeholder="Write a comment..."
           value={this.state.body}
           onChange={this.update('body')}

@@ -16,8 +16,10 @@
   width: 430px;
   border-radius: 18px;
   padding: 10px;
+  padding-bottom: 10px;
   resize: none;
   box-sizing: border-box;
+  border: solid 1px #dddfe2;
 }
 
 .comment-form > div {
