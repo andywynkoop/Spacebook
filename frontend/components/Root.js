@@ -2,7 +2,8 @@ import React from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
-import reduxLogger from 'redux-logger';
+//redux logger is the second arg
+// import reduxLogger from 'redux-logger';
 import rootReducer from '../reducers';
 import App from './App';
 
@@ -10,7 +11,7 @@ const Root = ({ preloadedState }) => {
   const store = createStore(
     rootReducer,
     preloadedState,
-    applyMiddleware(reduxThunk, reduxLogger)
+    applyMiddleware(reduxThunk)
   );
 
   return (

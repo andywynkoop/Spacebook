@@ -1,29 +1,54 @@
 import React, { Component } from 'react';
+import SearchModal from './navmodals/SearchModal';
+import { connect } from 'react-redux';
+import { setQuery } from '../actions/ui';
 
-export default class NavMainSearch extends Component {
+class NavMainSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: ''
+      query: '',
+      modal: false
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.update = this.update.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+  update(field) {
+    return e => {
+      let query = e.target.value;
+      this.setState({ modal: true, query });
+      this.props.setQuery(query);
+    };
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log(`searching for ${this.state.query}`);
+  }
+  closeModal() {
+    this.setState({ modal: false });
   }
   render() {
     return (
-      <form
-        className="nav-search"
-        onSubmit={() =>
-          console.log('Searchy search....', ` Looking for ${this.state.query}`)
-        }
-      >
+      <form className="nav-search" onSubmit={this.handleSubmit}>
         <input
           type="text"
-          value={this.state.query}
-          onChange={({ target: { value: query } }) => this.setState({ query })}
+          value={this.props.query}
+          onChange={this.update('query')}
+          placeholder="Search Users"
         />
-        <button type="submit">
+        <button type="submit" className={this.state.modal ? 'blue-button' : ''}>
           <i className="fas fa-search" />
         </button>
+        <SearchModal status={this.state.modal} close={this.closeModal} />
       </form>
     );
   }
 }
+
+const mapStateToProps = ({ ui }) => ({ ui });
+const mapDispatchToProps = dispatch => ({
+  setQuery: query => dispatch(setQuery(query))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavMainSearch);

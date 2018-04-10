@@ -38,6 +38,30 @@
   background: #fff;
   box-shadow: 0px 1px 3px 1px #333;
 }
+.modal-box-search {
+  left: 35px;
+  width: 445px;
+}
+.search-modal-user {
+  height: 30px;
+  display: flex;
+  color: #333;
+}
+.search-modal-user:hover {
+  color: #fff;
+  background: #315796;
+}
+.search-modal-user p {
+  height: 30px;
+  padding-top: 5px;
+}
+.search-modal-user-profile {
+  background-size: contain;
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
 
 .modal-title {
   color: #333;

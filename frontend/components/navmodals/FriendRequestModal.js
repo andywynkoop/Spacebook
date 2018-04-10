@@ -10,7 +10,7 @@ class FriendRequestModal extends Component {
   }
   renderRequestList() {
     const { requests, approve, deny, users } = this.props;
-    console.log(requests);
+
     if (requests.length === 0) return <FriendRequestItem data={null} />;
     return requests.map(request => (
       <FriendRequestItem

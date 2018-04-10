@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 class FriendRequestItem extends Component {
   render() {
     const { data, approve, deny, user } = this.props;
-    console.log(data);
-    console.log(user);
     if (data === null)
       return (
         <div className="request-item null-request">
