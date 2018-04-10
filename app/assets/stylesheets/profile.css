@@ -6,6 +6,7 @@
   overflow: hidden;
   margin: auto;
   cursor: pointer;
+  object-fit: cover;
 }
 
 .gray-page-button {
