@@ -1,0 +1,35 @@
+.comments {
+  background: #f2f3f5;
+  margin: 0px -15px -25px -15px;
+  padding: 15px;
+  border-top: solid 1px #dddfe2;
+  margin-top: 20px;
+}
+
+.comment-form {
+  display: flex;
+  padding: 15px 0px;
+}
+
+.comment-form input {
+  min-height: 32px;
+  width: 330px;
+  border-radius: 8%/100%;
+  padding: 10px;
+}
+
+.comment-form > div {
+  min-height: 32px;
+  width: 32px;
+  border-radius: 100%;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.comment {
+  background: #fff;
+  height: 32px;
+  border-radius: 8%/100%;
+  padding: 5px;
+  margin: 5px 0px;
+}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Comments from '../comments/Comments';
 
 class Post extends Component {
   render() {
@@ -21,6 +22,7 @@ class Post extends Component {
           </div>
         </div>
         <p className="post-body">{data.body}</p>
+        <Comments postId={data.id} comments={data.comments} />
       </li>
     );
   }
