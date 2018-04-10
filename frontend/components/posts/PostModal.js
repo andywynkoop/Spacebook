@@ -6,8 +6,14 @@ class PostModal extends Component {
     if (!status) return <div />;
     return (
       <div className="post-modal">
-        <p onClick={edit}>Edit</p>
-        <p onClick={destroy}>Delete</p>
+        <p onClick={edit}>
+          <i className="fas fa-edit" />
+          {' Edit...'}
+        </p>
+        <p onClick={destroy}>
+          <i className="fas fa-trash-alt" />
+          {' Delete...'}
+        </p>
       </div>
     );
   }
