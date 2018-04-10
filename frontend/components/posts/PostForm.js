@@ -28,11 +28,11 @@ class PostForm extends Component {
       );
   }
   render() {
-    const { author } = this.props;
+    const { author, formType } = this.props;
     return (
       <div className="item-container item-container-post post-form">
         <div className="post-form-header">
-          <p>Make Post</p>
+          <p>{formType}</p>
           {' | '}
           <p>Photo/Video</p>
           {' | '}

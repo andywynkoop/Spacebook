@@ -37,6 +37,7 @@
   padding: 10px;
   margin: 5px 0px;
   width: 430px;
+  font-size: 13px;
 }
 .comment {
   display: flex;

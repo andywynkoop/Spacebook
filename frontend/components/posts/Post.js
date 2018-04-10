@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Comments from '../comments/Comments';
+import PostModal from './PostModal';
 
 class Post extends Component {
   render() {
@@ -23,6 +24,7 @@ class Post extends Component {
         </div>
         <p className="post-body">{data.body}</p>
         <Comments post={data} comments={data.comments} />
+        <PostModal edit={this.openEditModal} />
       </li>
     );
   }

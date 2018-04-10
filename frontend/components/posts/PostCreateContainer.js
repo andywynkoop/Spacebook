@@ -7,7 +7,8 @@ const mapStateToProps = (state, { postAuthorId, author, wallId }) => ({
   post: { body: '' },
   postAuthorId,
   author,
-  wallId
+  wallId,
+  formType: 'Make Post'
 });
 
 const mapDispatchToProps = dispatch => ({
