@@ -10,9 +10,14 @@ class PostsList extends Component {
     const { posts, users } = this.props;
     if (!posts || !users) return <div />;
     console.log(users);
-    return Object.values(posts).map(post => (
-      <Post key={post.id} data={post} author={users[post.authorId]} />
-    ));
+    return Object.values(posts)
+      .sort((p1, p2) => {
+        if (p1.createdAt < p2.createdAt) return 1;
+        return -1;
+      })
+      .map(post => (
+        <Post key={post.id} data={post} author={users[post.authorId]} />
+      ));
   }
   render() {
     const { user, currentUser, posts } = this.props;

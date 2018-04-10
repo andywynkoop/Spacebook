@@ -17,11 +17,13 @@ class PostForm extends Component {
     e.preventDefault();
     const { postAuthorId: author_id, wallId: wall_id } = this.props;
     const { body } = this.state;
-    this.props.action({
-      author_id,
-      wall_id,
-      body
-    });
+    this.props
+      .action({
+        author_id,
+        wall_id,
+        body
+      })
+      .then(() => this.setState({ body: '' }));
   }
   render() {
     const { author } = this.props;

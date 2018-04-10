@@ -56,6 +56,9 @@
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
+.post-form-input input {
+  width: 100%;
+}
 .post-form-buttons {
   display: flex;
   justify-content: flex-end;
