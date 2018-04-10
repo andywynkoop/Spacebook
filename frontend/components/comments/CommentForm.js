@@ -11,27 +11,35 @@ class CommentForm extends Component {
     };
     this.update = this.update.bind(this);
     this.submit = this.submit.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
   update(field) {
     return e => this.setState({ [field]: e.target.value });
   }
-  submit(e) {
-    e.preventDefault();
+  submit() {
     const { postId: post_id, user: { id: author_id } } = this.props;
     const { body } = this.state;
 
     this.props.addComment({ author_id, post_id, body });
   }
+  handleSubmit(e) {
+    e.preventDefault();
+    submit();
+  }
+  handleKeyPress(e) {
+    if (e.key === 'Enter') this.submit();
+  }
   render() {
     const { user } = this.props;
     return (
-      <form className="comment-form" onSubmit={this.submit}>
+      <form className="comment-form" onSubmit={this.handleSubmit}>
         <div style={{ backgroundImage: `url("${user.profileImgUrl}")` }} />
-        <input
+        <textarea
           type="text"
           placeholder="Write a comment..."
           value={this.state.body}
           onChange={this.update('body')}
+          onKeyPress={this.handleKeyPress}
         />
       </form>
     );
