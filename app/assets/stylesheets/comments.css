@@ -36,11 +36,12 @@
   border-radius: 18px;
   padding: 10px;
   margin: 5px 0px;
-  width: 430px;
+  max-width: 410px;
   font-size: 13px;
 }
 .comment {
   display: flex;
+  position: relative;
 }
 
 .comment-author {
@@ -53,4 +54,50 @@
   width: 32px;
   border-radius: 100%;
   margin: 5px 10px 5px 0px;
+}
+
+.comment-modal-btn-container {
+  position: relative;
+}
+
+.comment-modal-btn {
+  display: none;
+  background: none;
+  position: absolute;
+  top: 12px;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.comment:hover .comment-modal-btn {
+  display: block;
+  color: #ccc;
+}
+
+.comment .comment-modal-btn:hover {
+  color: #333;
+}
+.comment-modal-btn-container:hover .comment-modal-btn-modal {
+  display: block;
+}
+.comment-modal-btn-modal {
+  position: absolute;
+  width: 80px;
+  left: -23px;
+  top: -17px;
+  background: #222;
+  color: #fff;
+  border-radius: 3px;
+  padding: 8px 2px;
+  text-align: center;
+  display: none;
+}
+.black-triangle {
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  bottom: -5px;
+  left: 35px;
+  transform: rotate(45deg);
+  background: #222;
 }

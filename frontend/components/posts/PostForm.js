@@ -39,13 +39,14 @@ class PostForm extends Component {
     this.submit();
   }
   isFriend() {
-    const { author, wall } = this.props;
+    const { author, wall, formType } = this.props;
+    if (formType === 'Edit Post') return true;
     return !!wall.friendshipData.friends[author.id] || wall.id === author.id;
   }
   render() {
     const { author, formType, message, close, wall } = this.props;
     if (!this.isFriend()) return <div />;
-    const classType = formType === 'Edit Form' ? 'post-edit' : '';
+    const classType = formType === 'Edit Post' ? 'post-edit' : '';
     return (
       <div
         className={`item-container item-container-post post-form ${classType}`}
