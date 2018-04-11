@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CommentHoverModal from './CommentHoverModal';
 import CommentOptionsModal from '../posts/PostOptionsModal';
+import CommentForm from './CommentForm';
 
 class Comment extends Component {
   constructor(props) {
@@ -12,6 +13,8 @@ class Comment extends Component {
       edit: false
     };
     this.handleClick = this.handleClick.bind(this);
+    this.setType = this.setType.bind(this);
+    this.hideForm = this.hideForm.bind(this);
   }
   handleClick(e) {
     const { target: { className } } = e;
@@ -22,10 +25,25 @@ class Comment extends Component {
     }
   }
   setType(type) {
-    if (type==="delete")
+    if (type === 'edit') {
+      this.setState({ edit: true });
+    }
+  }
+  hideForm() {
+    this.setState({ edit: false });
   }
   render() {
     const { data, author, currentUser, post } = this.props;
+    if (this.state.edit)
+      return (
+        <CommentForm
+          post={post}
+          formType="edit"
+          commentId={data.id}
+          body={data.body}
+          hideForm={this.hideForm}
+        />
+      );
     return (
       <div className="comment" onClick={this.handleClick}>
         <img src={author.profileImgUrl} />
@@ -65,5 +83,5 @@ const mapStateToProps = (
 const mapDispatchToProps = dispatch => ({
   destroy: id => dispatch(deleteComment(id)),
   update: comment => dispatch(updateComment(id))
-})
+});
 export default connect(mapStateToProps)(Comment);

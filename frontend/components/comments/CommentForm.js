@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addComment } from '../../actions/comment';
+import { addComment, updateComment } from '../../actions/comment';
 import { fetchWallPosts } from '../../actions/post';
 
 class CommentForm extends Component {
@@ -8,7 +8,7 @@ class CommentForm extends Component {
     super(props);
 
     this.state = {
-      body: ''
+      body: this.props.body
     };
 
     this.update = this.update.bind(this);
@@ -24,13 +24,25 @@ class CommentForm extends Component {
       post: { id: post_id },
       user: { id: author_id },
       addComment,
-      fetchPosts
+      saveComment,
+      fetchPosts,
+      formType,
+      hideForm,
+      commentId
     } = this.props;
     const { body } = this.state;
-
-    addComment({ author_id, post_id, body }).then(() =>
+    const submitAction = formType === 'create' ? addComment : saveComment;
+    let commentData = { author_id, post_id, body };
+    if (formType === 'edit') {
+      commentData.id = commentId;
+    }
+    submitAction(commentData).then(() =>
       this.setState({ body: '' }, () => {
-        fetchPosts(post.wallId);
+        fetchPosts(post.wallId).then(() => {
+          if (formType === 'edit') {
+            hideForm();
+          }
+        });
       })
     );
   }
@@ -59,12 +71,19 @@ class CommentForm extends Component {
   }
 }
 
-const mapStateToProps = ({ session: { currentUser: user } }) => ({
-  user
+const mapStateToProps = (
+  { session: { currentUser: user } },
+  { body, formType, commentId }
+) => ({
+  user,
+  body,
+  formType,
+  commentId
 });
 
 const mapDispatchToProps = dispatch => ({
   addComment: comment => dispatch(addComment(comment)),
+  saveComment: comment => dispatch(updateComment(comment)),
   fetchPosts: id => dispatch(fetchWallPosts(id))
 });
 

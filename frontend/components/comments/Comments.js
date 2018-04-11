@@ -8,7 +8,7 @@ class Comments extends Component {
     return (
       <div className="comments">
         <CommentsList comments={comments} post={post} />
-        <CommentForm post={post} />
+        <CommentForm post={post} formType="create" body="" />
       </div>
     );
   }

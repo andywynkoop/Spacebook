@@ -6,7 +6,7 @@ export const addComment = comment => dispatch =>
 
 export const updateComment = comment => dispatch =>
   CommentApiUtil.updateComment(comment).then(post =>
-    dispach(receivePost(post))
+    dispatch(receivePost(post))
   );
 
 export const deleteComment = id => dispatch =>
