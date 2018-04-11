@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import CommentHoverModal from './CommentHoverModal';
 import CommentOptionsModal from '../posts/PostOptionsModal';
 import CommentForm from './CommentForm';
+import { deleteComment } from '../../actions/comment';
+import { fetchWallPosts } from '../../actions/post';
 
 class Comment extends Component {
   constructor(props) {
@@ -27,6 +29,10 @@ class Comment extends Component {
   setType(type) {
     if (type === 'edit') {
       this.setState({ edit: true });
+    }
+    if (type === 'destroy') {
+      const { destroy, fetchPosts, data: { id: commentId }, post } = this.props;
+      destroy(commentId).then(() => fetchPosts(post.wallId));
     }
   }
   hideForm() {
@@ -82,6 +88,6 @@ const mapStateToProps = (
 
 const mapDispatchToProps = dispatch => ({
   destroy: id => dispatch(deleteComment(id)),
-  update: comment => dispatch(updateComment(id))
+  fetchPosts: id => dispatch(fetchWallPosts(id))
 });
-export default connect(mapStateToProps)(Comment);
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);
