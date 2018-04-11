@@ -19,6 +19,7 @@ class Post extends Component {
     this.edit = this.edit.bind(this);
     this.destroy = this.destroy.bind(this);
     this.close = this.close.bind(this);
+    this.postModalBtn = this.postModalBtn.bind(this);
   }
   handleClick(e) {
     const { target: { className } } = e;
@@ -49,9 +50,17 @@ class Post extends Component {
   close() {
     this.setState({ actionType: null });
   }
+  postModalBtn() {
+    const { currentUser, data } = this.props;
+    console.log(currentUser);
+    console.log(data);
+    if (currentUser.id === data.authorId || currentUser.id === data.wallId)
+      return <button className="post-modal-btn">···</button>;
+  }
   render() {
-    const { data, author } = this.props;
+    const { data, author, currentUser } = this.props;
     const { swapType, edit, destroy, close } = this;
+
     if (!author) return <div />;
     return (
       <li
@@ -82,8 +91,10 @@ class Post extends Component {
           edit={() => this.setType('edit')}
           destroy={() => this.setType('destroy')}
           status={this.state.modal}
+          currentUser={currentUser}
+          data={data}
         />
-        <button className="post-modal-btn">···</button>
+        {this.postModalBtn()}
         <PostActionModal
           data={data}
           type={this.state.actionType}

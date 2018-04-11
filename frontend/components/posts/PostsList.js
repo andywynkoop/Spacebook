@@ -7,7 +7,7 @@ class PostsList extends Component {
     this.props.fetchAction(this.props.user.id);
   }
   renderPostsList() {
-    const { posts, users } = this.props;
+    const { posts, users, currentUser } = this.props;
     if (!posts || !users) return <div />;
     return Object.values(posts)
       .sort((p1, p2) => {
@@ -15,12 +15,16 @@ class PostsList extends Component {
         return -1;
       })
       .map(post => (
-        <Post key={post.id} data={post} author={users[post.authorId]} />
+        <Post
+          key={post.id}
+          data={post}
+          author={users[post.authorId]}
+          currentUser={currentUser}
+        />
       ));
   }
   render() {
     const { user, currentUser, posts } = this.props;
-    console.log(posts);
     return (
       <div className="item-container-post">
         <PostCreateContainer
