@@ -26,6 +26,9 @@ class Comment extends Component {
       this.setState({ modal: false });
     }
   }
+  componentDidMount() {
+    console.log('rerender');
+  }
   setType(type) {
     if (type === 'edit') {
       this.setState({ edit: true });
@@ -37,6 +40,15 @@ class Comment extends Component {
   }
   hideForm() {
     this.setState({ edit: false });
+  }
+  commentModalBtn() {
+    const { currentUser, data, post } = this.props;
+    console.log(data);
+    if (currentUser.id === data.author_id) {
+      return <CommentHoverModal message={'Edit or delete this'} version="v2" />;
+    } else if (currentUser.id === post.wallId) {
+      return <CommentHoverModal message={'Remove this'} />;
+    }
   }
   render() {
     const { data, author, currentUser, post } = this.props;
@@ -60,7 +72,7 @@ class Comment extends Component {
           {data.body}
         </p>
         <div className="comment-modal-container">
-          <CommentHoverModal />
+          {this.commentModalBtn()}
           <CommentOptionsModal
             edit={() => this.setType('edit')}
             destroy={() => this.setType('destroy')}
@@ -68,6 +80,7 @@ class Comment extends Component {
             currentUser={currentUser}
             authorId={data.author_id}
             postAuthorId={post.author.id}
+            wallId={post.wallId}
             comment={'comment-option'}
           >
             <div className="white-modal-triangle" />

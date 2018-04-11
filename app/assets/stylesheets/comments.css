@@ -82,8 +82,9 @@
 }
 .comment-modal-btn-modal {
   position: absolute;
+  height: 30.5px;
   width: 80px;
-  left: -23px;
+  left: -27px;
   top: -17px;
   background: #222;
   color: #fff;
@@ -92,12 +93,15 @@
   text-align: center;
   display: none;
 }
+.comment-modal-btn-modal.v2 {
+  width: 110px;
+}
 .black-triangle {
   position: absolute;
   height: 10px;
   width: 10px;
   bottom: -5px;
-  left: 45%;
+  left: 40px;
   transform: rotate(45deg);
   background: #222;
 }

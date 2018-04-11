@@ -12,8 +12,15 @@ class PostOptionsModal extends Component {
       );
   }
   canDelete() {
-    const { currentUser: { id }, authorId, postAuthorId, destroy } = this.props;
-    if (id === authorId || id === postAuthorId)
+    const {
+      currentUser: { id },
+      authorId,
+      postAuthorId,
+      destroy,
+      wallId
+    } = this.props;
+
+    if (id === authorId || id === postAuthorId || id === wallId)
       return (
         <p onClick={destroy}>
           <i className="fas fa-trash-alt" />
