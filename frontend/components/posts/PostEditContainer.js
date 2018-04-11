@@ -1,20 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createPost, fetchWallPosts } from '../../actions/post';
+import { updatePost, fetchWallPosts } from '../../actions/post';
 import PostForm from './PostForm';
 
-const mapStateToProps = (state, { postAuthorId, author, wallId }) => ({
-  post: { body: '' },
+const mapStateToProps = (
+  state,
+  { body, postAuthorId, author, wallId, close, id }
+) => ({
+  post: { body: body },
   postAuthorId,
   author,
   wallId,
-  formType: 'Make Post',
-  message: 'Post',
-  close: () => {}
+  formType: 'Edit Post',
+  message: 'Save',
+  close: close,
+  id
 });
 
 const mapDispatchToProps = dispatch => ({
-  action: post => dispatch(createPost(post)),
+  action: post => dispatch(updatePost(post)),
   fetchPosts: id => dispatch(fetchWallPosts(id))
 });
 

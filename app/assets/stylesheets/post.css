@@ -8,11 +8,16 @@
   height: 40px;
   width: 40px;
   margin-right: 10px;
+  cursor: pointer;
 }
 .post-profile-author {
   font-size: 14px;
   font-weight: 500;
   color: #315796;
+  cursor: pointer;
+}
+.post-profile-author:hover {
+  text-decoration: underline;
 }
 .post-date {
   font-size: 12px;
@@ -40,6 +45,7 @@
 .post-form-header p {
   margin: 0px 10px;
   color: #315796;
+  cursor: pointer;
 }
 .post-form-header p:nth-child(1) {
   margin-left: 0;
@@ -56,8 +62,13 @@
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
-.post-form-input input {
-  width: 100%;
+.post-form-input textarea {
+  width: 400px;
+  padding: 15px 10px;
+  padding-bottom: 0px;
+  min-height: 50px;
+  resize: none;
+  font-size: 14px;
 }
 .post-form-buttons {
   display: flex;
@@ -79,7 +90,7 @@
   position: absolute;
   top: 25px;
   right: 10px;
-  border: solid 1px #dddfe2;
+  border: solid 1px #b3b3b3;
   border-radius: 3px 0px 3px 3px;
   box-shadow: 0px 0px 3px #333;
   padding: 5px 0px;
@@ -109,5 +120,97 @@
 }
 
 .post-modal-btn:hover {
+  color: #ccc;
+}
+/* POST MODAL ACTION */
+.post-action-modal-container {
+  position: fixed;
+  z-index: 6;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(25, 25, 25, 0.4);
+}
+
+.post-action-modal {
+  margin: auto;
+  position: relative;
+  top: 150px;
+  max-width: 500px;
+}
+
+.post-delete-confirm {
+  width: 450px;
+  background: #fff;
+  margin: auto;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.post-delete-confirm h3 {
+  background: #f6f7f9;
+  height: 32px;
+  border-bottom: solid 1px #dddfe2;
+  padding: 8px;
+  font-weight: 700;
+  color: #333;
+  border-radius: 3px 3px 0px 0px;
+  display: flex;
+  justify-content: space-between;
+}
+.post-delete-confirm h3 span:nth-child(2) {
+  color: #ccc;
+  cursor: pointer;
+}
+.post-delete-confirm h3 span:nth-child(2):hover {
+  color: #333;
+}
+.post-delete-warning {
+  padding: 10px;
+}
+.post-delete-warning p {
+  border-bottom: solid 1px #dddfe2;
+  padding-bottom: 10px;
+}
+
+.post-delete-btns {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.post-delete-btn {
+  font-size: 12px;
+  font-weight: 500;
+  background: #3c66af;
+  color: #fff;
+  text-align: center;
+  border-radius: 3px;
+  padding: 5px 8px;
+  margin: 0px 5px;
+  border: solid 1px #259;
+}
+
+.post-delete-btn.btn-2 {
+  background: #f6f7f9;
+  border: solid 1px #7b7b7c;
+  color: #4a4f55;
+}
+
+.post-edit {
+  margin: auto;
+}
+
+.post-edit-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 14px;
+  color: #333;
+  background: none;
+}
+
+.post-edit-close:hover {
   color: #ccc;
 }

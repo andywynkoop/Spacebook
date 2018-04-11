@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import Comments from '../comments/Comments';
-import PostModal from './PostModal';
+import PostOptionsModal from './PostOptionsModal';
+import PostActionModal from './PostActionModal';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { deletePost, fetchWallPosts } from '../../actions/post';
 
 class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal: false,
+      actionType: null
     };
     this.handleClick = this.handleClick.bind(this);
+    this.setType = this.setType.bind(this);
+    this.swapType = this.swapType.bind(this);
+    this.edit = this.edit.bind(this);
+    this.destroy = this.destroy.bind(this);
+    this.close = this.close.bind(this);
   }
   handleClick(e) {
     const { target: { className } } = e;
@@ -18,8 +28,30 @@ class Post extends Component {
       this.setState({ modal: false });
     }
   }
+  setType(actionType) {
+    this.setState({ actionType });
+  }
+  swapType() {
+    const actionType = this.state.actionType === 'edit' ? 'delete' : 'edit';
+    this.setState({ actionType });
+  }
+  edit() {
+    console.log('Edit here');
+  }
+  destroy() {
+    const { destroy, fetchPosts, data: { id, wallId } } = this.props;
+    this.setState({ actionType: null }, () => {
+      destroy(id).then(() => {
+        fetchPosts(wallId);
+      });
+    });
+  }
+  close() {
+    this.setState({ actionType: null });
+  }
   render() {
     const { data, author } = this.props;
+    const { swapType, edit, destroy, close } = this;
     if (!author) return <div />;
     return (
       <li
@@ -27,13 +59,17 @@ class Post extends Component {
         onClick={this.handleClick}
       >
         <div className="post-header">
-          <div
-            style={{ backgroundImage: `url("${author.profileImgUrl}")` }}
-            className="post-profile-img"
-          />
+          <Link to={`/${author.userUrl}`}>
+            <div
+              style={{ backgroundImage: `url("${author.profileImgUrl}")` }}
+              className="post-profile-img"
+            />
+          </Link>
           <div>
             <h3 className="post-profile-author">
-              {author.firstname} {author.lastname}
+              <Link to={`/${author.userUrl}`}>
+                {author.firstname} {author.lastname}
+              </Link>
             </h3>
             <p className="post-date">
               {new Date(data.createdAt).toDateString()}
@@ -42,15 +78,28 @@ class Post extends Component {
         </div>
         <p className="post-body">{data.body}</p>
         <Comments post={data} comments={data.comments} />
-        <PostModal
-          edit={() => console.log('edit')}
-          destroy={() => console.log('destroy')}
+        <PostOptionsModal
+          edit={() => this.setType('edit')}
+          destroy={() => this.setType('destroy')}
           status={this.state.modal}
         />
         <button className="post-modal-btn">···</button>
+        <PostActionModal
+          data={data}
+          type={this.state.actionType}
+          swap={swapType}
+          edit={edit}
+          destroy={destroy}
+          close={close}
+        />
       </li>
     );
   }
 }
 
-export default Post;
+const mapDispatchToProps = dispatch => ({
+  destroy: id => dispatch(deletePost(id)),
+  fetchPosts: id => dispatch(fetchWallPosts(id))
+});
+
+export default connect(null, mapDispatchToProps)(withRouter(Post));

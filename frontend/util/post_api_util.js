@@ -5,6 +5,19 @@ export const createPost = post =>
     data: { post }
   });
 
+export const updatePost = post =>
+  $.ajax({
+    method: 'PATCH',
+    url: `api/posts/${post.id}`,
+    data: { post }
+  });
+
+export const deletePost = id =>
+  $.ajax({
+    method: 'DELETE',
+    url: `api/posts/${id}`
+  });
+
 export const fetchWallPosts = id =>
   $.ajax({
     method: 'GET',
@@ -16,4 +29,3 @@ export const fetchFeed = id =>
     method: 'GET',
     url: `api/users/${id}/feed`
   });
-

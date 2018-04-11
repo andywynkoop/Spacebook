@@ -7,9 +7,15 @@ export const RECEIVE_FEED_POSTS = 'RECEIVE_FEED_POSTS';
 export const createPost = postForm => dispatch =>
   PostApiUtil.createPost(postForm).then(post => dispatch(receivePost(post)));
 
+export const updatePost = postForm => dispatch =>
+  PostApiUtil.updatePost(postForm).then(post => dispatch(receivePost(post)));
+
+export const deletePost = id => dispatch => PostApiUtil.deletePost(id);
+
 export const fetchWallPosts = id => dispatch =>
-  PostApiUtil.fetchWallPosts(id).then(posts =>
-    dispatch(receiveWallPosts(posts))
+  PostApiUtil.fetchWallPosts(id).then(
+    posts => dispatch(receiveWallPosts(posts)),
+    err => console.log(err.responseJSON)
   );
 
 export const fetchFeed = id => dispatch =>

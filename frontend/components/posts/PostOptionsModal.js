@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class PostModal extends Component {
+class PostOptionsModal extends Component {
   render() {
     const { edit, destroy, status } = this.props;
     if (!status) return <div />;
@@ -19,4 +19,4 @@ class PostModal extends Component {
   }
 }
 
-export default PostModal;
+export default PostOptionsModal;
