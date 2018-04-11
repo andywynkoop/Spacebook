@@ -1,7 +1,7 @@
 .friends-list {
   display: flex;
   flex-wrap: wrap;
-  margin: 0px -15px;
+  margin: 0px -15px -13px -15px;
   padding: 0px 2.5px;
 }
 .friend-card {

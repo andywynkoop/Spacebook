@@ -41,6 +41,8 @@
 .modal-box-search {
   left: 35px;
   width: 445px;
+  box-sizing: border-box;
+  padding: 5px;
 }
 .search-modal-user {
   height: 30px;

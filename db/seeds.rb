@@ -78,3 +78,16 @@ User.create(
  bio: "Challenge Accepted.",
  sex: "Male"
 )
+
+User.create(
+ firstname: "Americo",
+ lastname: "Zuzunaga",
+ email: "americo@email.com",
+ password: "password",
+ user_url: "AmericoZuzunaga",
+ profile_img_url: "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/1923385_503110217095_7903_n.jpg?_nc_cat=0&oh=82ce9df2cb883de0cacf648b96033fb5&oe=5B2C5105",
+ cover_photo_url: "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/407547_534550660195_992910873_n.jpg?_nc_cat=0&oh=1020131a2321878539a0d63425120626&oe=5B72DE72",
+ bio: "Shoot the jaguar that's closest to your jetski",
+ birthday: Sat, 05 Apr 1919 07:00:00 UTC +00:00,
+ sex: "Male"
+)
