@@ -52,8 +52,6 @@ class Post extends Component {
   }
   postModalBtn() {
     const { currentUser, data } = this.props;
-    console.log(currentUser);
-    console.log(data);
     if (currentUser.id === data.authorId || currentUser.id === data.wallId)
       return <button className="post-modal-btn">···</button>;
   }

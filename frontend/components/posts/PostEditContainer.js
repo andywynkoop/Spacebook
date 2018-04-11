@@ -5,12 +5,13 @@ import PostForm from './PostForm';
 
 const mapStateToProps = (
   state,
-  { body, postAuthorId, author, wallId, close, id }
+  { body, postAuthorId, author, wallId, wall, close, id }
 ) => ({
   post: { body: body },
   postAuthorId,
   author,
   wallId,
+  wall,
   formType: 'Edit Post',
   message: 'Save',
   close: close,

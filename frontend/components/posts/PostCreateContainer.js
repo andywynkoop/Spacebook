@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { createPost, fetchWallPosts } from '../../actions/post';
 import PostForm from './PostForm';
 
-const mapStateToProps = (state, { postAuthorId, author, wallId }) => ({
+const mapStateToProps = (state, { postAuthorId, author, wallId, wall }) => ({
   post: { body: '' },
   postAuthorId,
   author,
   wallId,
+  wall,
   formType: 'Make Post',
   message: 'Post',
   close: () => {}

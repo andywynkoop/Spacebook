@@ -12,6 +12,7 @@ class PostActionModal extends Component {
           postAuthorId={authorId}
           author={author}
           wallId={wallId}
+          wall={data}
           close={close}
           id={id}
         />

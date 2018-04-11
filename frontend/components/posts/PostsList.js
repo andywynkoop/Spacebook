@@ -31,6 +31,7 @@ class PostsList extends Component {
           postAuthorId={currentUser.id}
           author={currentUser}
           wallId={user.id}
+          wall={user}
         />
         <ul>{this.renderPostsList.bind(this)()}</ul>
       </div>

@@ -38,8 +38,13 @@ class PostForm extends Component {
     e.preventDefault();
     this.submit();
   }
+  isFriend() {
+    const { author, wall } = this.props;
+    return !!wall.friendshipData.friends[author.id] || wall.id === author.id;
+  }
   render() {
-    const { author, formType, message, close } = this.props;
+    const { author, formType, message, close, wall } = this.props;
+    if (!this.isFriend()) return <div />;
     const classType = formType === 'Edit Form' ? 'post-edit' : '';
     return (
       <div
