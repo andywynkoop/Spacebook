@@ -91,3 +91,29 @@ User.create(
  birthday: DateTime.parse("04/05/1919"),
  sex: "Male"
 )
+
+User.create(
+ firstname: "Nima",
+ lastname: "Partovi",
+ email: "nima@email.com",
+ password: "password",
+ user_url: "NimaPartovi",
+ profile_img_url: "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/12933060_984625198257535_3681921016482132181_n.jpg?_nc_cat=0&oh=69fb666540557e157de862845c2b8833&oe=5B74F93B",
+ cover_photo_url: "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/15107311_1155298207856899_2003906010021972892_n.jpg?_nc_cat=0&oh=74b944e70b3b9f10ec0faac3106d1eac&oe=5B2D873B",
+ bio: "I'm just a 2D boy living in a 3D world",
+ birthday: DateTime.parse("04/05/1919"),
+ sex: "Male"
+)
+
+User.create(
+ firstname: "Annie",
+ lastname: "Gu",
+ email: "annie@email.com",
+ password: "password",
+ user_url: "AnnieGu",
+ profile_img_url: "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/27073368_10156461893479305_5075423326676909182_n.jpg?_nc_cat=0&oh=c12bac1b93de7c006f05d6857146f739&oe=5B625CF8",
+ cover_photo_url: "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/10342486_10154015364159305_7766940857544355550_n.jpg?_nc_cat=0&oh=e9f9ba051a0db01379e8990da2da62bd&oe=5B2C6FB9",
+ bio: "I'll get back to you",
+ birthday: DateTime.parse("04/01/1995"),
+ sex: "Male"
+)
