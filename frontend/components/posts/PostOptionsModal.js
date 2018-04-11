@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 class PostOptionsModal extends Component {
   canEdit() {
-    const { currentUser: { id }, data, edit } = this.props;
-    if (id === data.authorId)
+    const { currentUser: { id }, authorId, edit } = this.props;
+    if (id === authorId)
       return (
         <p onClick={edit}>
           <i className="fas fa-edit" />
@@ -12,8 +12,8 @@ class PostOptionsModal extends Component {
       );
   }
   canDelete() {
-    const { currentUser: { id }, data, destroy } = this.props;
-    if (id === data.authorId || id === data.wallId)
+    const { currentUser: { id }, authorId, postAuthorId, destroy } = this.props;
+    if (id === authorId || id === postAuthorId)
       return (
         <p onClick={destroy}>
           <i className="fas fa-trash-alt" />
@@ -22,12 +22,13 @@ class PostOptionsModal extends Component {
       );
   }
   render() {
-    const { status } = this.props;
+    const { status, comment } = this.props;
     if (!status) return <div />;
     return (
-      <div className="post-modal">
+      <div className={`post-modal ${comment}`}>
         {this.canEdit()}
         {this.canDelete()}
+        {this.props.children}
       </div>
     );
   }

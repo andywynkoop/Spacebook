@@ -30,7 +30,7 @@
   margin-right: 10px;
 }
 
-.comment p {
+.comment > p {
   background: #fff;
   min-height: 32px;
   border-radius: 18px;
@@ -97,7 +97,26 @@
   height: 10px;
   width: 10px;
   bottom: -5px;
-  left: 35px;
+  left: 45%;
   transform: rotate(45deg);
   background: #222;
+}
+.comment-modal-container {
+  position: relative;
+}
+.post-modal.comment-option {
+  top: 35px;
+  left: -57px;
+  z-index: 9;
+}
+.white-modal-triangle {
+  height: 10px;
+  width: 10px;
+  background: #fff;
+  position: absolute;
+  top: -6px;
+  right: 10px;
+  transform: rotate(45deg);
+  border-left: 1px solid #b3b3b3;
+  border-top: 1px solid #b3b3b3;
 }

@@ -3,12 +3,14 @@ import Comment from './Comment';
 
 class CommentsList extends Component {
   render() {
-    const { comments } = this.props;
+    const { comments, post } = this.props;
     return (
       <ul>
         {Object.values(comments)
           .filter(el => typeof el !== 'number')
-          .map(comment => <Comment data={comment} key={comment.created_at} />)}
+          .map(comment => (
+            <Comment data={comment} post={post} key={comment.created_at} />
+          ))}
       </ul>
     );
   }

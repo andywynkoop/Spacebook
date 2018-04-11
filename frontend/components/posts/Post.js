@@ -90,7 +90,9 @@ class Post extends Component {
           destroy={() => this.setType('destroy')}
           status={this.state.modal}
           currentUser={currentUser}
-          data={data}
+          authorId={data.authorId}
+          postAuthorId={data.wallId}
+          comment={''}
         />
         {this.postModalBtn()}
         <PostActionModal

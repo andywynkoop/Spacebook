@@ -7,7 +7,7 @@ class Comments extends Component {
     const { post, comments } = this.props;
     return (
       <div className="comments">
-        <CommentsList comments={comments} />
+        <CommentsList comments={comments} post={post} />
         <CommentForm post={post} />
       </div>
     );
