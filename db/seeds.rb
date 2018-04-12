@@ -91,5 +91,5 @@ User.create(
  cover_photo_url: "https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/10342486_10154015364159305_7766940857544355550_n.jpg?_nc_cat=0&oh=e9f9ba051a0db01379e8990da2da62bd&oe=5B2C6FB9",
  bio: "I'll get back to you",
  birthday: DateTime.parse("04/01/1995"),
- sex: "Male"
+ sex: "Female"
 )

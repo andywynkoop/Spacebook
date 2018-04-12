@@ -16,9 +16,7 @@ export const receiveUser = user => ({
 });
 
 export const fetchAllUsers = () => dispatch =>
-  UserApi.fetchAllUsers().then(users => {
-    dispatch(receiveAllUsers(users));
-  });
+  UserApi.fetchAllUsers().then(users => dispatch(receiveAllUsers(users)));
 
 export const receiveAllUsers = users => ({
   type: RECEIVE_ALL_USERS,

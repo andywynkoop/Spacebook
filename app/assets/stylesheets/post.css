@@ -16,7 +16,7 @@
   color: #315796;
   cursor: pointer;
 }
-.post-profile-author:hover {
+.post-profile-author a:hover {
   text-decoration: underline;
 }
 .post-date {

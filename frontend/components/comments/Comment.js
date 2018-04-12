@@ -26,9 +26,6 @@ class Comment extends Component {
       this.setState({ modal: false });
     }
   }
-  componentDidMount() {
-    console.log('rerender');
-  }
   setType(type) {
     if (type === 'edit') {
       this.setState({ edit: true });
@@ -43,7 +40,6 @@ class Comment extends Component {
   }
   commentModalBtn() {
     const { currentUser, data, post } = this.props;
-    console.log(data);
     if (currentUser.id === data.author_id) {
       return <CommentHoverModal message={'Edit or delete this'} version="v2" />;
     } else if (currentUser.id === post.wallId) {

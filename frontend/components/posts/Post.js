@@ -40,7 +40,12 @@ class Post extends Component {
     console.log('Edit here');
   }
   destroy() {
-    const { destroy, fetchPosts, data: { id, wallId } } = this.props;
+    const {
+      destroy,
+      fetchPosts,
+      fetchAllUsers,
+      data: { id, wallId }
+    } = this.props;
     this.setState({ actionType: null }, () => {
       destroy(id).then(() => {
         fetchPosts(wallId);
@@ -54,6 +59,31 @@ class Post extends Component {
     const { currentUser, data } = this.props;
     if (currentUser.id === data.authorId || currentUser.id === data.wallId)
       return <button className="post-modal-btn">···</button>;
+  }
+  renderAuthorDetails() {
+    const { author, data: { wall } } = this.props;
+    if (this.props.history.location.pathname !== '/' || author.id === wall.id) {
+      return (
+        <Link to={`/${author.userUrl}`}>
+          {author.firstname} {author.lastname}
+        </Link>
+      );
+    } else {
+      return (
+        <div>
+          <Link to={`/${author.userUrl}`}>
+            {author.firstname} {author.lastname}
+          </Link>{' '}
+          <i
+            className="fas fa-caret-right"
+            style={{ margin: '0px 5px', textDecoration: 'none' }}
+          />{' '}
+          <Link to={`/${wall.user_url}`}>
+            {wall.firstname} {wall.lastname}
+          </Link>
+        </div>
+      );
+    }
   }
   render() {
     const { data, author, currentUser } = this.props;
@@ -74,9 +104,7 @@ class Post extends Component {
           </Link>
           <div>
             <h3 className="post-profile-author">
-              <Link to={`/${author.userUrl}`}>
-                {author.firstname} {author.lastname}
-              </Link>
+              {this.renderAuthorDetails()}
             </h3>
             <p className="post-date">
               {new Date(data.createdAt).toDateString()}

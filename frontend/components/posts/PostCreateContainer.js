@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createPost, fetchWallPosts } from '../../actions/post';
+import { createPost, fetchWallPosts, fetchFeed } from '../../actions/post';
 import PostForm from './PostForm';
 
-const mapStateToProps = (state, { postAuthorId, author, wallId, wall }) => ({
+const mapStateToProps = (
+  { session: { currentUser } },
+  { postAuthorId, author, wallId, wall }
+) => ({
+  currentUser,
   post: { body: '' },
   postAuthorId,
   author,
@@ -16,7 +20,8 @@ const mapStateToProps = (state, { postAuthorId, author, wallId, wall }) => ({
 
 const mapDispatchToProps = dispatch => ({
   action: post => dispatch(createPost(post)),
-  fetchPosts: id => dispatch(fetchWallPosts(id))
+  fetchPosts: id => dispatch(fetchWallPosts(id)),
+  fetchFeed: id => dispatch(fetchFeed(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostForm);

@@ -4,7 +4,8 @@ import Post from './Post';
 
 class PostsList extends Component {
   componentDidMount() {
-    this.props.fetchAction(this.props.user.id);
+    const { fetchAction, user } = this.props;
+    fetchAction(user.id);
   }
   renderPostsList() {
     const { posts, users, currentUser } = this.props;
@@ -25,8 +26,6 @@ class PostsList extends Component {
   }
   render() {
     const { user, currentUser, posts } = this.props;
-    console.log('list');
-    console.log(posts);
     return (
       <div className="item-container-post">
         <PostCreateContainer

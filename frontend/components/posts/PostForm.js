@@ -14,7 +14,13 @@ class PostForm extends Component {
     return e => this.setState({ [field]: e.target.value });
   }
   submit() {
-    const { postAuthorId: author_id, wallId: wall_id, id, close } = this.props;
+    const {
+      postAuthorId: author_id,
+      wallId: wall_id,
+      id,
+      close,
+      currentUser
+    } = this.props;
 
     const { body } = this.state;
     this.props
@@ -27,6 +33,7 @@ class PostForm extends Component {
       .then(() => {
         this.setState({ body: '' }, () => {
           this.props.fetchPosts(wall_id);
+          this.props.fetchFeed(currentUser.id);
           close();
         });
       });

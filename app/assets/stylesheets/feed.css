@@ -1,3 +1,9 @@
+.feed-container {
+  padding-top: 42px;
+  width: 980px;
+  margin: auto;
+}
 .feed {
-  padding: 42px;
+  margin: auto;
+  width: 550px;
 }

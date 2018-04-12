@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addComment, updateComment } from '../../actions/comment';
-import { fetchWallPosts } from '../../actions/post';
+import { fetchWallPosts, fetchFeed } from '../../actions/post';
 
 class CommentForm extends Component {
   constructor(props) {
@@ -26,6 +26,7 @@ class CommentForm extends Component {
       addComment,
       saveComment,
       fetchPosts,
+      fetchFeed,
       formType,
       hideForm,
       commentId
@@ -39,6 +40,7 @@ class CommentForm extends Component {
     submitAction(commentData).then(() =>
       this.setState({ body: '' }, () => {
         fetchPosts(post.wallId).then(() => {
+          fetchFeed(author_id);
           if (formType === 'edit') {
             hideForm();
           }
@@ -84,7 +86,8 @@ const mapStateToProps = (
 const mapDispatchToProps = dispatch => ({
   addComment: comment => dispatch(addComment(comment)),
   saveComment: comment => dispatch(updateComment(comment)),
-  fetchPosts: id => dispatch(fetchWallPosts(id))
+  fetchPosts: id => dispatch(fetchWallPosts(id)),
+  fetchFeed: id => dispatch(fetchFeed(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentForm);
