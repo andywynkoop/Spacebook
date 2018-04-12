@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { logout } from '../actions/session';
 import { openModal } from '../actions/ui';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import NavSession from './session/NavSession';
 import NavIcon from './NavIcon';
 import NavMainSearch from './NavMainSearch';
@@ -18,24 +16,20 @@ class NavMain extends Component {
     if (!this.props.currentUser) this.props.history.push('/');
   }
   render() {
-    const { currentUser, logout, history } = this.props;
+    const { currentUser, history } = this.props;
     const { modalType, openModal } = this.props;
     if (!currentUser) return <NavSession />;
     return (
       <div className="nav-main-wrapper">
         <nav className="nav-main">
           <div className="nav-main-header-wrapper">
-            <div
-              className="nav-header"
-              onClick={() => {
-                logout();
-                history.push('/');
-              }}
-            >
-              <div className="header-t">
-                <p>t</p>
+            <Link to="/">
+              <div className="nav-header">
+                <div className="header-t">
+                  <p>t</p>
+                </div>
               </div>
-            </div>
+            </Link>
             <NavMainSearch />
           </div>
           <ul>
@@ -78,7 +72,6 @@ const mapStateToProps = ({ session: { currentUser }, ui }) => ({
   modalType: ui.modal.type
 });
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout()),
   openModal: type => dispatch(openModal(type))
 });
 

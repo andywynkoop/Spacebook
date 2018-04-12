@@ -128,3 +128,34 @@
   text-align: center;
   width: 100%;
 }
+/*DROPDOWN NAV MORE OPTIONS*/
+
+.modal-box.dropdown-modal {
+  left: 729px;
+  width: 250px;
+}
+
+.modal-list-item {
+  padding: 5px 30px;
+  font-size: 12px;
+}
+.modal-list-item:hover {
+  background: #3c66af;
+  color: white;
+}
+
+/*HELP NAV*/
+.modal-box.help-modal {
+  left: 680px;
+  width: 300px;
+}
+/*MESSAGE MODAL*/
+.white-modal-triangle.help-tri {
+  right: 88px;
+}
+
+/*NOTIFICATIONS*/
+
+.white-modal-triangle.notification-tri {
+  right: 53px;
+}

@@ -20,9 +20,8 @@ export const login = formUser => dispatch =>
     err => dispatch(receiveErrors(err.responseJSON))
   );
 
-export const logout = () => dispatch => {
+export const logout = () => dispatch =>
   SessionApiUtils.logout().then(() => dispatch(logoutCurrentUser()));
-};
 
 export const fetchCurrentUser = () => dispatch =>
   SessionApiUtils.fetchCurrentUser().then(user =>
