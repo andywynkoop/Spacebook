@@ -6,6 +6,7 @@ import CommentForm from './CommentForm';
 import { deleteComment } from '../../actions/comment';
 import { fetchWallPosts, fetchFeed } from '../../actions/post';
 import { Link, withRouter } from 'react-router-dom';
+import { NULL_PROFILE } from '../../util/img_util';
 
 class Comment extends Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class Comment extends Component {
       );
     return (
       <div className="comment" onClick={this.handleClick}>
-        <img src={author.profileImgUrl} />
+        <img src={author.profileImgUrl || NULL_PROFILE} />
         <p>
           <Link to={`${author.userUrl}`}>
             <span className="comment-author">

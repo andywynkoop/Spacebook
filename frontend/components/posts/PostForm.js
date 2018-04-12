@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NULL_PROFILE } from '../../util/img_util';
 
 class PostForm extends Component {
   constructor(props) {
@@ -54,6 +55,8 @@ class PostForm extends Component {
     const { author, formType, message, close, wall } = this.props;
     if (!this.isFriend()) return <div />;
     const classType = formType === 'Edit Post' ? 'post-edit' : '';
+    const profile =
+      formType === 'Edit Post' ? author.profile_img_url : author.profileImgUrl;
     return (
       <div
         className={`item-container item-container-post post-form ${classType}`}
@@ -77,7 +80,7 @@ class PostForm extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className="post-form-input">
             <div
-              style={{ backgroundImage: `url("${author.profileImgUrl}")` }}
+              style={{ backgroundImage: `url("${profile || NULL_PROFILE}")` }}
               className="post-profile-img"
             />
             <textarea

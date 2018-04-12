@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addComment, updateComment } from '../../actions/comment';
 import { fetchWallPosts, fetchFeed } from '../../actions/post';
+import { NULL_PROFILE } from '../../util/img_util';
 
 class CommentForm extends Component {
   constructor(props) {
@@ -59,7 +60,11 @@ class CommentForm extends Component {
     const { user } = this.props;
     return (
       <form className="comment-form" onSubmit={this.handleSubmit}>
-        <div style={{ backgroundImage: `url("${user.profileImgUrl}")` }} />
+        <div
+          style={{
+            backgroundImage: `url("${user.profileImgUrl || NULL_PROFILE}")`
+          }}
+        />
         <textarea
           type="text"
           rows={1}

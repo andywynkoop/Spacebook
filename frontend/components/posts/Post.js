@@ -5,6 +5,7 @@ import PostActionModal from './PostActionModal';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deletePost, fetchWallPosts, fetchFeed } from '../../actions/post';
+import { NULL_PROFILE } from '../../util/img_util';
 
 class Post extends Component {
   constructor(props) {
@@ -102,7 +103,10 @@ class Post extends Component {
         <div className="post-header">
           <Link to={`/${author.userUrl}`}>
             <div
-              style={{ backgroundImage: `url("${author.profileImgUrl}")` }}
+              style={{
+                backgroundImage: `url("${author.profileImgUrl ||
+                  NULL_PROFILE}")`
+              }}
               className="post-profile-img"
             />
           </Link>
