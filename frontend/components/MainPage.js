@@ -21,6 +21,11 @@ class MainPage extends Component {
   }
   componentDidMount() {
     this.fetchInfo();
+    this.liveUpdate = setInterval(() => this.fetchInfo(), 15000);
+  }
+  componentWillUnmount() {
+    this.fetchInfo();
+    clearInterval(this.liveUpdate);
   }
   render() {
     const { currentUser, logout, users } = this.props;

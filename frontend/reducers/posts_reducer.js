@@ -14,7 +14,7 @@ export default (state = {}, action) => {
     case RECEIVE_WALL_POSTS:
       const { posts } = action;
       const postIds = Object.keys(posts);
-      if (postIds.length === 0) return newState;
+      if (postIds.length === 0) return posts;
       wall = posts[postIds[0]].wallId;
       newState[wall] = posts;
       return newState;

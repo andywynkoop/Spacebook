@@ -5,6 +5,7 @@ import PostActionModal from './PostActionModal';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deletePost, fetchWallPosts, fetchFeed } from '../../actions/post';
+import { fetchAllUsers } from '../../actions/user';
 import { NULL_PROFILE } from '../../util/img_util';
 
 class Post extends Component {
@@ -46,15 +47,20 @@ class Post extends Component {
       fetchPosts,
       fetchAllUsers,
       data: { id, wallId },
-      currentUser
+      currentUser,
+      fetchFeed
     } = this.props;
 
     this.setState({ actionType: null }, () => {
-      destroy(id).then(() => {
-        fetchPosts(wallId).then(() => {
-          fetchFeed(currentUser.id);
+      destroy(id)
+        .then(() => fetchAllUsers())
+        .then(() => {
+          if (this.props.history.location.pathname !== '/') {
+            fetchPosts(wallId);
+          } else {
+            fetchFeed(currentUser.id);
+          }
         });
-      });
     });
   }
   close() {
@@ -147,6 +153,7 @@ class Post extends Component {
 const mapDispatchToProps = dispatch => ({
   destroy: id => dispatch(deletePost(id)),
   fetchPosts: id => dispatch(fetchWallPosts(id)),
+  fetchAllUsers: () => dispatch(fetchAllUsers()),
   fetchFeed: id => dispatch(fetchFeed(id))
 });
 

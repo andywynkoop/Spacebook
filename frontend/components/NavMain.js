@@ -50,7 +50,10 @@ class NavMain extends Component {
             </Link>
             <span className="nav-break">|</span>
 
-            <li className="nav-main-list-item nav-main-home">
+            <li
+              className="nav-main-list-item nav-main-home"
+              onClick={() => this.props.history.push('/')}
+            >
               <Link to="/">Home</Link>
             </li>
 
