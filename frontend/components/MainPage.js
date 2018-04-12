@@ -8,7 +8,7 @@ import { fetchFeed } from '../actions/post';
 
 class MainPage extends Component {
   componentDidMount() {
-    console.log('render');
+    if (!currentUser) return;
     const {
       fetchCurrentUser,
       fetchAllUsers,
