@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import NavMain from './NavMain';
+import FeedPostsContainer from './FeedPostsContainer';
 
 class Feed extends Component {
   render() {
-    const { session: { currentUser }, logout } = this.props;
-    const message = !!currentUser
-      ? `This is the feed page for the current user with email: ${
-          currentUser.email
-        }`
-      : 'Not logged in';
+    const { currentUser, logout } = this.props;
+    console.log('feed');
     return (
       <div>
         <NavMain currentUser={currentUser} logout={logout} />
-        <h1>{message}</h1>
+        <div className="feed">
+          <FeedPostsContainer />
+        </div>
       </div>
     );
   }

@@ -38,6 +38,7 @@
   display: flex;
   height: 32px;
   border-bottom: solid 1px #dddfe2;
+  border-radius: 5px 5px 0px 0px;
   padding: 8px;
   font-weight: 700;
 }

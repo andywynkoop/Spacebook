@@ -25,6 +25,8 @@ class PostsList extends Component {
   }
   render() {
     const { user, currentUser, posts } = this.props;
+    console.log('list');
+    console.log(posts);
     return (
       <div className="item-container-post">
         <PostCreateContainer

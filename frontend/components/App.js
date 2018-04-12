@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
-import FeedContainer from './FeedContainer';
 import MainPage from './MainPage';
 import Profile from './profile/Profile';
 

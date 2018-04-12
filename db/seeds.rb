@@ -20,30 +20,6 @@ sex: "Male"
 )
 
 User.create(
- firstname: "Jerry",
- lastname: "Garcia",
- email: "jerry@email.com",
- password: "password",
- user_url: "JerryGarcia",
- profile_img_url: "https://upload.wikimedia.org/wikipedia/commons/9/97/Jerry-Garcia-01.jpg",
- cover_photo_url: "https://upload.wikimedia.org/wikipedia/commons/1/10/Grateful_Dead_%289139238416%29.jpg",
- bio: nil,
- sex: "Male"
-)
-
-User.create(
- firstname: "Jerry",
- lastname: "Garcia",
- email: "jerry@email.com",
- password: "password",
- user_url: "JerryGarcia",
- profile_img_url: "https://upload.wikimedia.org/wikipedia/commons/9/97/Jerry-Garcia-01.jpg",
- cover_photo_url: "https://upload.wikimedia.org/wikipedia/commons/1/10/Grateful_Dead_%289139238416%29.jpg",
- bio: nil,
- sex: "Male"
-)
-
-User.create(
  firstname: "Danny W.",
  lastname: "Peng",
  email: "danny@email.com",

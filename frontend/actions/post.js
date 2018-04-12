@@ -19,7 +19,7 @@ export const fetchWallPosts = id => dispatch =>
   );
 
 export const fetchFeed = id => dispatch =>
-  PostApiUtil.fetchFeed(id).then(posts => dispatch(receiveFeedPosts));
+  PostApiUtil.fetchFeed(id).then(posts => dispatch(receiveFeedPosts(posts)));
 
 export const receivePost = post => ({
   type: RECEIVE_POST,

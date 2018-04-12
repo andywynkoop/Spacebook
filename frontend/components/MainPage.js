@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import FeedContainer from './FeedContainer';
+import Feed from './Feed';
 import SignUpContainer from './session/SignUpContainer';
+import { logout } from '../actions/session';
 
 class MainPage extends Component {
   render() {
+    console.log('mainpage');
     const { currentUser } = this.props;
     if (!!currentUser) {
-      return <FeedContainer />;
+      return <Feed currentUser={currentUser} logout={logout} />;
     } else {
       return <SignUpContainer />;
     }
@@ -15,4 +17,8 @@ class MainPage extends Component {
 }
 
 const mapStateToProps = ({ session: { currentUser } }) => ({ currentUser });
-export default connect(mapStateToProps)(MainPage);
+
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout())
+});
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
