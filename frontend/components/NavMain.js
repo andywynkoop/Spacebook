@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { openModal } from '../actions/ui';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import NavSession from './session/NavSession';
 import NavIcon from './NavIcon';
 import NavMainSearch from './NavMainSearch';
@@ -15,21 +16,25 @@ class NavMain extends Component {
   componentWillReceiveProps() {
     if (!this.props.currentUser) this.props.history.push('/');
   }
+
   render() {
-    const { currentUser, history } = this.props;
+    const { currentUser, logout, history } = this.props;
     const { modalType, openModal } = this.props;
     if (!currentUser) return <NavSession />;
     return (
       <div className="nav-main-wrapper">
         <nav className="nav-main">
           <div className="nav-main-header-wrapper">
-            <Link to="/">
-              <div className="nav-header">
-                <div className="header-t">
-                  <p>t</p>
-                </div>
+            <div
+              className="nav-header"
+              onClick={() => {
+                history.push('/');
+              }}
+            >
+              <div className="header-t">
+                <p>t</p>
               </div>
-            </Link>
+            </div>
             <NavMainSearch />
           </div>
           <ul>

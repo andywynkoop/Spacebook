@@ -7,24 +7,23 @@ import { fetchAllUsers } from '../actions/user';
 import { fetchFeed } from '../actions/post';
 
 class MainPage extends Component {
-  componentDidMount() {
-    if (!currentUser) return;
+  fetchInfo() {
     const {
       fetchCurrentUser,
       fetchAllUsers,
       fetchFeed,
       currentUser
     } = this.props;
-    fetchFeed(currentUser.id).then(() => {
-      fetchAllUsers().then(() => {
-        fetchCurrentUser().then(() => {
-          fetchFeed(currentUser.id);
-        });
-      });
+
+    fetchAllUsers().then(() => {
+      fetchCurrentUser();
     });
   }
+  componentDidMount() {
+    this.fetchInfo();
+  }
   render() {
-    const { currentUser, logout } = this.props;
+    const { currentUser, logout, users } = this.props;
     if (!!currentUser) {
       return <Feed currentUser={currentUser} logout={logout} />;
     } else {
@@ -33,7 +32,10 @@ class MainPage extends Component {
   }
 }
 
-const mapStateToProps = ({ session: { currentUser } }) => ({ currentUser });
+const mapStateToProps = ({
+  session: { currentUser },
+  entities: { users }
+}) => ({ currentUser, users });
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
