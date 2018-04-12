@@ -4,7 +4,7 @@ import PostOptionsModal from './PostOptionsModal';
 import PostActionModal from './PostActionModal';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { deletePost, fetchWallPosts } from '../../actions/post';
+import { deletePost, fetchWallPosts, fetchFeed } from '../../actions/post';
 
 class Post extends Component {
   constructor(props) {
@@ -44,11 +44,15 @@ class Post extends Component {
       destroy,
       fetchPosts,
       fetchAllUsers,
-      data: { id, wallId }
+      data: { id, wallId },
+      currentUser
     } = this.props;
+
     this.setState({ actionType: null }, () => {
       destroy(id).then(() => {
-        fetchPosts(wallId);
+        fetchPosts(wallId).then(() => {
+          fetchFeed(currentUser.id);
+        });
       });
     });
   }
@@ -138,7 +142,8 @@ class Post extends Component {
 
 const mapDispatchToProps = dispatch => ({
   destroy: id => dispatch(deletePost(id)),
-  fetchPosts: id => dispatch(fetchWallPosts(id))
+  fetchPosts: id => dispatch(fetchWallPosts(id)),
+  fetchFeed: id => dispatch(fetchFeed(id))
 });
 
 export default connect(null, mapDispatchToProps)(withRouter(Post));

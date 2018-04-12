@@ -4,7 +4,8 @@ import CommentHoverModal from './CommentHoverModal';
 import CommentOptionsModal from '../posts/PostOptionsModal';
 import CommentForm from './CommentForm';
 import { deleteComment } from '../../actions/comment';
-import { fetchWallPosts } from '../../actions/post';
+import { fetchWallPosts, fetchFeed } from '../../actions/post';
+import { Link, withRouter } from 'react-router-dom';
 
 class Comment extends Component {
   constructor(props) {
@@ -31,8 +32,18 @@ class Comment extends Component {
       this.setState({ edit: true });
     }
     if (type === 'destroy') {
-      const { destroy, fetchPosts, data: { id: commentId }, post } = this.props;
-      destroy(commentId).then(() => fetchPosts(post.wallId));
+      const {
+        destroy,
+        fetchPosts,
+        data: { id: commentId },
+        post,
+        currentUser
+      } = this.props;
+      destroy(commentId).then(() =>
+        fetchPosts(post.wallId).then(() => {
+          fetchFeed(currentUser.id);
+        })
+      );
     }
   }
   hideForm() {
@@ -62,9 +73,11 @@ class Comment extends Component {
       <div className="comment" onClick={this.handleClick}>
         <img src={author.profileImgUrl} />
         <p>
-          <span className="comment-author">
-            {author.firstname} {author.lastname}
-          </span>{' '}
+          <Link to={`${author.userUrl}`}>
+            <span className="comment-author">
+              {author.firstname} {author.lastname}
+            </span>
+          </Link>{' '}
           {data.body}
         </p>
         <div className="comment-modal-container">
@@ -97,6 +110,9 @@ const mapStateToProps = (
 
 const mapDispatchToProps = dispatch => ({
   destroy: id => dispatch(deleteComment(id)),
-  fetchPosts: id => dispatch(fetchWallPosts(id))
+  fetchPosts: id => dispatch(fetchWallPosts(id)),
+  fetchFeed: id => dispatch(fetchFeed(id))
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withRouter(Comment)
+);

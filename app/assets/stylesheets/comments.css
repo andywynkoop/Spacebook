@@ -48,6 +48,9 @@
   font-weight: 500;
   color: #315796;
 }
+.comment-author:hover {
+  text-decoration: underline;
+}
 .comment img {
   object-fit: cover;
   height: 32px;

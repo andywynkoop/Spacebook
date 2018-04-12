@@ -22,13 +22,6 @@ class MainPage extends Component {
         });
       });
     });
-
-    this.poll = setInterval(() => {
-      fetchFeed(currentUser.id);
-    }, 15000);
-  }
-  componentWillUnmount() {
-    clearInterval(this.poll);
   }
   render() {
     const { currentUser, logout } = this.props;
