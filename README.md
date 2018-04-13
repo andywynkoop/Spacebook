@@ -1,6 +1,7 @@
 # Spacebook
 
 [Live Link](https://space--book.herokuapp.com)
+
 [Design Documents](https://github.com/andywynkoop/fb_inspired_site/wiki)
 
 Spacebook is a social media web application that allows users to connect with a network of friends and share stories and updates about their daily lives.
