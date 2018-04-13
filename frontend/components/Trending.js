@@ -11,6 +11,7 @@ class Trending extends Component {
     };
   }
   componentDidMount() {
+    //comment in to enable requests
     if (this.props.articles.length === 0) this.props.fetchArticles();
   }
   render() {

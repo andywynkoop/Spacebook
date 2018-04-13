@@ -16,24 +16,43 @@ class FeedSidebarLinks extends Component {
                 {user.firstname} {user.lastname}
               </p>
             </Link>
+            <span className="feed-ellipse">···</span>
           </li>
           <li>
-            <i className="far fa-newspaper" /> News Feed
+            <div className="feed-link-left">
+              <i className="far fa-newspaper" /> <span>News Feed</span>
+            </div>
+            <span className="feed-ellipse">···</span>
           </li>
           <li>
-            <i className="far fa-comment" /> Messenger
+            <div className="feed-link-left">
+              <i className="far fa-comment" /> <span>Messenger</span>
+            </div>
+            <span className="feed-ellipse">···</span>
           </li>
           <li>
-            <i className="fas fa-camera" /> Photos
+            <div className="feed-link-left">
+              <i className="fas fa-camera" /> <span>Photos</span>
+            </div>
+            <span className="feed-ellipse">···</span>
           </li>
           <li>
-            <i className="far fa-calendar" /> Events
+            <div className="feed-link-left">
+              <i className="far fa-calendar" /> <span>Events</span>
+            </div>
+            <span className="feed-ellipse">···</span>
           </li>
           <li>
-            <i className="far fa-file-alt" /> Pages
+            <div className="feed-link-left">
+              <i className="far fa-file-alt" /> <span>Pages</span>
+            </div>
+            <span className="feed-ellipse">···</span>
           </li>
           <li>
-            <i className="fab fa-github" /> Github
+            <div className="feed-link-left">
+              <i className="fab fa-github" /> <span>Github</span>
+            </div>
+            <span className="feed-ellipse">···</span>
           </li>
         </ul>
       </div>
