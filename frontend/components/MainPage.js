@@ -5,6 +5,7 @@ import SignUpContainer from './session/SignUpContainer';
 import { logout, fetchCurrentUser } from '../actions/session';
 import { fetchAllUsers } from '../actions/user';
 import { fetchFeed } from '../actions/post';
+import Trending from './Trending';
 
 class MainPage extends Component {
   fetchInfo() {
@@ -32,7 +33,12 @@ class MainPage extends Component {
   render() {
     const { currentUser, logout, users } = this.props;
     if (!!currentUser) {
-      return <Feed currentUser={currentUser} logout={logout} />;
+      return (
+        <div>
+          <Feed currentUser={currentUser} logout={logout} />
+          <Trending />
+        </div>
+      );
     } else {
       return <SignUpContainer />;
     }

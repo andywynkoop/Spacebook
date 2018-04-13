@@ -1,0 +1,79 @@
+.trending {
+  position: absolute;
+  top: 42px;
+  right: 0px;
+  height: 89vh;
+}
+
+.trending h3 {
+  font-size: 13px;
+  font-weight: 500;
+  color: #60676f;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.trending-article h5 {
+  color: #3c66af;
+  font-size: 12px;
+}
+
+.trending-article {
+  padding: 5px 0px;
+  position: relative;
+}
+
+.trending-article h5 a {
+  display: flex;
+}
+.trending-article h5 a i {
+  margin-right: 5px;
+}
+.trending-title:hover {
+  text-decoration: underline;
+}
+.trending-article:hover .trending-modal {
+  display: block;
+}
+
+.trending-modal {
+  position: absolute;
+  top: 0px;
+  left: -400px;
+  min-height: 200px;
+  width: 400px;
+  border: solid 1px #000;
+  background: #fff;
+  border-radius: 3px;
+  border: solid 1px #ccc;
+  display: none;
+  padding: 10px;
+}
+
+.trending-modal h4 {
+  color: #222;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.trending-modal .white-modal-triangle {
+  right: -6px;
+  top: 10px;
+  border-left: none;
+  border-right: solid 1px #b3b3b3;
+}
+
+.trending-modal-body {
+  display: flex;
+}
+.trending-modal-body img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+.trending-modal-author {
+  color: #777;
+  margin-bottom: 5px;
+}
