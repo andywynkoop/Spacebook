@@ -46,8 +46,6 @@ class LoginNewAccount extends Component {
     this.setState({ errors }, () => {
       if (Object.keys(errors).length === 0) {
         this.props.signup(createUserFromState(this.state));
-      } else {
-        console.log(this.state.errors);
       }
     });
   }

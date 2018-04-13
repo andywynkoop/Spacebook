@@ -29,10 +29,11 @@ class Profile extends Component {
     if (!this.props.currentUser) this.props.history.push('/');
   }
   componentDidUpdate() {
-    const { user, errors } = this.props;
+    const { user, errors, currentUser } = this.props;
     if (!user && errors.length === 0) {
       this.fetchUser();
     }
+    if (!currentUser) this.props.history.push('/');
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.match.params.userUrl !== nextProps.match.params.userUrl) {

@@ -14,27 +14,28 @@ class FriendButton extends Component {
   }
   buttonAttributes() {
     const {
-      currentUser: { friendshipData: data },
+      currentUser,
       match: { params: { userUrl } },
       user: { id },
       requestFriendship,
       approveFriendship,
       cancelRequest
     } = this.props;
-    const { currentUser } = this.props;
+    if (!currentUser) return <div />;
+    const { friendshipData: data } = currentUser;
 
     // debug
     //the current user is looking at their own page
     if (userUrl === currentUser.userUrl) {
       return {
         label: 'Update Info',
-        action: () => console.log('Update info here')
+        action: () => {}
       };
     } else if (data.friends[id]) {
       // the current uses is looking at a friend's page
       return {
         label: '✓ Friends',
-        action: () => console.log("You're already friends!")
+        action: () => {}
       };
     } else if (data.requestsTo[id]) {
       //the current user is looking at a person they've requested
@@ -63,6 +64,7 @@ class FriendButton extends Component {
 
   render() {
     const { label, action } = this.buttonAttributes();
+    if (!this.props.currentUser) return null;
     if (!label) return <div />;
     return (
       <div className="gray-page-button friend-button" onClick={action}>

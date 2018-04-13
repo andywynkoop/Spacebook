@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CommentsList from './CommentsList';
 import CommentForm from './CommentForm';
+import { withRouter } from 'react-router-dom';
 
 class Comments extends Component {
   render() {

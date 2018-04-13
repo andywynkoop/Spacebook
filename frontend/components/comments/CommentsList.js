@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Comment from './Comment';
+import { withRouter } from 'react-router-dom';
 
 class CommentsList extends Component {
   render() {
@@ -16,4 +17,4 @@ class CommentsList extends Component {
   }
 }
 
-export default CommentsList;
+export default withRouter(CommentsList);

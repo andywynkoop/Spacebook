@@ -39,7 +39,7 @@ class Post extends Component {
     this.setState({ actionType });
   }
   edit() {
-    console.log('Edit here');
+    // edit
   }
   destroy() {
     const {

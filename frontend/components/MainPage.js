@@ -15,6 +15,8 @@ class MainPage extends Component {
       currentUser
     } = this.props;
 
+    if (!currentUser) return clearInterval(this.liveUpdate);
+
     fetchAllUsers().then(() => {
       fetchCurrentUser();
     });

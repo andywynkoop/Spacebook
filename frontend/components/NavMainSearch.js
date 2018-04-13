@@ -23,7 +23,6 @@ class NavMainSearch extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    console.log(`searching for ${this.state.query}`);
   }
   closeModal() {
     this.setState({ modal: false });

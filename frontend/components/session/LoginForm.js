@@ -17,7 +17,6 @@ class LoginForm extends Component {
     const { errors } = this.props;
     let message = '';
     if (errors.length > 0) {
-      console.log(errors);
       message = 'The email or password you entered is incorrect.';
     }
     this.setState({ message });

@@ -36,15 +36,16 @@ class Comment extends Component {
       const {
         destroy,
         fetchPosts,
+        fetchFeed,
         data: { id: commentId },
         post,
         currentUser
       } = this.props;
-      destroy(commentId).then(() =>
-        fetchPosts(post.wallId).then(() => {
-          fetchFeed(currentUser.id);
-        })
-      );
+
+      destroy(commentId).then(() => {
+        fetchPosts(post.wallId);
+        fetchFeed(currentUser.id);
+      });
     }
   }
   hideForm() {

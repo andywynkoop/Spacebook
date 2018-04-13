@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { addComment, updateComment } from '../../actions/comment';
 import { fetchWallPosts, fetchFeed } from '../../actions/post';
 import { NULL_PROFILE } from '../../util/img_util';
+import { withRouter } from 'react-router-dom';
 
 class CommentForm extends Component {
   constructor(props) {
@@ -95,4 +96,6 @@ const mapDispatchToProps = dispatch => ({
   fetchFeed: id => dispatch(fetchFeed(id))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentForm);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withRouter(CommentForm)
+);

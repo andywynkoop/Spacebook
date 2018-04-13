@@ -14,9 +14,8 @@ export const deletePost = id => dispatch =>
   PostApiUtil.deletePost(id).then(post => dispatch(receivePost(post)));
 
 export const fetchWallPosts = id => dispatch =>
-  PostApiUtil.fetchWallPosts(id).then(
-    posts => dispatch(receiveWallPosts(posts)),
-    err => console.log(err.responseJSON)
+  PostApiUtil.fetchWallPosts(id).then(posts =>
+    dispatch(receiveWallPosts(posts))
   );
 
 export const fetchFeed = id => dispatch =>
