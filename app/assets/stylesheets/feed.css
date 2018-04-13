@@ -4,6 +4,33 @@
   margin: auto;
 }
 .feed {
-  margin: auto;
-  width: 550px;
+  margin-left: 210px;
+  width: 505px;
+  display: flex;
+}
+
+/*Sidebar*/
+.feed-sidebar-links {
+  position: absolute;
+  top: 52px;
+  width: 180px;
+  padding: 10px;
+  font-size: 15px;
+}
+.feed-sidebar-links li {
+  height: 28px;
+  width: 135px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.feed-profile-link a {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.feed-profile-link img {
+  height: 24px;
+  width: 24px;
+  border-radius: 100%;
+  margin-right: 5px;
 }

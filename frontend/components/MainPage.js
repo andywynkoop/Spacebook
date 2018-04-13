@@ -5,7 +5,6 @@ import SignUpContainer from './session/SignUpContainer';
 import { logout, fetchCurrentUser } from '../actions/session';
 import { fetchAllUsers } from '../actions/user';
 import { fetchFeed } from '../actions/post';
-import Trending from './Trending';
 
 class MainPage extends Component {
   fetchInfo() {
@@ -36,7 +35,6 @@ class MainPage extends Component {
       return (
         <div>
           <Feed currentUser={currentUser} logout={logout} />
-          <Trending />
         </div>
       );
     } else {

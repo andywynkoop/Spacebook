@@ -1,5 +1,6 @@
 .trending {
   position: absolute;
+  width: 300px;
   top: 42px;
   right: 0px;
   height: 89vh;
