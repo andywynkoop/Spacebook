@@ -4,7 +4,7 @@ import DemoModal from './DemoModal';
 export default () => {
   return (
     <div className="no-recent-logins">
-      <h2>Connect with friends and the world around you on Thoughtbook.</h2>
+      <h2>Connect with friends and the world around you on Spacebook.</h2>
       <div className="intro-feature-box">
         <div className="img-box">
           <div id="main1" />
@@ -24,7 +24,7 @@ export default () => {
           <div id="main3" />
         </div>
         <h4>{'Find more'}</h4>
-        <p>{"of what you're looking for with Thoughtspot Search."}</p>
+        <p>{"of what you're looking for with Spacebook Search."}</p>
       </div>
       <DemoModal />
     </div>

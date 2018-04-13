@@ -32,7 +32,7 @@ class NavMain extends Component {
               }}
             >
               <div className="header-t">
-                <p>t</p>
+                <p>s</p>
               </div>
             </div>
             <NavMainSearch />
