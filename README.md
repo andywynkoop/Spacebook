@@ -4,6 +4,8 @@
 
 [Design Documents](https://github.com/andywynkoop/fb_inspired_site/wiki)
 
+![Profile](http://res.cloudinary.com/dmynah8jz/image/upload/v1523655949/Screen_Shot_2018-04-13_at_2.45.26_PM.png)
+
 Spacebook is a social media web application that allows users to connect with a network of friends and share stories and updates about their daily lives.
 
 Spacebook is designed as a lightweight alternative to it's popular competitor, facebook. It implements many of the same core features and design to provide a smooth and familiar user experience.
@@ -19,9 +21,11 @@ When visiting spacebook for the first time, you'll be directed to a sign up page
 Both the log in and sign up forms validate that you've entered all of the fields, and will display an error message modal with information about the error. Invalid fields on the sign up page will be hightlighted with a red border.
 
 Logging In:
+
 ![Log In Errors](http://res.cloudinary.com/dmynah8jz/image/upload/v1523651528/Screen_Shot_2018-04-13_at_1.29.29_PM.png)
 
 Signing Up:
+
 ![Sign Up Errors](http://res.cloudinary.com/dmynah8jz/image/upload/v1523651528/Screen_Shot_2018-04-13_at_1.30.43_PM.png)
 
 ### Main Navigation Bar
