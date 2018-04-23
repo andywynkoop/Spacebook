@@ -19,3 +19,6 @@
 .byebug_history
 
 trending_util
+
+# Ignore application configuration
+/config/application.yml
