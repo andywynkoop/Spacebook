@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :friendships, only: [:create, :update, :destroy]
     resources :posts, only: [:create, :update, :destroy]
     resources :comments, only: [:create, :update, :destroy]
+    resources :photos
 
     # Fetch posts on a user's wall
     get '/users/:id/wall', to: 'posts#index_wall'
