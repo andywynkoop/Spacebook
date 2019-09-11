@@ -60,6 +60,12 @@ class FeedSidebarLinks extends Component {
   }
 }
 
-const mapStateToProps = ({ session: { currentUser } }) => ({ currentUser });
+const mapStateToProps = state => {
+  const { id } = state.session;
+  const { users } = state.entities;
+  return ({ 
+    currentUser: users[id]
+  });
+}
 
 export default connect(mapStateToProps)(withRouter(FeedSidebarLinks));

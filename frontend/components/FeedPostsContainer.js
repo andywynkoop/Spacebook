@@ -4,15 +4,16 @@ import { logout } from '../actions/session';
 import { fetchFeed } from '../actions/post';
 import PostsList from './posts/PostsList';
 
-const mapStateToProps = ({
-  entities: { feed, users },
-  session: { currentUser }
-}) => ({
-  posts: feed,
-  users,
-  user: currentUser,
-  currentUser
-});
+const mapStateToProps = (state) => {
+  const { users, feed:posts } = state.entities;
+  const { id } = state.session;
+  return ({
+    posts,
+    users,
+    user: users[id],
+    currentUser: users[id]
+  });
+}
 
 const mapDispatchToProps = dispatch => ({
   fetchAction: id => dispatch(fetchFeed(id))

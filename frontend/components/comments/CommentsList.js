@@ -10,7 +10,11 @@ class CommentsList extends Component {
         {Object.values(comments)
           .filter(el => typeof el !== 'number')
           .map(comment => (
-            <Comment data={comment} post={post} key={comment.created_at} />
+            <Comment 
+              data={comment} 
+              post={post} 
+              key={comment.created_at} 
+            />
           ))}
       </ul>
     );

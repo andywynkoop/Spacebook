@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     # Fetch posts on a user's wall
     get '/users/:id/wall', to: 'posts#index_wall'
     #Fetch posts from a user's friends
-    get '/users/:id/feed', to: 'posts#index_feed'
+    get '/feed', to: 'posts#index_feed'
     #Get all coments for a post
     get '/posts/:id/comments', to: 'comments#index'
   end

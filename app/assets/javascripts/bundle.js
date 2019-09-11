@@ -597,7 +597,7 @@ var receiveErrors = exports.receiveErrors = function receiveErrors(errors) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.receiveFeedPosts = exports.receiveWallPosts = exports.receivePost = exports.fetchFeed = exports.fetchWallPosts = exports.deletePost = exports.updatePost = exports.createPost = exports.RECEIVE_FEED_POSTS = exports.RECEIVE_WALL_POSTS = exports.RECEIVE_POST = undefined;
+exports.fetchFeed = exports.fetchWallPosts = exports.deletePost = exports.updatePost = exports.createPost = exports.RECEIVE_FEED_POSTS = exports.RECEIVE_WALL_POSTS = exports.RECEIVE_POST = undefined;
 
 var _post_api_util = __webpack_require__(113);
 
@@ -612,7 +612,10 @@ var RECEIVE_FEED_POSTS = exports.RECEIVE_FEED_POSTS = 'RECEIVE_FEED_POSTS';
 var createPost = exports.createPost = function createPost(postForm) {
   return function (dispatch) {
     return PostApiUtil.createPost(postForm).then(function (post) {
-      return dispatch(receivePost(post));
+      return dispatch({
+        type: RECEIVE_POST,
+        post: post
+      });
     });
   };
 };
@@ -620,7 +623,10 @@ var createPost = exports.createPost = function createPost(postForm) {
 var updatePost = exports.updatePost = function updatePost(postForm) {
   return function (dispatch) {
     return PostApiUtil.updatePost(postForm).then(function (post) {
-      return dispatch(receivePost(post));
+      return dispatch({
+        type: RECEIVE_POST,
+        post: post
+      });
     });
   };
 };
@@ -628,7 +634,10 @@ var updatePost = exports.updatePost = function updatePost(postForm) {
 var deletePost = exports.deletePost = function deletePost(id) {
   return function (dispatch) {
     return PostApiUtil.deletePost(id).then(function (post) {
-      return dispatch(receivePost(post));
+      return dispatch({
+        type: RECEIVE_POST,
+        post: post
+      });
     });
   };
 };
@@ -636,37 +645,22 @@ var deletePost = exports.deletePost = function deletePost(id) {
 var fetchWallPosts = exports.fetchWallPosts = function fetchWallPosts(id) {
   return function (dispatch) {
     return PostApiUtil.fetchWallPosts(id).then(function (posts) {
-      return dispatch(receiveWallPosts(posts));
+      return dispatch({
+        type: RECEIVE_WALL_POSTS,
+        posts: posts
+      });
     });
   };
 };
 
-var fetchFeed = exports.fetchFeed = function fetchFeed(id) {
+var fetchFeed = exports.fetchFeed = function fetchFeed() {
   return function (dispatch) {
-    return PostApiUtil.fetchFeed(id).then(function (posts) {
-      return dispatch(receiveFeedPosts(posts));
+    return PostApiUtil.fetchFeed().then(function (posts) {
+      return dispatch({
+        type: RECEIVE_FEED_POSTS,
+        posts: posts
+      });
     });
-  };
-};
-
-var receivePost = exports.receivePost = function receivePost(post) {
-  return {
-    type: RECEIVE_POST,
-    post: post
-  };
-};
-
-var receiveWallPosts = exports.receiveWallPosts = function receiveWallPosts(posts) {
-  return {
-    type: RECEIVE_WALL_POSTS,
-    posts: posts
-  };
-};
-
-var receiveFeedPosts = exports.receiveFeedPosts = function receiveFeedPosts(posts) {
-  return {
-    type: RECEIVE_FEED_POSTS,
-    posts: posts
   };
 };
 
@@ -1980,15 +1974,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(1);
-
-var _ui = __webpack_require__(15);
 
 var _reactRouterDom = __webpack_require__(5);
 
@@ -2012,149 +2002,106 @@ var _NavModal2 = _interopRequireDefault(_NavModal);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var NavMain = function NavMain(_ref) {
+  var currentUser = _ref.currentUser,
+      history = _ref.history;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var NavMain = function (_Component) {
-  _inherits(NavMain, _Component);
-
-  function NavMain(props) {
-    _classCallCheck(this, NavMain);
-
-    return _possibleConstructorReturn(this, (NavMain.__proto__ || Object.getPrototypeOf(NavMain)).call(this, props));
-  }
-
-  _createClass(NavMain, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps() {
-      if (!this.props.currentUser) this.props.history.push('/');
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      var _props = this.props,
-          currentUser = _props.currentUser,
-          logout = _props.logout,
-          history = _props.history;
-      var _props2 = this.props,
-          modalType = _props2.modalType,
-          openModal = _props2.openModal;
-
-      if (!currentUser) return _react2.default.createElement(_NavSession2.default, null);
-      return _react2.default.createElement(
+  if (!currentUser) return _react2.default.createElement(_NavSession2.default, null);
+  return _react2.default.createElement(
+    'div',
+    { className: 'nav-main-wrapper' },
+    _react2.default.createElement(
+      'nav',
+      { className: 'nav-main' },
+      _react2.default.createElement(
         'div',
-        { className: 'nav-main-wrapper' },
+        { className: 'nav-main-header-wrapper' },
         _react2.default.createElement(
-          'nav',
-          { className: 'nav-main' },
+          'div',
+          {
+            className: 'nav-header',
+            onClick: function onClick() {
+              history.push('/');
+            }
+          },
           _react2.default.createElement(
             'div',
-            { className: 'nav-main-header-wrapper' },
+            { className: 'header-t' },
             _react2.default.createElement(
-              'div',
-              {
-                className: 'nav-header',
-                onClick: function onClick() {
-                  history.push('/');
-                }
-              },
-              _react2.default.createElement(
-                'div',
-                { className: 'header-t' },
-                _react2.default.createElement(
-                  'p',
-                  null,
-                  's'
-                )
-              )
-            ),
-            _react2.default.createElement(_NavMainSearch2.default, null)
-          ),
+              'p',
+              null,
+              's'
+            )
+          )
+        ),
+        _react2.default.createElement(_NavMainSearch2.default, null)
+      ),
+      _react2.default.createElement(
+        'ul',
+        null,
+        _react2.default.createElement(
+          _reactRouterDom.Link,
+          { to: '/' + currentUser.userUrl },
           _react2.default.createElement(
-            'ul',
-            null,
-            _react2.default.createElement(
-              _reactRouterDom.Link,
-              { to: '/' + currentUser.userUrl },
-              _react2.default.createElement(
-                'li',
-                { className: 'nav-main-list-item nav-main-profile-btn' },
-                _react2.default.createElement('img', {
-                  src: currentUser.profileImgUrl || _img_util.NULL_PROFILE,
-                  className: 'nav-main-img'
-                }),
-                _react2.default.createElement(
-                  'span',
-                  null,
-                  currentUser.firstname
-                )
-              )
-            ),
-            _react2.default.createElement(
-              'span',
-              { className: 'nav-break' },
-              '|'
-            ),
-            _react2.default.createElement(
-              'li',
-              {
-                className: 'nav-main-list-item nav-main-home',
-                onClick: function onClick() {
-                  return _this2.props.history.push('/');
-                }
-              },
-              _react2.default.createElement(
-                _reactRouterDom.Link,
-                { to: '/' },
-                'Home'
-              )
-            ),
-            _react2.default.createElement(_NavIcon2.default, { type: 'friend', select: openModal, selected: modalType }),
-            _react2.default.createElement(_NavIcon2.default, { type: 'message', select: openModal, selected: modalType }),
-            _react2.default.createElement(_NavIcon2.default, {
-              type: 'notification',
-              select: openModal,
-              selected: modalType
+            'li',
+            { className: 'nav-main-list-item nav-main-profile-btn' },
+            _react2.default.createElement('img', {
+              src: currentUser.profileImgUrl || _img_util.NULL_PROFILE,
+              className: 'nav-main-img'
             }),
             _react2.default.createElement(
               'span',
-              { className: 'nav-break nav-break-2' },
-              '|'
-            ),
-            _react2.default.createElement(_NavIcon2.default, { type: 'question', select: openModal, selected: modalType }),
-            _react2.default.createElement(_NavIcon2.default, { type: 'dropdown', select: openModal, selected: modalType })
+              null,
+              currentUser.firstname
+            )
           )
         ),
-        _react2.default.createElement(_NavModal2.default, null)
-      );
-    }
-  }]);
+        _react2.default.createElement(
+          'span',
+          { className: 'nav-break' },
+          '|'
+        ),
+        _react2.default.createElement(
+          'li',
+          {
+            className: 'nav-main-list-item nav-main-home',
+            onClick: function onClick() {
+              return history.push('/');
+            }
+          },
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: '/' },
+            'Home'
+          )
+        ),
+        ['friend', 'message', 'notification'].map(function (type) {
+          return _react2.default.createElement(_NavIcon2.default, { key: type, type: type });
+        }),
+        _react2.default.createElement(
+          'span',
+          { className: 'nav-break nav-break-2' },
+          '|'
+        ),
+        ['question', 'dropdown'].map(function (type) {
+          return _react2.default.createElement(_NavIcon2.default, { key: type, type: type });
+        })
+      )
+    ),
+    _react2.default.createElement(_NavModal2.default, null)
+  );
+};
 
-  return NavMain;
-}(_react.Component);
+var mapStateToProps = function mapStateToProps(state) {
+  var users = state.entities.users;
+  var id = state.session.id;
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var currentUser = _ref.session.currentUser,
-      ui = _ref.ui;
   return {
-    currentUser: currentUser,
-    modalType: ui.modal.type
+    currentUser: users[id]
   };
 };
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    openModal: function openModal(type) {
-      return dispatch((0, _ui.openModal)(type));
-    }
-  };
-};
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _reactRouterDom.withRouter)(NavMain));
+exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouterDom.withRouter)(NavMain));
 
 /***/ }),
 /* 32 */
@@ -4655,15 +4602,12 @@ var CommentForm = function (_Component) {
       });
     }
   }, {
-    key: 'handleSubmit',
-    value: function handleSubmit(e) {
-      e.preventDefault();
-      submit();
-    }
-  }, {
     key: 'handleKeyPress',
     value: function handleKeyPress(e) {
-      if (e.key === 'Enter') this.submit();
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.submit();
+      }
     }
   }, {
     key: 'render',
@@ -4672,7 +4616,7 @@ var CommentForm = function (_Component) {
 
       return _react2.default.createElement(
         'form',
-        { className: 'comment-form', onSubmit: this.handleSubmit },
+        { className: 'comment-form' },
         _react2.default.createElement('div', {
           style: {
             backgroundImage: 'url("' + (user.profileImgUrl || _img_util.NULL_PROFILE) + '")'
@@ -4694,12 +4638,14 @@ var CommentForm = function (_Component) {
 }(_react.Component);
 
 var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var user = _ref.session.currentUser;
+  var users = _ref.entities.users,
+      id = _ref.session.id;
   var body = _ref2.body,
       formType = _ref2.formType,
       commentId = _ref2.commentId;
+
   return {
-    user: user,
+    user: users[id],
     body: body,
     formType: formType,
     commentId: commentId
@@ -4748,7 +4694,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var addComment = exports.addComment = function addComment(comment) {
   return function (dispatch) {
     return CommentApiUtil.addComment(comment).then(function (post) {
-      return dispatch((0, _post.receivePost)(post));
+      return dispatch({
+        type: _post.RECEIVE_POST,
+        post: post
+      });
     });
   };
 };
@@ -4756,7 +4705,10 @@ var addComment = exports.addComment = function addComment(comment) {
 var updateComment = exports.updateComment = function updateComment(comment) {
   return function (dispatch) {
     return CommentApiUtil.updateComment(comment).then(function (post) {
-      return dispatch((0, _post.receivePost)(post));
+      return dispatch({
+        type: _post.RECEIVE_POST,
+        post: post
+      });
     });
   };
 };
@@ -4764,7 +4716,10 @@ var updateComment = exports.updateComment = function updateComment(comment) {
 var deleteComment = exports.deleteComment = function deleteComment(id) {
   return function (dispatch) {
     return CommentApiUtil.deleteComment(id).then(function (post) {
-      return dispatch((0, _post.receivePost)(post));
+      return dispatch({
+        type: _post.RECEIVE_POST,
+        post: post
+      });
     });
   };
 };
@@ -4790,10 +4745,15 @@ var _Root2 = _interopRequireDefault(_Root);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 document.addEventListener('DOMContentLoaded', function () {
   var preloadedState = window.currentUser ? {
     session: {
-      currentUser: window.currentUser
+      id: window.currentUser.id
+    },
+    entities: {
+      users: _defineProperty({}, currentUser.id, currentUser)
     }
   } : {};
   _reactDom2.default.render(_react2.default.createElement(_Root2.default, { preloadedState: preloadedState }), document.querySelector('#root'));
@@ -22128,6 +22088,8 @@ var Root = function Root(_ref) {
 
   var store = (0, _redux.createStore)(_reducers2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
+  window.state = store.getState;
+
   return _react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
@@ -24269,10 +24231,10 @@ var fetchWallPosts = exports.fetchWallPosts = function fetchWallPosts(id) {
   });
 };
 
-var fetchFeed = exports.fetchFeed = function fetchFeed(id) {
+var fetchFeed = exports.fetchFeed = function fetchFeed() {
   return $.ajax({
     method: 'GET',
-    url: 'api/users/' + id + '/feed'
+    url: 'api/feed'
   });
 };
 
@@ -24451,8 +24413,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -24469,46 +24429,22 @@ var _Profile2 = _interopRequireDefault(_Profile);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var App = function (_Component) {
-  _inherits(App, _Component);
-
-  function App() {
-    _classCallCheck(this, App);
-
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
-  }
-
-  _createClass(App, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: 'app' },
-        _react2.default.createElement(
-          _reactRouterDom.HashRouter,
-          null,
-          _react2.default.createElement(
-            _reactRouterDom.Switch,
-            null,
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/:userUrl', component: _Profile2.default }),
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _MainPage2.default })
-          )
-        )
-      );
-    }
-  }]);
-
-  return App;
-}(_react.Component);
-//render a 404 page if not found
-
-exports.default = App;
+exports.default = function () {
+  return _react2.default.createElement(
+    'div',
+    { className: 'app' },
+    _react2.default.createElement(
+      _reactRouterDom.HashRouter,
+      null,
+      _react2.default.createElement(
+        _reactRouterDom.Switch,
+        null,
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/:userUrl', component: _Profile2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _MainPage2.default })
+      )
+    )
+  );
+};
 
 /***/ }),
 /* 121 */
@@ -27496,10 +27432,6 @@ var _SignUpContainer = __webpack_require__(174);
 
 var _SignUpContainer2 = _interopRequireDefault(_SignUpContainer);
 
-var _session = __webpack_require__(7);
-
-var _user = __webpack_require__(11);
-
 var _post = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -27520,51 +27452,17 @@ var MainPage = function (_Component) {
   }
 
   _createClass(MainPage, [{
-    key: 'fetchInfo',
-    value: function fetchInfo() {
-      var _props = this.props,
-          fetchCurrentUser = _props.fetchCurrentUser,
-          fetchAllUsers = _props.fetchAllUsers,
-          fetchFeed = _props.fetchFeed,
-          currentUser = _props.currentUser;
-
-
-      if (!currentUser) return clearInterval(this.liveUpdate);
-
-      fetchAllUsers().then(function () {
-        fetchCurrentUser();
-      });
-    }
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
-
-      this.fetchInfo();
-      this.liveUpdate = setInterval(function () {
-        return _this2.fetchInfo();
-      }, 15000);
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.fetchInfo();
-      clearInterval(this.liveUpdate);
+      this.props.fetchFeed();
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props2 = this.props,
-          currentUser = _props2.currentUser,
-          logout = _props2.logout,
-          users = _props2.users;
+      var currentUser = this.props.currentUser;
 
       if (!!currentUser) {
-        return _react2.default.createElement(
-          'div',
-          null,
-          _react2.default.createElement(_Feed2.default, { currentUser: currentUser, logout: logout })
-        );
+        return _react2.default.createElement(_Feed2.default, { currentUser: currentUser });
       } else {
         return _react2.default.createElement(_SignUpContainer2.default, null);
       }
@@ -27574,25 +27472,16 @@ var MainPage = function (_Component) {
   return MainPage;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var currentUser = _ref.session.currentUser,
-      users = _ref.entities.users;
-  return { currentUser: currentUser, users: users };
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    currentUser: state.entities.users[state.session.id]
+  };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    logout: function logout() {
-      return dispatch((0, _session.logout)());
-    },
-    fetchCurrentUser: function fetchCurrentUser() {
-      return dispatch((0, _session.fetchCurrentUser)());
-    },
-    fetchAllUsers: function fetchAllUsers() {
-      return dispatch((0, _user.fetchAllUsers)());
-    },
-    fetchFeed: function fetchFeed(id) {
-      return dispatch((0, _post.fetchFeed)(id));
+    fetchFeed: function fetchFeed() {
+      return dispatch((0, _post.fetchFeed)());
     }
   };
 };
@@ -27652,14 +27541,12 @@ var Feed = function (_Component) {
   _createClass(Feed, [{
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          currentUser = _props.currentUser,
-          logout = _props.logout;
+      var currentUser = this.props.currentUser;
 
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_NavMain2.default, { currentUser: currentUser, logout: logout }),
+        _react2.default.createElement(_NavMain2.default, { currentUser: currentUser }),
         _react2.default.createElement(
           'div',
           { className: 'feed-container' },
@@ -27860,6 +27747,10 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(1);
+
+var _ui = __webpack_require__(15);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27902,7 +27793,21 @@ var NavIcon = function (_Component) {
   return NavIcon;
 }(_react.Component);
 
-exports.default = NavIcon;
+var mapStateToProps = function mapStateToProps(_ref) {
+  var ui = _ref.ui;
+  return {
+    selected: ui.modal.type
+  };
+};
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    select: function select(type) {
+      return dispatch((0, _ui.openModal)(type));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NavIcon);
 
 /***/ }),
 /* 150 */
@@ -28416,10 +28321,10 @@ var FriendRequestModal = function (_Component) {
 }(_react.Component);
 
 var mapStateToProps = function mapStateToProps(_ref) {
-  var currentUser = _ref.session.currentUser,
+  var id = _ref.session.id,
       users = _ref.entities.users;
   return {
-    requests: Object.values(currentUser.friendshipData.requestsFrom).filter(function (el) {
+    requests: Object.values(users[id].friendshipData.requestsFrom).filter(function (el) {
       return el.approved === false;
     }),
     users: users
@@ -28770,16 +28675,17 @@ var _PostsList2 = _interopRequireDefault(_PostsList);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var _ref$entities = _ref.entities,
-      feed = _ref$entities.feed,
-      users = _ref$entities.users,
-      currentUser = _ref.session.currentUser;
+var mapStateToProps = function mapStateToProps(state) {
+  var _state$entities = state.entities,
+      users = _state$entities.users,
+      posts = _state$entities.feed;
+  var id = state.session.id;
+
   return {
-    posts: feed,
+    posts: posts,
     users: users,
-    user: currentUser,
-    currentUser: currentUser
+    user: users[id],
+    currentUser: users[id]
   };
 };
 
@@ -29259,7 +29165,11 @@ var CommentsList = function (_Component) {
         Object.values(comments).filter(function (el) {
           return typeof el !== 'number';
         }).map(function (comment) {
-          return _react2.default.createElement(_Comment2.default, { data: comment, post: post, key: comment.created_at });
+          return _react2.default.createElement(_Comment2.default, {
+            data: comment,
+            post: post,
+            key: comment.created_at
+          });
         })
       );
     }
@@ -29456,13 +29366,14 @@ var Comment = function (_Component) {
   return Comment;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var users = _ref.entities.users,
-      currentUser = _ref.session.currentUser;
-  var data = _ref2.data;
+var mapStateToProps = function mapStateToProps(state, _ref) {
+  var data = _ref.data;
+  var users = state.entities.users;
+  var id = state.session.id;
+
   return {
     author: users[data.author_id],
-    currentUser: currentUser
+    currentUser: users[id]
   };
 };
 
@@ -30175,9 +30086,13 @@ var FeedSidebarLinks = function (_Component) {
   return FeedSidebarLinks;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var currentUser = _ref.session.currentUser;
-  return { currentUser: currentUser };
+var mapStateToProps = function mapStateToProps(state) {
+  var id = state.session.id;
+  var users = state.entities.users;
+
+  return {
+    currentUser: users[id]
+  };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouterDom.withRouter)(FeedSidebarLinks));

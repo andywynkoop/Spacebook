@@ -16,7 +16,7 @@ class Api::PostsController < ApplicationController
   end
 
   def index_feed
-    @posts = Post.find_by_friends_of_user(params[:id])
+    @posts = Post.find_by_friends_of_user(current_user.id)
     render :index
   end
 

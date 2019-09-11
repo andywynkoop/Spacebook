@@ -13,6 +13,8 @@ const Root = ({ preloadedState }) => {
     preloadedState,
     applyMiddleware(reduxThunk)
   );
+  
+  window.state = store.getState;
 
   return (
     <Provider store={store}>

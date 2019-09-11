@@ -102,13 +102,14 @@ class Comment extends Component {
   }
 }
 
-const mapStateToProps = (
-  { entities: { users }, session: { currentUser } },
-  { data }
-) => ({
-  author: users[data.author_id],
-  currentUser
-});
+const mapStateToProps = (state, { data }) =>{ 
+  const { users } = state.entities;
+  const { id } = state.session;
+  return ({
+    author: users[data.author_id],
+    currentUser: users[id]
+  });
+}
 
 const mapDispatchToProps = dispatch => ({
   destroy: id => dispatch(deleteComment(id)),

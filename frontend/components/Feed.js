@@ -6,10 +6,10 @@ import FeedSidebarLinks from './FeedSidebarLinks';
 
 class Feed extends Component {
   render() {
-    const { currentUser, logout } = this.props;
+    const { currentUser } = this.props;
     return (
       <div>
-        <NavMain currentUser={currentUser} logout={logout} />
+        <NavMain currentUser={currentUser} />
         <div className="feed-container">
           <FeedSidebarLinks />
           <div className="feed">

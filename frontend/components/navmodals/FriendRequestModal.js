@@ -41,10 +41,10 @@ class FriendRequestModal extends Component {
 }
 
 const mapStateToProps = ({
-  session: { currentUser },
+  session: { id },
   entities: { users }
 }) => ({
-  requests: Object.values(currentUser.friendshipData.requestsFrom).filter(
+  requests: Object.values(users[id].friendshipData.requestsFrom).filter(
     el => el.approved === false
   ),
   users

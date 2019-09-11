@@ -50,17 +50,16 @@ class CommentForm extends Component {
       })
     );
   }
-  handleSubmit(e) {
-    e.preventDefault();
-    submit();
-  }
   handleKeyPress(e) {
-    if (e.key === 'Enter') this.submit();
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.submit();
+    }
   }
   render() {
     const { user } = this.props;
     return (
-      <form className="comment-form" onSubmit={this.handleSubmit}>
+      <form className="comment-form">
         <div
           style={{
             backgroundImage: `url("${user.profileImgUrl || NULL_PROFILE}")`
@@ -80,14 +79,16 @@ class CommentForm extends Component {
 }
 
 const mapStateToProps = (
-  { session: { currentUser: user } },
+  { entities: { users }, session: { id } },
   { body, formType, commentId }
-) => ({
-  user,
-  body,
-  formType,
-  commentId
-});
+) => {
+  return ({
+    user: users[id],
+    body,
+    formType,
+    commentId
+  })
+};
 
 const mapDispatchToProps = dispatch => ({
   addComment: comment => dispatch(addComment(comment)),

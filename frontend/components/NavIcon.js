@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { openModal } from '../actions/ui';
 
-export default class NavIcon extends Component {
+class NavIcon extends Component {
   render() {
     const { type, selected, select } = this.props;
     let className = selected === type ? '-active' : '';
@@ -14,3 +16,12 @@ export default class NavIcon extends Component {
     );
   }
 }
+
+const mapStateToProps = ({ ui }) => ({
+  selected: ui.modal.type
+})
+const mapDispatchToProps = dispatch => ({
+  select: type => dispatch(openModal(type))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavIcon)
