@@ -18,15 +18,9 @@ export const logout = () =>
     url: 'api/session'
   });
 
-export const fetchUser = id =>
+export const fetchUser = userUrl =>
   $.ajax({
     method: 'GET',
-    url: `api/users/${id}`
-  });
-
-export const fetchCurrentUser = () =>
-  $.ajax({
-    method: 'GET',
-    url: '/api/session'
+    url: `api/users/${userUrl}`
   });
 

@@ -15,6 +15,7 @@ class Trending extends Component {
     if (this.props.articles.length === 0) this.props.fetchArticles();
   }
   render() {
+    if (!this.props.articles || window.innerWidth < 1100) return null;
     return (
       <div className="item-container trending">
         <h3>
@@ -38,7 +39,7 @@ class Trending extends Component {
   }
 }
 
-const mapStateToProps = ({ entities: { articles } }) => ({
+const mapStateToProps = ({ entities: { trending:articles } }) => ({
   articles
 });
 const mapDispatchToProps = dispatch => ({

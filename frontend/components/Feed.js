@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 import NavMain from './NavMain';
 import FeedPostsContainer from './FeedPostsContainer';
 import Trending from './Trending';
 import FeedSidebarLinks from './FeedSidebarLinks';
+import { connect } from 'react-redux';
 
-class Feed extends Component {
-  render() {
-    const { currentUser } = this.props;
-    return (
-      <div>
-        <NavMain currentUser={currentUser} />
-        <div className="feed-container">
-          <FeedSidebarLinks />
-          <div className="feed">
-            <FeedPostsContainer />
-          </div>
-          <Trending />
-        </div>
+const Feed = ({ currentUser }) =>
+  <div>
+    <NavMain currentUser={currentUser} />
+    <div className="feed-container">
+      <FeedSidebarLinks currentUser={currentUser} />
+      <div className="feed">
+        <FeedPostsContainer />
       </div>
-    );
-  }
-}
+      <Trending />
+    </div>
+  </div>
 
-export default Feed;
+const msp = state => ({
+  currentUser: state.entities.users[state.session.id]
+});
+
+export default connect(msp)(Feed);

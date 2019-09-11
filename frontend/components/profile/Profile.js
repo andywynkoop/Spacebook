@@ -9,15 +9,13 @@ import ProfilePostsContainer from '../posts/ProfilePostsContainer';
 import About from './About';
 import Friends from '../friends/Friends';
 import NavMain from '../NavMain';
-import { fetchUser, fetchAllUsers } from '../../actions/user';
-import { fetchCurrentUser } from '../../actions/session';
+import { fetchUser } from '../../actions/user';
 import MissingPage from './MissingPage';
 import { ChangeProfilePhoto, ChangeCoverPhoto } from './PhotoForm';
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.fetchUser = this.fetchUser.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.state = {
@@ -25,40 +23,26 @@ class Profile extends Component {
     }
   }
   componentDidMount() {
-    this.props.fetchAllUsers();
+    this.props.fetchUser()
   }
-  componentWillMount() {
-    this.fetchUser();
-    this.props.fetchCurrentUser();
-  }
-  componentWillUpdate() {
-    if (!this.props.currentUser) this.props.history.push('/');
-  }
-  componentDidUpdate() {
-    const { user, errors, currentUser } = this.props;
-    if (!user && errors.length === 0) {
-      this.fetchUser();
-    }
-    if (!currentUser) this.props.history.push('/');
-  }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.match.params.userUrl !== nextProps.match.params.userUrl) {
-      this.props.fetchUser(nextProps.match.params.userUrl);
+
+  componentDidUpdate(oldProps) {
+    if (this.props.match.params.userUrl !== oldProps.match.params.userUrl) {
+      this.props.fetchUser();
     }
   }
-  fetchUser() {
-    const { userUrl } = this.props.match.params;
-    this.props.fetchUser(userUrl);
-  }
+
   openModal(type) {
     if (this.props.currentUser.id !== this.props.user.id) {
       return () => this.setState({ photoModal: `view-${type}`});
     }
     return () => this.setState({ photoModal: type })
   }
+
   closeModal(e) {
     this.setState({ photoModal: false });
   }
+
   photoModal() {
     switch(this.state.photoModal) {
       case false:
@@ -74,7 +58,7 @@ class Profile extends Component {
     }
   }
   render() {
-    const { user, currentUser, errors } = this.props;
+    const { user, currentUser, errors, friends } = this.props;
     if (!user && errors.length === 0) return <NavMain />;
     if (!user) return <MissingPage />;
 
@@ -94,7 +78,7 @@ class Profile extends Component {
           <MainPage>
             <SidePanel>
               <About user={user} />
-              <Friends friends={user.friendshipData.friends} />
+              <Friends friends={friends} />
             </SidePanel>
             <ProfilePostsContainer user={user} currentUser={currentUser} />
           </MainPage>
@@ -105,22 +89,25 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = (
-  { session: { currentUser }, entities: { users, userIdMap }, errors },
-  ownProps
-) => {
-  const id = userIdMap[ownProps.match.params.userUrl];
+const mapStateToProps = (state, props) => {
+  const { errors, session, entities } = state;
+  const { id } = session;
+  const { users, userFriendshipMap, userIdMap } = entities;
+  const currentUser = users[id];
+  const userId = userIdMap[props.match.params.userUrl];
+  const user = users[userId];
+  const userFriendIds = userFriendshipMap[userId] || [];
+  const friends = (userFriendIds).map(id => users[id]);
   return {
     currentUser,
-    user: users[id],
-    errors
+    user,
+    errors,
+    friends
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  fetchUser: userUrl => dispatch(fetchUser(userUrl)),
-  fetchCurrentUser: () => dispatch(fetchCurrentUser()),
-  fetchAllUsers: () => dispatch(fetchAllUsers())
+const mapDispatchToProps = (dispatch, props) => ({
+  fetchUser: () => dispatch(fetchUser(props.match.params.userUrl))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

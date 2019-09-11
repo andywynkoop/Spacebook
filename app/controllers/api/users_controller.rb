@@ -21,19 +21,12 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    @user = User.find_by(user_url: params[:userUrl])
+    @user = User.find_by(user_url: params[:id])
     if @user
       render :show
     else
       render json: ["User not found"], status: 422
     end
-  end
-
-  def index
-    @users = User.all
-  end
-
-  def destroy
   end
 
   def user_params

@@ -89,8 +89,8 @@ class Comment extends Component {
             destroy={() => this.setType('destroy')}
             status={this.state.modal}
             currentUser={currentUser}
-            authorId={data.author_id}
-            postAuthorId={post.author.id}
+            authorId={data.authorId}
+            postAuthorId={author.id}
             wallId={post.wallId}
             comment={'comment-option'}
           >
@@ -106,7 +106,7 @@ const mapStateToProps = (state, { data }) =>{
   const { users } = state.entities;
   const { id } = state.session;
   return ({
-    author: users[data.author_id],
+    author: users[data.authorId],
     currentUser: users[id]
   });
 }

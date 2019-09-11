@@ -6,7 +6,6 @@ class PostForm extends Component {
     super(props);
     this.state = this.props.post;
     this.update = this.update.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.submit = this.submit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
@@ -14,49 +13,46 @@ class PostForm extends Component {
   update(field) {
     return e => this.setState({ [field]: e.target.value });
   }
+
   submit() {
     const {
       postAuthorId: author_id,
-      wallId: wall_id,
+      wall,
       id,
-      close,
-      currentUser
+      close
     } = this.props;
-
     const { body } = this.state;
-    this.props
-      .action({
-        id,
-        author_id,
-        wall_id,
-        body
-      })
-      .then(() => {
-        this.setState({ body: '' }, () => {
-          this.props.fetchPosts(wall_id);
-          this.props.fetchFeed(currentUser.id);
-          close();
-        });
-      });
+    this.props.action({
+      id,
+      author_id,
+      wall_id: wall.id,
+      body
+    }).then(() => close());
   }
+
   handleKeyPress(e) {
-    if (e.key === 'Enter') this.submit();
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.submit();
+    }
   }
+
+  isFriend() {
+    const { author, wall, formType, isFriend } = this.props;
+    if (formType === 'Edit Post') return true;
+    return wall.id === author.id;
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     this.submit();
   }
-  isFriend() {
-    const { author, wall, formType } = this.props;
-    if (formType === 'Edit Post') return true;
-    return !!wall.friendshipData.friends[author.id] || wall.id === author.id;
-  }
+
   render() {
     const { author, formType, message, close, wall } = this.props;
     if (!this.isFriend()) return <div />;
     const classType = formType === 'Edit Post' ? 'post-edit' : '';
-    const profile =
-      formType === 'Edit Post' ? author.profile_img_url : author.profileImgUrl;
+    const profile = author.profileImgUrl;
     return (
       <div
         className={`item-container item-container-post post-form ${classType}`}
@@ -77,7 +73,7 @@ class PostForm extends Component {
             <div />
           )}
         </div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="post-form-input">
             <div
               style={{ backgroundImage: `url("${profile || NULL_PROFILE}")` }}
@@ -92,7 +88,7 @@ class PostForm extends Component {
             />
           </div>
           <div className="post-form-buttons">
-            <button type="submit">{message}</button>
+            <button>{message}</button>
           </div>
         </form>
       </div>

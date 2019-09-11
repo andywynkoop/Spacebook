@@ -1,12 +1,11 @@
 import { RECEIVE_USER } from '../actions/user';
 
 export default (state = {}, action) => {
-  Object.freeze(state);
-  const newState = Object.assign({}, state);
-
   switch (action.type) {
     case RECEIVE_USER:
-      const { user: { userUrl, id } } = action;
+      const newState = Object.assign({}, state);
+      const user = Object.values(action.payload.user)[0];
+      const { userUrl, id } = user;
       newState[userUrl] = id;
       return newState;
     default:

@@ -1,23 +1,12 @@
 import { RECEIVE_POST, RECEIVE_WALL_POSTS } from '../actions/post';
 
 export default (state = {}, action) => {
-  Object.freeze(state);
-  const newState = Object.assign({}, state);
-  let wall;
   switch (action.type) {
     case RECEIVE_POST:
-      const { post } = action;
-      wall = post.wallId;
-      if (!newState[wall]) newState[wall] = {};
-      newState[wall][post.id] = post;
-      return newState;
+      const { post } = action.payload;
+      return Object.assign({}, state, { [post.id]: post });
     case RECEIVE_WALL_POSTS:
-      const { posts } = action;
-      const postIds = Object.keys(posts);
-      if (postIds.length === 0) return posts;
-      wall = posts[postIds[0]].wallId;
-      newState[wall] = posts;
-      return newState;
+      return action.payload.posts || {};
     default:
       return state;
   }

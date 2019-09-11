@@ -5,35 +5,32 @@ export const RECEIVE_WALL_POSTS = 'RECEIVE_WALL_POSTS';
 export const RECEIVE_FEED_POSTS = 'RECEIVE_FEED_POSTS';
 
 export const createPost = postForm => dispatch =>
-  PostApiUtil.createPost(postForm).then(post => dispatch({
+  PostApiUtil.createPost(postForm).then(payload => dispatch({
     type: RECEIVE_POST,
-    post
+    payload
   }));
 
 export const updatePost = postForm => dispatch =>
-  PostApiUtil.updatePost(postForm).then(post => dispatch({
+  PostApiUtil.updatePost(postForm).then(payload => dispatch({
     type: RECEIVE_POST,
-    post
+    payload
   }));
 
 export const deletePost = id => dispatch =>
-  PostApiUtil.deletePost(id).then(post => dispatch({
+  PostApiUtil.deletePost(id).then(payload => dispatch({
     type: RECEIVE_POST,
-    post
+    payload
   }));
 
 export const fetchWallPosts = id => dispatch =>
-  PostApiUtil.fetchWallPosts(id).then(posts => dispatch({
+  PostApiUtil.fetchWallPosts(id).then(payload => dispatch({
       type: RECEIVE_WALL_POSTS,
-      posts
+      payload
     })
   );
 
-export const fetchFeed = () => dispatch =>
-  PostApiUtil.fetchFeed().then(posts => dispatch({
+export const fetchFeed = id => dispatch =>
+  PostApiUtil.fetchFeed(id).then(payload => dispatch({
     type: RECEIVE_FEED_POSTS,
-    posts
+    payload
   }));
-
-
-

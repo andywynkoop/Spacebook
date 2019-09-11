@@ -5,7 +5,6 @@ import PostActionModal from './PostActionModal';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deletePost, fetchWallPosts, fetchFeed } from '../../actions/post';
-import { fetchAllUsers } from '../../actions/user';
 import { NULL_PROFILE } from '../../util/img_util';
 
 class Post extends Component {
@@ -44,23 +43,11 @@ class Post extends Component {
   destroy() {
     const {
       destroy,
-      fetchPosts,
-      fetchAllUsers,
-      data: { id, wallId },
-      currentUser,
-      fetchFeed
+      data: { id }
     } = this.props;
 
     this.setState({ actionType: null }, () => {
       destroy(id)
-        .then(() => fetchAllUsers())
-        .then(() => {
-          if (this.props.history.location.pathname !== '/') {
-            fetchPosts(wallId);
-          } else {
-            fetchFeed(currentUser.id);
-          }
-        });
     });
   }
   close() {
@@ -72,7 +59,7 @@ class Post extends Component {
       return <button className="post-modal-btn">···</button>;
   }
   renderAuthorDetails() {
-    const { author, data: { wall } } = this.props;
+    const { author, wall } = this.props;
     if (this.props.history.location.pathname !== '/' || author.id === wall.id) {
       return (
         <Link to={`/${author.userUrl}`}>
@@ -97,9 +84,8 @@ class Post extends Component {
     }
   }
   render() {
-    const { data, author, currentUser } = this.props;
+    const { data, author, currentUser, comments } = this.props;
     const { swapType, edit, destroy, close } = this;
-
     if (!author) return <div />;
     return (
       <li
@@ -126,7 +112,7 @@ class Post extends Component {
           </div>
         </div>
         <p className="post-body">{data.body}</p>
-        <Comments post={data} comments={data.comments} />
+        <Comments post={data} comments={comments} />
         <PostOptionsModal
           edit={() => this.setType('edit')}
           destroy={() => this.setType('destroy')}
@@ -144,17 +130,31 @@ class Post extends Component {
           edit={edit}
           destroy={destroy}
           close={close}
+          author={author}
         />
       </li>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  destroy: id => dispatch(deletePost(id)),
-  fetchPosts: id => dispatch(fetchWallPosts(id)),
-  fetchAllUsers: () => dispatch(fetchAllUsers()),
-  fetchFeed: id => dispatch(fetchFeed(id))
+const msp = ({ entities, session }, { data }) => {
+  const { users, comments:allComments } = entities;
+  const currentUser = users[session.id];
+  const author = users[data.authorId];
+  const wall = users[data.wallId];
+  const comments = Object
+    .values(allComments)
+    .filter(comment => comment.postId === data.id)
+  return ({
+    currentUser,
+    author,
+    wall,
+    comments
+  });
+}
+
+const mdp = dispatch => ({
+  destroy: id => dispatch(deletePost(id))
 });
 
-export default connect(null, mapDispatchToProps)(withRouter(Post));
+export default connect(msp, mdp)(withRouter(Post));

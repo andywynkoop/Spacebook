@@ -40,62 +40,32 @@ class User < ApplicationRecord
     self.user_url ||= "#{self.firstname}#{self.lastname}_#{rand(100000)}"
   end
   # End of Session
-
-  #Friends
-  #to other users
-  has_many :requests_to_friends,
-    foreign_key: :requesting_user_id,
-    class_name: :Friendship
-  #from other users
-  has_many :requests_from_friends,
-    foreign_key: :requested_user_id,
-    class_name: :Friendship
-
-  #friends the user has requested
-  has_many :friends_requested,
-    through: :requests_to_friends,
-    source: :requested_user
-
-  #friends who requested user
-  has_many :requesting_friends,
-    through: :requests_from_friends,
-    source: :requesting_user
-
   has_one_attached :profile_photo
   has_one_attached :cover_photo
-  def approved_friends_to
-    User.find_by_sql(<<-SQL)
-    SELECT
-      users.*
-    FROM
-      users
-    JOIN
-      friendships ON users.id = friendships.requested_user_id
-    WHERE
-      friendships.requesting_user_id = #{self.id}
-    AND
-      friendships.approved = true
-    SQL
-  end
 
-  def approved_friends_from
-    User.find_by_sql(<<-SQL)
-    SELECT
-      users.*
-    FROM
-      users
-    JOIN
-      friendships ON users.id = friendships.requesting_user_id
-    WHERE
-      friendships.requested_user_id = #{self.id}
-    AND
-      friendships.approved = true
-    SQL
-  end
+  has_many :requests_to,
+    foreign_key: :requestor_id,
+    class_name: :FriendRequest
 
-  def friends
-    approved_friends_from.concat(approved_friends_to)
-  end
+  has_many :requests_from,
+    foreign_key: :requestee_id,
+    class_name: :FriendRequest
+
+  has_many :friends_asked,
+    through: :requests_to,
+    source: :requestee
+
+  has_many :asking_friends,
+    through: :requests_from,
+    source: :requestor
+
+  has_many :friendships,
+    foreign_key: :requestor,
+    class_name: :Friendship
+
+  has_many :friends,
+    through: :friendships,
+    source: :requestee
 
   ##End of Friends
   has_many :authored_posts,
@@ -109,6 +79,5 @@ class User < ApplicationRecord
   has_many :authored_comments,
     foreign_key: :author_id,
     class_name: :Comment
-
 
 end

@@ -1,71 +1,31 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-class FeedSidebarLinks extends Component {
-  render() {
-    if (!this.props.currentUser) return <div />;
-    const { currentUser: user } = this.props;
-    return (
-      <div>
-        <ul className="feed-sidebar-links">
-          <li className="feed-profile-link">
-            <Link to={`/${user.userUrl}`}>
-              <img src={user.profileImgUrl} />{' '}
-              <p>
-                {user.firstname} {user.lastname}
-              </p>
-            </Link>
-            <span className="feed-ellipse">···</span>
-          </li>
-          <li>
-            <div className="feed-link-left">
-              <i className="far fa-newspaper" /> <span>News Feed</span>
-            </div>
-            <span className="feed-ellipse">···</span>
-          </li>
-          <li>
-            <div className="feed-link-left">
-              <i className="far fa-comment" /> <span>Messenger</span>
-            </div>
-            <span className="feed-ellipse">···</span>
-          </li>
-          <li>
-            <div className="feed-link-left">
-              <i className="fas fa-camera" /> <span>Photos</span>
-            </div>
-            <span className="feed-ellipse">···</span>
-          </li>
-          <li>
-            <div className="feed-link-left">
-              <i className="far fa-calendar" /> <span>Events</span>
-            </div>
-            <span className="feed-ellipse">···</span>
-          </li>
-          <li>
-            <div className="feed-link-left">
-              <i className="far fa-file-alt" /> <span>Pages</span>
-            </div>
-            <span className="feed-ellipse">···</span>
-          </li>
-          <li>
-            <div className="feed-link-left">
-              <i className="fab fa-github" /> <span>Github</span>
-            </div>
-            <span className="feed-ellipse">···</span>
-          </li>
-        </ul>
-      </div>
-    );
-  }
-}
+const DeadLink = ({ icon, label }) => 
+  <li>
+    <div className="feed-link-left">
+      <i className={icon} /> <span>{label}</span>
+    </div>
+    <span className="feed-ellipse">···</span>
+  </li>;
 
-const mapStateToProps = state => {
-  const { id } = state.session;
-  const { users } = state.entities;
-  return ({ 
-    currentUser: users[id]
-  });
-}
+const FeedSidebarLinks = ({ currentUser: user }) => 
+  <div>
+    <ul className="feed-sidebar-links">
+      <li className="feed-profile-link">
+        <Link to={`/${user.userUrl}`}>
+          <img src={user.profileImgUrl} />{' '}
+          <p>{user.firstname} {user.lastname}</p>
+        </Link>
+        <span className="feed-ellipse">···</span>
+      </li>
+      <DeadLink icon="far fa-newspaper" label="News Feed" />
+      <DeadLink icon="far fa-comment" label="Messenger" />
+      <DeadLink icon="fas fa-camera" label="Photos" />
+      <DeadLink icon="far fa-calendar" label="Events" />
+      <DeadLink icon="far fa-file-alt" label="Pages" />
+      <DeadLink icon="fab fa-github" label="Github" />
+    </ul>
+  </div>;
 
-export default connect(mapStateToProps)(withRouter(FeedSidebarLinks));
+export default FeedSidebarLinks;

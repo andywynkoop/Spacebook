@@ -6,7 +6,7 @@ class Api::PostsController < ApplicationController
     if @post.save
       render :show
     else
-      render json: @post.errors.full_messages
+      render json: @post.errors.full_messages, status: 422
     end
   end
 
@@ -22,7 +22,8 @@ class Api::PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
-    if @post.update_attributes(post_params)
+    @post.update_attributes(post_params)
+    if @post.save
       render :show
     else
       render json: @post.errors.full_messages, status: 422

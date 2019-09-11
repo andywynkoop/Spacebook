@@ -7,23 +7,7 @@ class PostsList extends Component {
     const { fetchAction, user } = this.props;
     fetchAction(user.id);
   }
-  renderPostsList() {
-    const { posts, users, currentUser } = this.props;
-    if (!posts || !users) return <div />;
-    return Object.values(posts)
-      .sort((p1, p2) => {
-        if (p1.createdAt < p2.createdAt) return 1;
-        return -1;
-      })
-      .map(post => (
-        <Post
-          key={post.id}
-          data={post}
-          author={users[post.authorId]}
-          currentUser={currentUser}
-        />
-      ));
-  }
+
   render() {
     const { user, currentUser, posts } = this.props;
     if (!currentUser) return <div />;
@@ -32,10 +16,11 @@ class PostsList extends Component {
         <PostCreateContainer
           postAuthorId={currentUser.id}
           author={currentUser}
-          wallId={user.id}
           wall={user}
         />
-        <ul>{this.renderPostsList.bind(this)()}</ul>
+        <ul>
+          {posts.map(post => <Post key={post.id} data={post} />)}
+        </ul>
       </div>
     );
   }

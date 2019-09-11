@@ -3,8 +3,8 @@ import PostEditContainer from './PostEditContainer';
 
 class PostActionModal extends Component {
   renderComponent() {
-    const { data, type, swap, edit, destroy, close } = this.props;
-    const { body, authorId, author, wallId, id } = data;
+    const { data, type, swap, edit, destroy, close, author } = this.props;
+    const { body, authorId, wallId, id } = data;
     if (type === 'edit')
       return (
         <PostEditContainer
@@ -12,7 +12,6 @@ class PostActionModal extends Component {
           postAuthorId={authorId}
           author={author}
           wallId={wallId}
-          wall={data}
           close={close}
           id={id}
         />

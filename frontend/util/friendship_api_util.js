@@ -1,18 +1,18 @@
-export const requestFriend = friendship =>
+export const requestFriend = requestee_id =>
   $.ajax({
     method: 'POST',
-    url: 'api/friendships',
-    data: { friendship }
+    url: 'api/friend_requests',
+    data: { requestee_id }
   });
 
 export const approveRequest = friendshipId =>
   $.ajax({
     method: 'PATCH',
-    url: `api/friendships/${friendshipId}`
+    url: `api/friend_requests/${friendshipId}`
   });
 
 export const deleteRequest = friendshipId =>
   $.ajax({
     method: 'DELETE',
-    url: `api/friendships/${friendshipId}`
+    url: `api/friend_requests/${friendshipId}`
   });
