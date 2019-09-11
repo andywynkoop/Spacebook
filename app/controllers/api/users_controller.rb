@@ -10,6 +10,14 @@ class Api::UsersController < ApplicationController
   end
 
   def update
+    @user = current_user
+    profile, cover = params[:photo], params[:cover]
+    if profile
+      @user.update(profile_photo: profile)
+    elsif cover
+      @user.update(cover_photo: cover)
+    end
+    render :show
   end
 
   def show

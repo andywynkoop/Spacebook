@@ -12,11 +12,17 @@ import NavMain from '../NavMain';
 import { fetchUser, fetchAllUsers } from '../../actions/user';
 import { fetchCurrentUser } from '../../actions/session';
 import MissingPage from './MissingPage';
+import { ChangeProfilePhoto, ChangeCoverPhoto } from './PhotoForm';
 
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.fetchUser = this.fetchUser.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.state = {
+      photoModal: false
+    }
   }
   componentDidMount() {
     this.props.fetchAllUsers();
@@ -42,19 +48,44 @@ class Profile extends Component {
   }
   fetchUser() {
     const { userUrl } = this.props.match.params;
-    this.props.fetchUser(this.props.match.params.userUrl);
+    this.props.fetchUser(userUrl);
+  }
+  openModal(type) {
+    if (this.props.currentUser.id !== this.props.user.id) {
+      return () => this.setState({ photoModal: `view-${type}`});
+    }
+    return () => this.setState({ photoModal: type })
+  }
+  closeModal(e) {
+    this.setState({ photoModal: false });
+  }
+  photoModal() {
+    switch(this.state.photoModal) {
+      case false:
+        return null;
+      case "photo":
+        return <ChangeProfilePhoto close={this.closeModal} />;
+      case "cover":
+        return <ChangeCoverPhoto close={this.closeModal} />;
+      case 'view-photo':
+      case 'view-cover':
+      default:
+        return null;
+    }
   }
   render() {
     const { user, currentUser, errors } = this.props;
     if (!user && errors.length === 0) return <NavMain />;
     if (!user) return <MissingPage />;
+
     return (
       <div>
         <NavMain />
         <div style={{ paddingTop: '42px' }}>
-          <Cover cover={user.coverPhotoUrl} />
+          <Cover cover={user.coverPhotoUrl} change={this.openModal('cover')} />
 
           <ProfileNav
+            change={this.openModal('photo')}
             profile={user.profileImgUrl}
             name={`${user.firstname} ${user.lastname}`}
             user={user}
@@ -67,6 +98,7 @@ class Profile extends Component {
             </SidePanel>
             <ProfilePostsContainer user={user} currentUser={currentUser} />
           </MainPage>
+          {this.photoModal()}
         </div>
       </div>
     );

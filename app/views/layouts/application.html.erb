@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Spacebook</title>
+    <% if current_user %>
+      <title><%= current_user.firstname.capitalize + " " + current_user.lastname.capitalize %></title>
+    <% else %>
+      <title>Spacebook</title>
+    <% end %>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all' %>

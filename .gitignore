@@ -19,3 +19,6 @@
 .byebug_history
 
 trending_util
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key

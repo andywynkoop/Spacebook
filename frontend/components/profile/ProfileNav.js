@@ -5,10 +5,10 @@ import { NULL_PROFILE } from '../../util/img_util';
 
 class NavMain extends Component {
   render() {
-    const { profile, name, currentUser, user } = this.props;
+    const { profile, name, currentUser, user, change } = this.props;
     return (
       <nav className="profile-nav">
-        <div className="profile-img">
+        <div className="profile-img" onClick={change}>
           <img src={profile || NULL_PROFILE} />
         </div>
         <h1 className="profile-nav-header">{name}</h1>

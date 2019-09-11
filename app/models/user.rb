@@ -61,6 +61,8 @@ class User < ApplicationRecord
     through: :requests_from_friends,
     source: :requesting_user
 
+  has_one_attached :profile_photo
+  has_one_attached :cover_photo
   def approved_friends_to
     User.find_by_sql(<<-SQL)
     SELECT

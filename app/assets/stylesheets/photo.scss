@@ -1,0 +1,76 @@
+.photo-form-modal {
+  position: absolute;
+  background: rgba(0,0,0,.8);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.photo-form {
+  position: absolute;
+  top: 200px;
+  left: calc(50vw - 250px);
+  width: 350px;
+  background: #eee;
+  padding: 35px;
+  border-radius: 3px;
+
+  h2 {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 25px;
+  }
+
+  button {
+    padding: 10px;
+    background-color: #67ae55;
+    color: white;
+    border-radius: 3px;
+  }
+
+  .cancel {
+    background-color: #d32f2f;
+  }
+}
+.photo-form-buttons {
+  margin: auto;
+  display: flex;
+  width: 45%;
+  justify-content: space-between;
+}
+
+.photo-form-file {
+  position: relative;
+  margin: auto;
+  width: 300px;
+  height: 300px;
+  margin-bottom: 20px;
+  
+  input {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    opacity: 0;
+    margin:0;
+    padding: 0;
+  }
+  figure {
+    // to work with inline background styling
+    position: absolute !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    background-size: cover !important;
+    border-radius: 3px !important;
+    border: solid 1px #ddd !important;
+  }
+}
