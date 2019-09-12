@@ -7,6 +7,7 @@ import { deleteComment } from '../../actions/comment';
 import { fetchWallPosts, fetchFeed } from '../../actions/post';
 import { Link, withRouter } from 'react-router-dom';
 import { NULL_PROFILE } from '../../util/img_util';
+import { userByUserId, currentUser } from '../../util/selectors';
 
 class Comment extends Component {
   constructor(props) {
@@ -33,19 +34,8 @@ class Comment extends Component {
       this.setState({ edit: true });
     }
     if (type === 'destroy') {
-      const {
-        destroy,
-        fetchPosts,
-        fetchFeed,
-        data: { id: commentId },
-        post,
-        currentUser
-      } = this.props;
-
-      destroy(commentId).then(() => {
-        fetchPosts(post.wallId);
-        fetchFeed(currentUser.id);
-      });
+      const { id: commentId } = this.props.data;
+      this.props.destroy(commentId);
     }
   }
   hideForm() {
@@ -53,7 +43,7 @@ class Comment extends Component {
   }
   commentModalBtn() {
     const { currentUser, data, post } = this.props;
-    if (currentUser.id === data.author_id) {
+    if (currentUser.id === data.authorId) {
       return <CommentHoverModal message={'Edit or delete this'} version="v2" />;
     } else if (currentUser.id === post.wallId) {
       return <CommentHoverModal message={'Remove this'} />;
@@ -102,20 +92,15 @@ class Comment extends Component {
   }
 }
 
-const mapStateToProps = (state, { data }) =>{ 
-  const { users } = state.entities;
-  const { id } = state.session;
-  return ({
-    author: users[data.authorId],
-    currentUser: users[id]
-  });
-}
-
-const mapDispatchToProps = dispatch => ({
-  destroy: id => dispatch(deleteComment(id)),
-  fetchPosts: id => dispatch(fetchWallPosts(id)),
-  fetchFeed: id => dispatch(fetchFeed(id))
+const msp = (state, { data }) => ({
+  author: userByUserId(state, data.authorId),
+  currentUser: currentUser(state)
 });
-export default connect(mapStateToProps, mapDispatchToProps)(
+
+const mdp = dispatch => ({
+  destroy: id => dispatch(deleteComment(id))
+});
+
+export default connect(msp, mdp)(
   withRouter(Comment)
 );

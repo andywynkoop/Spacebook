@@ -33,6 +33,10 @@
 .feed-link-left {
   display: flex;
 }
+
+li.disabled {
+  cursor: not-allowed;
+}
 .feed-sidebar-links li:nth-child(2) {
   border: solid 1px #ccc;
   background: #fff;

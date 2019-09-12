@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addComment, updateComment } from '../../actions/comment';
-import { fetchWallPosts, fetchFeed } from '../../actions/post';
 import { NULL_PROFILE } from '../../util/img_util';
 import { withRouter } from 'react-router-dom';
+import { currentUser } from '../../util/selectors';
 
 class CommentForm extends Component {
   constructor(props) {
@@ -22,13 +22,10 @@ class CommentForm extends Component {
   }
   submit() {
     const {
-      post,
       post: { id: post_id },
       user: { id: author_id },
       addComment,
       saveComment,
-      fetchPosts,
-      fetchFeed,
       formType,
       hideForm,
       commentId
@@ -39,16 +36,12 @@ class CommentForm extends Component {
     if (formType === 'edit') {
       commentData.id = commentId;
     }
-    submitAction(commentData).then(() =>
-      this.setState({ body: '' }, () => {
-        fetchPosts(post.wallId).then(() => {
-          fetchFeed(author_id);
-          if (formType === 'edit') {
-            hideForm();
-          }
-        });
-      })
-    );
+    this.setState({ body: '' }, () => {
+      submitAction(commentData);
+      if (formType === 'edit') {
+        hideForm();
+      }
+    })
   }
   handleKeyPress(e) {
     if (e.key === 'Enter') {
@@ -78,25 +71,18 @@ class CommentForm extends Component {
   }
 }
 
-const mapStateToProps = (
-  { entities: { users }, session: { id } },
-  { body, formType, commentId }
-) => {
-  return ({
-    user: users[id],
-    body,
-    formType,
-    commentId
-  })
-};
+const msp = (state, { body, formType, commentId }) => ({
+  user: currentUser(state),
+  body,
+  formType,
+  commentId
+})
 
-const mapDispatchToProps = dispatch => ({
+const mdp = dispatch => ({
   addComment: comment => dispatch(addComment(comment)),
-  saveComment: comment => dispatch(updateComment(comment)),
-  fetchPosts: id => dispatch(fetchWallPosts(id)),
-  fetchFeed: id => dispatch(fetchFeed(id))
+  saveComment: comment => dispatch(updateComment(comment))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(msp, mdp)(
   withRouter(CommentForm)
 );

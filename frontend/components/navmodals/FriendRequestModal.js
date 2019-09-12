@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { approveFriendship, denyFriendship } from '../../actions/friendship';
 import FriendRequestItem from './FriendRequestItem';
+import { friendRequests } from '../../util/selectors';
 
 class FriendRequestModal extends Component {
   constructor(props) {
@@ -9,17 +9,10 @@ class FriendRequestModal extends Component {
     this.renderRequestList = this.renderRequestList.bind(this);
   }
   renderRequestList() {
-    const { requests, approve, deny, users } = this.props;
-
-    if (requests.length === 0) return <FriendRequestItem data={null} />;
+    const { requests } = this.props;
+    if (requests.length === 0) return <FriendRequestItem request={null} />;
     return requests.map(request => (
-      <FriendRequestItem
-        key={request.id}
-        data={request}
-        approve={approve}
-        deny={deny}
-        user={users[request.requesting_user_id]}
-      />
+      <FriendRequestItem key={request.id} request={request} />
     ));
   }
 
@@ -40,19 +33,9 @@ class FriendRequestModal extends Component {
   }
 }
 
-const mapStateToProps = ({
-  session: { id },
-  entities: { users }
-}) => ({
-  requests: Object.values(users[id].friendshipData.requestsFrom).filter(
-    el => el.approved === false
-  ),
-  users
+const msp = state => ({
+  requests: friendRequests(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-  approve: id => dispatch(approveFriendship(id)),
-  deny: id => dispatch(denyFriendship(id))
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendRequestModal);
+export default connect(msp)(FriendRequestModal);

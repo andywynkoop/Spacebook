@@ -9,8 +9,10 @@ export default (state = {}, action) => {
       const { payload } = action;
       const { user } = payload;
       const userFriendships = payload.userFriendships || {};
+      const friendRequests = payload.friendRequests || {};
       const friends = userFriendships.friends || {};
-      return Object.assign({}, state, user, friends);
+      const requestors = friendRequests.users;
+      return Object.assign({}, state, user, friends, requestors);
     default:
       return state;
   }

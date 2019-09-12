@@ -22,12 +22,15 @@ class PostForm extends Component {
       close
     } = this.props;
     const { body } = this.state;
-    this.props.action({
-      id,
-      author_id,
-      wall_id: wall.id,
-      body
-    }).then(() => close());
+
+    this.setState({ body: "" }, () => {
+      this.props.action({
+        id,
+        author_id,
+        wall_id: wall.id,
+        body
+      }).then(() => close());
+    })
   }
 
   handleKeyPress(e) {
@@ -37,12 +40,6 @@ class PostForm extends Component {
     }
   }
 
-  isFriend() {
-    const { author, wall, formType, isFriend } = this.props;
-    if (formType === 'Edit Post') return true;
-    return wall.id === author.id;
-  }
-
   handleSubmit(e) {
     e.preventDefault();
     this.submit();
@@ -50,7 +47,7 @@ class PostForm extends Component {
 
   render() {
     const { author, formType, message, close, wall } = this.props;
-    if (!this.isFriend()) return <div />;
+    if (!this.props.isFriend) return <div />;
     const classType = formType === 'Edit Post' ? 'post-edit' : '';
     const profile = author.profileImgUrl;
     return (

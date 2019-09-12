@@ -40,9 +40,9 @@ class NavModal extends Component {
   }
 }
 
-const mapStateToProps = ({ ui: { modal: { type } } }) => ({ type });
+const msp = ({ ui: { modal: { type } } }) => ({ type });
 
-const mapDispatchToProps = dispatch => ({
+const mdp = dispatch => ({
   closeModal: () => dispatch(closeModal())
 });
-export default connect(mapStateToProps, mapDispatchToProps)(NavModal);
+export default connect(msp, mdp)(NavModal);

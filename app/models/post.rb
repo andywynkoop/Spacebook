@@ -10,7 +10,8 @@ class Post < ApplicationRecord
 
   has_many :comments,
     foreign_key: :post_id,
-    class_name: :Comment
+    class_name: :Comment,
+    dependent: :destroy
 
   def self.find_by_wall_id(id)
     Post.all.where(wall_id: id)

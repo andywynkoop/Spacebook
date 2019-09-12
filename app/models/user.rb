@@ -45,11 +45,13 @@ class User < ApplicationRecord
 
   has_many :requests_to,
     foreign_key: :requestor_id,
-    class_name: :FriendRequest
+    class_name: :FriendRequest,
+    dependent: :destroy
 
   has_many :requests_from,
     foreign_key: :requestee_id,
-    class_name: :FriendRequest
+    class_name: :FriendRequest,
+    dependent: :destroy
 
   has_many :friends_asked,
     through: :requests_to,
@@ -61,7 +63,8 @@ class User < ApplicationRecord
 
   has_many :friendships,
     foreign_key: :requestor,
-    class_name: :Friendship
+    class_name: :Friendship,
+    dependent: :destroy
 
   has_many :friends,
     through: :friendships,
@@ -70,14 +73,17 @@ class User < ApplicationRecord
   ##End of Friends
   has_many :authored_posts,
     foreign_key: :author_id,
-    class_name: :Post
+    class_name: :Post,
+    dependent: :destroy
 
   has_many :wall_posts,
     foreign_key: :wall_id,
-    class_name: :Post
+    class_name: :Post,
+    dependent: :destroy
 
   has_many :authored_comments,
     foreign_key: :author_id,
-    class_name: :Comment
+    class_name: :Comment,
+    dependent: :destroy
 
 end

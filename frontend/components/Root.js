@@ -5,15 +5,14 @@ import reduxThunk from 'redux-thunk';
 import reduxLogger from 'redux-logger';
 import rootReducer from '../reducers';
 import App from './App';
+import { windowState } from '../util/middleware';
 
 const Root = ({ preloadedState }) => {
   const store = createStore(
     rootReducer,
     preloadedState,
-    applyMiddleware(reduxThunk, reduxLogger)
+    applyMiddleware(reduxThunk, windowState, reduxLogger)
   );
-  
-  window.state = store.getState;
 
   return (
     <Provider store={store}>

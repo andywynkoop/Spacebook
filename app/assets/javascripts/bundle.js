@@ -585,7 +585,7 @@ var receiveErrors = exports.receiveErrors = function receiveErrors(errors) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchFeed = exports.fetchWallPosts = exports.deletePost = exports.updatePost = exports.createPost = exports.RECEIVE_FEED_POSTS = exports.RECEIVE_WALL_POSTS = exports.RECEIVE_POST = undefined;
+exports.fetchFeed = exports.fetchWallPosts = exports.deletePost = exports.updatePost = exports.createPost = exports.REMOVE_POST = exports.RECEIVE_FEED_POSTS = exports.RECEIVE_WALL_POSTS = exports.RECEIVE_POST = undefined;
 
 var _post_api_util = __webpack_require__(113);
 
@@ -596,6 +596,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var RECEIVE_POST = exports.RECEIVE_POST = 'RECEIVE_POST';
 var RECEIVE_WALL_POSTS = exports.RECEIVE_WALL_POSTS = 'RECEIVE_WALL_POSTS';
 var RECEIVE_FEED_POSTS = exports.RECEIVE_FEED_POSTS = 'RECEIVE_FEED_POSTS';
+var REMOVE_POST = exports.REMOVE_POST = "REMOVE_POST";
 
 var createPost = exports.createPost = function createPost(postForm) {
   return function (dispatch) {
@@ -623,7 +624,7 @@ var deletePost = exports.deletePost = function deletePost(id) {
   return function (dispatch) {
     return PostApiUtil.deletePost(id).then(function (payload) {
       return dispatch({
-        type: RECEIVE_POST,
+        type: REMOVE_POST,
         payload: payload
       });
     });
@@ -1996,6 +1997,8 @@ var _NavModal = __webpack_require__(175);
 
 var _NavModal2 = _interopRequireDefault(_NavModal);
 
+var _selectors = __webpack_require__(198);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var NavMain = function NavMain(_ref) {
@@ -2088,16 +2091,13 @@ var NavMain = function NavMain(_ref) {
   );
 };
 
-var mapStateToProps = function mapStateToProps(state) {
-  var users = state.entities.users;
-  var id = state.session.id;
-
+var msp = function msp(state) {
   return {
-    currentUser: users[id]
+    currentUser: (0, _selectors.currentUser)(state)
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouterDom.withRouter)(NavMain));
+exports.default = (0, _reactRedux.connect)(msp)((0, _reactRouterDom.withRouter)(NavMain));
 
 /***/ }),
 /* 33 */
@@ -3861,10 +3861,13 @@ var FriendshipApiUtil = _interopRequireWildcard(_friendship_api_util);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var requestFriendship = exports.requestFriendship = function requestFriendship(friendship) {
+var requestFriendship = exports.requestFriendship = function requestFriendship(targetUserId) {
   return function (dispatch) {
-    return FriendshipApiUtil.requestFriend(friendship).then(function (user) {
-      return dispatch((0, _session.receiveCurrentUser)(user));
+    return FriendshipApiUtil.requestFriend(targetUserId).then(function (payload) {
+      return dispatch({
+        type: _session.RECEIVE_CURRENT_USER,
+        payload: payload
+      });
     }, function (err) {
       return dispatch((0, _session.receiveErrors)(err.responseJSON));
     });
@@ -3873,8 +3876,11 @@ var requestFriendship = exports.requestFriendship = function requestFriendship(f
 
 var approveFriendship = exports.approveFriendship = function approveFriendship(friendshipId) {
   return function (dispatch) {
-    return FriendshipApiUtil.approveRequest(friendshipId).then(function (user) {
-      return dispatch((0, _session.receiveCurrentUser)(user));
+    return FriendshipApiUtil.approveRequest(friendshipId).then(function (payload) {
+      return dispatch({
+        type: _session.RECEIVE_CURRENT_USER,
+        payload: payload
+      });
     }, function (err) {
       return dispatch((0, _session.receiveErrors)(err.responseJSON));
     });
@@ -3883,8 +3889,11 @@ var approveFriendship = exports.approveFriendship = function approveFriendship(f
 
 var denyFriendship = exports.denyFriendship = function denyFriendship(friendshipId) {
   return function (dispatch) {
-    return FriendshipApiUtil.deleteRequest(friendshipId).then(function (user) {
-      return dispatch((0, _session.receiveCurrentUser)(user));
+    return FriendshipApiUtil.deleteRequest(friendshipId).then(function (payload) {
+      return dispatch({
+        type: _session.RECEIVE_CURRENT_USER,
+        payload: payload
+      });
     }, function (err) {
       return dispatch((0, _session.receiveErrors)(err.responseJSON));
     });
@@ -4031,6 +4040,8 @@ var PostForm = function (_Component) {
   }, {
     key: 'submit',
     value: function submit() {
+      var _this3 = this;
+
       var _props = this.props,
           author_id = _props.postAuthorId,
           wall = _props.wall,
@@ -4038,13 +4049,16 @@ var PostForm = function (_Component) {
           close = _props.close;
       var body = this.state.body;
 
-      this.props.action({
-        id: id,
-        author_id: author_id,
-        wall_id: wall.id,
-        body: body
-      }).then(function () {
-        return close();
+
+      this.setState({ body: "" }, function () {
+        _this3.props.action({
+          id: id,
+          author_id: author_id,
+          wall_id: wall.id,
+          body: body
+        }).then(function () {
+          return close();
+        });
       });
     }
   }, {
@@ -4056,18 +4070,6 @@ var PostForm = function (_Component) {
       }
     }
   }, {
-    key: 'isFriend',
-    value: function isFriend() {
-      var _props2 = this.props,
-          author = _props2.author,
-          wall = _props2.wall,
-          formType = _props2.formType,
-          isFriend = _props2.isFriend;
-
-      if (formType === 'Edit Post') return true;
-      return wall.id === author.id;
-    }
-  }, {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
       e.preventDefault();
@@ -4076,14 +4078,14 @@ var PostForm = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props3 = this.props,
-          author = _props3.author,
-          formType = _props3.formType,
-          message = _props3.message,
-          close = _props3.close,
-          wall = _props3.wall;
+      var _props2 = this.props,
+          author = _props2.author,
+          formType = _props2.formType,
+          message = _props2.message,
+          close = _props2.close,
+          wall = _props2.wall;
 
-      if (!this.isFriend()) return _react2.default.createElement('div', null);
+      if (!this.props.isFriend) return _react2.default.createElement('div', null);
       var classType = formType === 'Edit Post' ? 'post-edit' : '';
       var profile = author.profileImgUrl;
       return _react2.default.createElement(
@@ -4271,11 +4273,11 @@ var _reactRedux = __webpack_require__(1);
 
 var _comment = __webpack_require__(62);
 
-var _post = __webpack_require__(8);
-
 var _img_util = __webpack_require__(9);
 
 var _reactRouterDom = __webpack_require__(4);
+
+var _selectors = __webpack_require__(198);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4317,16 +4319,11 @@ var CommentForm = function (_Component) {
   }, {
     key: 'submit',
     value: function submit() {
-      var _this3 = this;
-
       var _props = this.props,
-          post = _props.post,
           post_id = _props.post.id,
           author_id = _props.user.id,
           addComment = _props.addComment,
           saveComment = _props.saveComment,
-          fetchPosts = _props.fetchPosts,
-          fetchFeed = _props.fetchFeed,
           formType = _props.formType,
           hideForm = _props.hideForm,
           commentId = _props.commentId;
@@ -4337,15 +4334,11 @@ var CommentForm = function (_Component) {
       if (formType === 'edit') {
         commentData.id = commentId;
       }
-      submitAction(commentData).then(function () {
-        return _this3.setState({ body: '' }, function () {
-          fetchPosts(post.wallId).then(function () {
-            fetchFeed(author_id);
-            if (formType === 'edit') {
-              hideForm();
-            }
-          });
-        });
+      this.setState({ body: '' }, function () {
+        submitAction(commentData);
+        if (formType === 'edit') {
+          hideForm();
+        }
       });
     }
   }, {
@@ -4384,39 +4377,30 @@ var CommentForm = function (_Component) {
   return CommentForm;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var users = _ref.entities.users,
-      id = _ref.session.id;
-  var body = _ref2.body,
-      formType = _ref2.formType,
-      commentId = _ref2.commentId;
-
+var msp = function msp(state, _ref) {
+  var body = _ref.body,
+      formType = _ref.formType,
+      commentId = _ref.commentId;
   return {
-    user: users[id],
+    user: (0, _selectors.currentUser)(state),
     body: body,
     formType: formType,
     commentId: commentId
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     addComment: function addComment(comment) {
       return dispatch((0, _comment.addComment)(comment));
     },
     saveComment: function saveComment(comment) {
       return dispatch((0, _comment.updateComment)(comment));
-    },
-    fetchPosts: function fetchPosts(id) {
-      return dispatch((0, _post.fetchWallPosts)(id));
-    },
-    fetchFeed: function fetchFeed(id) {
-      return dispatch((0, _post.fetchFeed)(id));
     }
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _reactRouterDom.withRouter)(CommentForm));
+exports.default = (0, _reactRedux.connect)(msp, mdp)((0, _reactRouterDom.withRouter)(CommentForm));
 
 /***/ }),
 /* 62 */
@@ -4730,18 +4714,29 @@ var _Root2 = _interopRequireDefault(_Root);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 document.addEventListener('DOMContentLoaded', function () {
   var preloadedState = {};
-  if (window.currentUser) {
-    var user = Object.values(window.currentUser)[0];
+  if (window.preloaded) {
+    var user = window.preloaded.user;
+
+    var id = Object.keys(user)[0];
+    var userFriendships = window.preloaded.userFriendships || {};
+    var friendMap = userFriendships.friendMap || {};
+    var friends = userFriendships.friends || {};
+    var friendRequests = window.preloaded.friendRequests || {};
+    var friendRequestTo = friendRequests.requestsTo || {};
+    var friendRequestFrom = friendRequests.requestsFrom || {};
+    var requestors = friendRequests.users || {};
+    var users = Object.assign({}, requestors, friends, user);
     preloadedState = {
       session: {
-        id: user.id
+        id: id
       },
       entities: {
-        users: _defineProperty({}, user.id, user)
+        users: users,
+        userFriendshipMap: friendMap,
+        friendRequestTo: friendRequestTo,
+        friendRequestFrom: friendRequestFrom
       }
     };
   }
@@ -22073,14 +22068,14 @@ var _App = __webpack_require__(122);
 
 var _App2 = _interopRequireDefault(_App);
 
+var _middleware = __webpack_require__(197);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Root = function Root(_ref) {
   var preloadedState = _ref.preloadedState;
 
-  var store = (0, _redux.createStore)(_reducers2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default, _reduxLogger2.default));
-
-  window.state = store.getState;
+  var store = (0, _redux.createStore)(_reducers2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default, _middleware.windowState, _reduxLogger2.default));
 
   return _react2.default.createElement(
     _reactRedux.Provider,
@@ -24024,6 +24019,18 @@ var _comments_reducer = __webpack_require__(118);
 
 var _comments_reducer2 = _interopRequireDefault(_comments_reducer);
 
+var _post_comment_map_reducer = __webpack_require__(199);
+
+var _post_comment_map_reducer2 = _interopRequireDefault(_post_comment_map_reducer);
+
+var _friend_request_to_reducer = __webpack_require__(200);
+
+var _friend_request_to_reducer2 = _interopRequireDefault(_friend_request_to_reducer);
+
+var _friend_request_from_reducer = __webpack_require__(201);
+
+var _friend_request_from_reducer2 = _interopRequireDefault(_friend_request_from_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
@@ -24033,7 +24040,10 @@ exports.default = (0, _redux.combineReducers)({
   feed: _feed_reducer2.default,
   posts: _posts_reducer2.default,
   trending: _trending_reducer2.default,
-  comments: _comments_reducer2.default
+  comments: _comments_reducer2.default,
+  postCommentMap: _post_comment_map_reducer2.default,
+  friendRequestTo: _friend_request_to_reducer2.default,
+  friendRequestFrom: _friend_request_from_reducer2.default
 });
 
 /***/ }),
@@ -24063,8 +24073,10 @@ exports.default = function () {
       var user = payload.user;
 
       var userFriendships = payload.userFriendships || {};
+      var friendRequests = payload.friendRequests || {};
       var friends = userFriendships.friends || {};
-      return Object.assign({}, state, user, friends);
+      var requestors = friendRequests.users;
+      return Object.assign({}, state, user, friends, requestors);
     default:
       return state;
   }
@@ -24127,6 +24139,10 @@ exports.default = function () {
       return Object.assign({}, state, _defineProperty({}, post.id, post));
     case _post.RECEIVE_FEED_POSTS:
       return action.payload.posts || {};
+    case _post.REMOVE_POST:
+      var newState = Object.assign({}, state);
+      delete newState[action.payload.post.id];
+      return newState;
     default:
       return state;
   }
@@ -24205,6 +24221,10 @@ exports.default = function () {
       return Object.assign({}, state, _defineProperty({}, post.id, post));
     case _post.RECEIVE_WALL_POSTS:
       return action.payload.posts || {};
+    case _post.REMOVE_POST:
+      var newState = Object.assign({}, state);
+      delete newState[action.payload.post.id];
+      return newState;
     default:
       return state;
   }
@@ -27461,6 +27481,8 @@ var _MissingPage2 = _interopRequireDefault(_MissingPage);
 
 var _PhotoForm = __webpack_require__(183);
 
+var _selectors = __webpack_require__(198);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27541,8 +27563,8 @@ var Profile = function (_Component) {
           errors = _props.errors,
           friends = _props.friends;
 
-      if (!user && errors.length === 0) return _react2.default.createElement(_NavMain2.default, null);
-      if (!user) return _react2.default.createElement(_MissingPage2.default, null);
+      if (!user.id && errors.length === 0) return _react2.default.createElement(_NavMain2.default, null);
+      if (!user.id) return _react2.default.createElement(_MissingPage2.default, null);
 
       return _react2.default.createElement(
         'div',
@@ -27579,31 +27601,19 @@ var Profile = function (_Component) {
   return Profile;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(state, props) {
-  var errors = state.errors,
-      session = state.session,
-      entities = state.entities;
-  var id = session.id;
-  var users = entities.users,
-      userFriendshipMap = entities.userFriendshipMap,
-      userIdMap = entities.userIdMap;
+var msp = function msp(state, props) {
+  var user = (0, _selectors.userByUserUrl)(state, props.match.params.userUrl) || {};
 
-  var currentUser = users[id];
-  var userId = userIdMap[props.match.params.userUrl];
-  var user = users[userId];
-  var userFriendIds = userFriendshipMap[userId] || [];
-  var friends = userFriendIds.map(function (id) {
-    return users[id];
-  });
+  var friends = (0, _selectors.friendsByUserId)(state, user.id);
   return {
-    currentUser: currentUser,
+    currentUser: (0, _selectors.currentUser)(state),
     user: user,
-    errors: errors,
+    errors: state.errors,
     friends: friends
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch, props) {
+var mdp = function mdp(dispatch, props) {
   return {
     fetchUser: function fetchUser() {
       return dispatch((0, _user.fetchUser)(props.match.params.userUrl));
@@ -27611,7 +27621,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, props) {
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Profile);
+exports.default = (0, _reactRedux.connect)(msp, mdp)(Profile);
 
 /***/ }),
 /* 149 */
@@ -27796,9 +27806,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(1);
 
-var _reactRouterDom = __webpack_require__(4);
-
 var _friendship = __webpack_require__(57);
+
+var _selectors = __webpack_require__(198);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27811,114 +27821,87 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var FriendButton = function (_Component) {
   _inherits(FriendButton, _Component);
 
-  function FriendButton(props) {
+  function FriendButton() {
     _classCallCheck(this, FriendButton);
 
-    var _this = _possibleConstructorReturn(this, (FriendButton.__proto__ || Object.getPrototypeOf(FriendButton)).call(this, props));
-
-    _this.buttonAttributes = _this.buttonAttributes.bind(_this);
-    return _this;
+    return _possibleConstructorReturn(this, (FriendButton.__proto__ || Object.getPrototypeOf(FriendButton)).apply(this, arguments));
   }
 
   _createClass(FriendButton, [{
-    key: 'buttonAttributes',
-    value: function buttonAttributes() {
-      var _props = this.props,
-          currentUser = _props.currentUser,
-          userUrl = _props.match.params.userUrl,
-          id = _props.user.id,
-          requestFriendship = _props.requestFriendship,
-          approveFriendship = _props.approveFriendship,
-          cancelRequest = _props.cancelRequest;
-
-      if (!currentUser) return _react2.default.createElement('div', null);
-      var data = currentUser.friendshipData;
-
-      // debug
-      //the current user is looking at their own page
-
-      if (userUrl === currentUser.userUrl) {
-        return {
-          label: 'Update Info',
-          action: function action() {}
-        };
-      } else if (data.friends[id]) {
-        // the current uses is looking at a friend's page
-        return {
-          label: '✓ Friends',
-          action: function action() {}
-        };
-      } else if (data.requestsTo[id]) {
-        //the current user is looking at a person they've requested
-        return {
-          label: '✓ Requested',
-          action: function action() {
-            return cancelRequest(data.requestsTo[id].id);
-          }
-        };
-      } else if (data.requestsFrom[id]) {
-        //the current user is looking at a person who's requested them
-        return {
-          label: '+ Approve',
-          action: function action() {
-            return approveFriendship(data.requestsFrom[id].id);
-          }
-        };
-      } else {
-        //the current user has no requests associated with this user
-        return {
-          label: '+ Add Friend',
-          action: function action() {
-            return requestFriendship({
-              requesting_user_id: currentUser.id,
-              requested_user_id: id
-            });
-          }
-        };
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _buttonAttributes = this.buttonAttributes(),
-          label = _buttonAttributes.label,
-          action = _buttonAttributes.action;
-
-      if (!this.props.currentUser) return null;
-      if (!label) return _react2.default.createElement('div', null);
+    key: 'friendButton',
+    value: function friendButton(label, action) {
       return _react2.default.createElement(
         'div',
         { className: 'gray-page-button friend-button', onClick: action },
         label
       );
     }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          pending = _props.pending,
+          approvableRequest = _props.approvableRequest,
+          alreadyFriends = _props.alreadyFriends,
+          ownPage = _props.ownPage,
+          userId = _props.userId,
+          loading = _props.loading,
+          currentUser = _props.currentUser,
+          request = _props.request,
+          cancel = _props.cancel;
+
+
+      if (loading) return false;
+      if (!currentUser) return null;
+
+      if (ownPage) {
+        return this.friendButton('Update Info', function () {});
+      } else if (alreadyFriends) {
+        return this.friendButton('✓ Friends', function () {});
+      } else if (pending) {
+        return this.friendButton('✓ Requested', function () {
+          return cancel(data.requestsTo[id].id);
+        });
+      } else if (approvableRequest) {
+        return this.friendButton('+ Approve', function () {
+          return request(approvableRequest.requestorId);
+        });
+      } else {
+        return this.friendButton('+ Add Friend', function () {
+          return request(userId);
+        });
+      }
+    }
   }]);
 
   return FriendButton;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var currentUser = _ref.session.currentUser;
+var msp = function msp(state, _ref) {
+  var id = _ref.user.id;
   return {
-    currentUser: currentUser
+    currentUser: (0, _selectors.currentUser)(state),
+    pending: (0, _selectors.userHasRequestedFriendship)(state, id),
+    approvableRequest: (0, _selectors.userHasRequestFrom)(state, id),
+    alreadyFriends: (0, _selectors.userIsFriendsWith)(state, id),
+    ownPage: state.session.id === id,
+    loading: !id,
+    userId: id
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
-    requestFriendship: function requestFriendship(friendship) {
-      return dispatch((0, _friendship.requestFriendship)(friendship));
+    request: function request(targetUserId) {
+      return dispatch((0, _friendship.requestFriendship)(targetUserId));
     },
-    approveFriendship: function approveFriendship(friendshipId) {
-      return dispatch((0, _friendship.approveFriendship)(friendshipId));
-    },
-    cancelRequest: function cancelRequest(friendshipId) {
+    cancel: function cancel(friendshipId) {
       return dispatch((0, _friendship.denyFriendship)(friendshipId));
     }
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _reactRouterDom.withRouter)(FriendButton));
+exports.default = (0, _reactRedux.connect)(msp, mdp)(FriendButton);
 
 /***/ }),
 /* 152 */
@@ -28147,20 +28130,20 @@ var _reactRedux = __webpack_require__(1);
 
 var _post = __webpack_require__(8);
 
+var _selectors = __webpack_require__(198);
+
 var _PostForm = __webpack_require__(59);
 
 var _PostForm2 = _interopRequireDefault(_PostForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var currentUser = _ref.session.currentUser;
-  var postAuthorId = _ref2.postAuthorId,
-      author = _ref2.author,
-      wall = _ref2.wall;
-
+var msp = function msp(state, _ref) {
+  var postAuthorId = _ref.postAuthorId,
+      author = _ref.author,
+      wall = _ref.wall;
   return {
-    currentUser: currentUser,
+    currentUser: (0, _selectors.currentUser)(state),
     post: { body: '' },
     postAuthorId: postAuthorId,
     author: author,
@@ -28168,11 +28151,11 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
     formType: 'Make Post',
     message: 'Post',
     close: function close() {},
-    isFriend: "IMPLEMENT SOON"
+    isFriend: (0, _selectors.userIsFriendsWith)(state, wall.id)
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     action: function action(post) {
       return dispatch((0, _post.createPost)(post));
@@ -28186,7 +28169,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_PostForm2.default);
+exports.default = (0, _reactRedux.connect)(msp, mdp)(_PostForm2.default);
 
 /***/ }),
 /* 158 */
@@ -28224,6 +28207,8 @@ var _reactRedux = __webpack_require__(1);
 var _post = __webpack_require__(8);
 
 var _img_util = __webpack_require__(9);
+
+var _selectors = __webpack_require__(198);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28440,24 +28425,14 @@ var Post = function (_Component) {
   return Post;
 }(_react.Component);
 
-var msp = function msp(_ref, _ref2) {
-  var entities = _ref.entities,
-      session = _ref.session;
-  var data = _ref2.data;
-  var users = entities.users,
-      allComments = entities.comments;
+var msp = function msp(state, _ref) {
+  var data = _ref.data;
 
-  var currentUser = users[session.id];
-  var author = users[data.authorId];
-  var wall = users[data.wallId];
-  var comments = Object.values(allComments).filter(function (comment) {
-    return comment.postId === data.id;
-  });
   return {
-    currentUser: currentUser,
-    author: author,
-    wall: wall,
-    comments: comments
+    currentUser: (0, _selectors.currentUser)(state),
+    author: (0, _selectors.userByUserId)(state, data.authorId),
+    wall: (0, _selectors.userByUserId)(state, data.wallId),
+    comments: (0, _selectors.commentsByPostId)(state, data.id)
   };
 };
 
@@ -28584,7 +28559,7 @@ var CommentsList = function (_Component) {
       return _react2.default.createElement(
         'ul',
         null,
-        Object.values(comments).map(function (comment) {
+        comments.map(function (comment) {
           return _react2.default.createElement(_Comment2.default, {
             data: comment,
             post: post,
@@ -28639,6 +28614,8 @@ var _reactRouterDom = __webpack_require__(4);
 
 var _img_util = __webpack_require__(9);
 
+var _selectors = __webpack_require__(198);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28683,19 +28660,9 @@ var Comment = function (_Component) {
         this.setState({ edit: true });
       }
       if (type === 'destroy') {
-        var _props = this.props,
-            destroy = _props.destroy,
-            fetchPosts = _props.fetchPosts,
-            _fetchFeed = _props.fetchFeed,
-            commentId = _props.data.id,
-            post = _props.post,
-            currentUser = _props.currentUser;
+        var commentId = this.props.data.id;
 
-
-        destroy(commentId).then(function () {
-          fetchPosts(post.wallId);
-          _fetchFeed(currentUser.id);
-        });
+        this.props.destroy(commentId);
       }
     }
   }, {
@@ -28706,12 +28673,12 @@ var Comment = function (_Component) {
   }, {
     key: 'commentModalBtn',
     value: function commentModalBtn() {
-      var _props2 = this.props,
-          currentUser = _props2.currentUser,
-          data = _props2.data,
-          post = _props2.post;
+      var _props = this.props,
+          currentUser = _props.currentUser,
+          data = _props.data,
+          post = _props.post;
 
-      if (currentUser.id === data.author_id) {
+      if (currentUser.id === data.authorId) {
         return _react2.default.createElement(_CommentHoverModal2.default, { message: 'Edit or delete this', version: 'v2' });
       } else if (currentUser.id === post.wallId) {
         return _react2.default.createElement(_CommentHoverModal2.default, { message: 'Remove this' });
@@ -28722,11 +28689,11 @@ var Comment = function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var _props3 = this.props,
-          data = _props3.data,
-          author = _props3.author,
-          currentUser = _props3.currentUser,
-          post = _props3.post;
+      var _props2 = this.props,
+          data = _props2.data,
+          author = _props2.author,
+          currentUser = _props2.currentUser,
+          post = _props2.post;
 
       if (this.state.edit) return _react2.default.createElement(_CommentForm2.default, {
         post: post,
@@ -28786,31 +28753,23 @@ var Comment = function (_Component) {
   return Comment;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(state, _ref) {
+var msp = function msp(state, _ref) {
   var data = _ref.data;
-  var users = state.entities.users;
-  var id = state.session.id;
-
   return {
-    author: users[data.authorId],
-    currentUser: users[id]
+    author: (0, _selectors.userByUserId)(state, data.authorId),
+    currentUser: (0, _selectors.currentUser)(state)
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     destroy: function destroy(id) {
       return dispatch((0, _comment.deleteComment)(id));
-    },
-    fetchPosts: function fetchPosts(id) {
-      return dispatch((0, _post.fetchWallPosts)(id));
-    },
-    fetchFeed: function fetchFeed(id) {
-      return dispatch((0, _post.fetchFeed)(id));
     }
   };
 };
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _reactRouterDom.withRouter)(Comment));
+
+exports.default = (0, _reactRedux.connect)(msp, mdp)((0, _reactRouterDom.withRouter)(Comment));
 
 /***/ }),
 /* 162 */
@@ -29064,6 +29023,8 @@ var _PostForm = __webpack_require__(59);
 
 var _PostForm2 = _interopRequireDefault(_PostForm);
 
+var _selectors = __webpack_require__(198);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29072,21 +29033,19 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var currentUser = _ref.session.currentUser,
-      users = _ref.entities.users;
-  var body = _ref2.body,
-      postAuthorId = _ref2.postAuthorId,
-      author = _ref2.author,
-      wallId = _ref2.wallId,
-      close = _ref2.close,
-      id = _ref2.id;
+var msp = function msp(state, _ref) {
+  var body = _ref.body,
+      postAuthorId = _ref.postAuthorId,
+      author = _ref.author,
+      wallId = _ref.wallId,
+      close = _ref.close,
+      id = _ref.id;
   return {
-    currentUser: currentUser,
+    currentUser: (0, _selectors.currentUser)(state),
     post: { body: body },
     postAuthorId: postAuthorId,
     author: author,
-    wall: users[wallId],
+    wall: (0, _selectors.userByUserId)(state, wallId),
     formType: 'Edit Post',
     message: 'Save',
     close: close,
@@ -29095,7 +29054,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     action: function action(post) {
       return dispatch((0, _post.updatePost)(post));
@@ -29125,7 +29084,7 @@ var EditForm = function (_React$Component) {
   return EditForm;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_PostForm2.default);
+exports.default = (0, _reactRedux.connect)(msp, mdp)(_PostForm2.default);
 
 /***/ }),
 /* 166 */
@@ -29499,11 +29458,11 @@ var LoginForm = function (_Component) {
   return LoginForm;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref) {
+var msp = function msp(_ref) {
   var errors = _ref.errors;
   return { errors: errors };
 };
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     login: function login(user) {
       return dispatch((0, _session.login)(user));
@@ -29511,7 +29470,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LoginForm);
+exports.default = (0, _reactRedux.connect)(msp, mdp)(LoginForm);
 
 /***/ }),
 /* 171 */
@@ -29524,8 +29483,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -29536,53 +29493,29 @@ var _ui = __webpack_require__(15);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var NavIcon = function NavIcon(_ref) {
+  var type = _ref.type,
+      selected = _ref.selected,
+      select = _ref.select;
+  return _react2.default.createElement(
+    'li',
+    {
+      className: 'nav-main-list-item nav-icon-container',
+      onClick: function onClick() {
+        return select(type);
+      }
+    },
+    _react2.default.createElement('div', { className: 'nav-icon ni-' + type + (selected === type ? '-active' : '') })
+  );
+};
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var NavIcon = function (_Component) {
-  _inherits(NavIcon, _Component);
-
-  function NavIcon() {
-    _classCallCheck(this, NavIcon);
-
-    return _possibleConstructorReturn(this, (NavIcon.__proto__ || Object.getPrototypeOf(NavIcon)).apply(this, arguments));
-  }
-
-  _createClass(NavIcon, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          type = _props.type,
-          selected = _props.selected,
-          select = _props.select;
-
-      var className = selected === type ? '-active' : '';
-      return _react2.default.createElement(
-        'li',
-        {
-          className: 'nav-main-list-item nav-icon-container',
-          onClick: function onClick() {
-            return select(type);
-          }
-        },
-        _react2.default.createElement('div', { className: 'nav-icon ni-' + type + className })
-      );
-    }
-  }]);
-
-  return NavIcon;
-}(_react.Component);
-
-var mapStateToProps = function mapStateToProps(_ref) {
-  var ui = _ref.ui;
+var msp = function msp(_ref2) {
+  var ui = _ref2.ui;
   return {
     selected: ui.modal.type
   };
 };
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     select: function select(type) {
       return dispatch((0, _ui.openModal)(type));
@@ -29590,7 +29523,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NavIcon);
+exports.default = (0, _reactRedux.connect)(msp, mdp)(NavIcon);
 
 /***/ }),
 /* 172 */
@@ -29689,11 +29622,11 @@ var NavMainSearch = function (_Component) {
   return NavMainSearch;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref) {
+var msp = function msp(_ref) {
   var ui = _ref.ui;
   return { ui: ui };
 };
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     setQuery: function setQuery(query) {
       return dispatch((0, _ui.setQuery)(query));
@@ -29701,7 +29634,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NavMainSearch);
+exports.default = (0, _reactRedux.connect)(msp, mdp)(NavMainSearch);
 
 /***/ }),
 /* 173 */
@@ -29765,8 +29698,7 @@ var SearchModal = function (_Component) {
       var _props2 = this.props,
           ui = _props2.ui,
           status = _props2.status,
-          close = _props2.close,
-          users = _props2.users;
+          close = _props2.close;
 
       if (!status || !ui) return _react2.default.createElement('div', null);
       return _react2.default.createElement(
@@ -29788,15 +29720,12 @@ var SearchModal = function (_Component) {
   return SearchModal;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var users = _ref.entities.users,
-      ui = _ref.ui;
-  return {
-    users: users,
-    ui: ui
-  };
+var msp = function msp(_ref) {
+  var ui = _ref.ui;
+  return { ui: ui };
 };
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(SearchModal);
+
+exports.default = (0, _reactRedux.connect)(msp)(SearchModal);
 
 /***/ }),
 /* 174 */
@@ -29981,19 +29910,19 @@ var NavModal = function (_Component) {
   return NavModal;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref) {
+var msp = function msp(_ref) {
   var type = _ref.ui.modal.type;
   return { type: type };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     closeModal: function closeModal() {
       return dispatch((0, _ui.closeModal)());
     }
   };
 };
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NavModal);
+exports.default = (0, _reactRedux.connect)(msp, mdp)(NavModal);
 
 /***/ }),
 /* 176 */
@@ -30014,11 +29943,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(1);
 
-var _friendship = __webpack_require__(57);
-
 var _FriendRequestItem = __webpack_require__(177);
 
 var _FriendRequestItem2 = _interopRequireDefault(_FriendRequestItem);
+
+var _selectors = __webpack_require__(198);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30043,22 +29972,11 @@ var FriendRequestModal = function (_Component) {
   _createClass(FriendRequestModal, [{
     key: 'renderRequestList',
     value: function renderRequestList() {
-      var _props = this.props,
-          requests = _props.requests,
-          approve = _props.approve,
-          deny = _props.deny,
-          users = _props.users;
+      var requests = this.props.requests;
 
-
-      if (requests.length === 0) return _react2.default.createElement(_FriendRequestItem2.default, { data: null });
+      if (requests.length === 0) return _react2.default.createElement(_FriendRequestItem2.default, { request: null });
       return requests.map(function (request) {
-        return _react2.default.createElement(_FriendRequestItem2.default, {
-          key: request.id,
-          data: request,
-          approve: approve,
-          deny: deny,
-          user: users[request.requesting_user_id]
-        });
+        return _react2.default.createElement(_FriendRequestItem2.default, { key: request.id, request: request });
       });
     }
   }, {
@@ -30103,29 +30021,13 @@ var FriendRequestModal = function (_Component) {
   return FriendRequestModal;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var id = _ref.session.id,
-      users = _ref.entities.users;
+var msp = function msp(state) {
   return {
-    requests: Object.values(users[id].friendshipData.requestsFrom).filter(function (el) {
-      return el.approved === false;
-    }),
-    users: users
+    requests: (0, _selectors.friendRequests)(state)
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    approve: function approve(id) {
-      return dispatch((0, _friendship.approveFriendship)(id));
-    },
-    deny: function deny(id) {
-      return dispatch((0, _friendship.denyFriendship)(id));
-    }
-  };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FriendRequestModal);
+exports.default = (0, _reactRedux.connect)(msp)(FriendRequestModal);
 
 /***/ }),
 /* 177 */
@@ -30143,6 +30045,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(1);
+
+var _friendship = __webpack_require__(57);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30162,59 +30068,62 @@ var FriendRequestItem = function (_Component) {
   }
 
   _createClass(FriendRequestItem, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       var _props = this.props,
-          data = _props.data,
+          request = _props.request,
           approve = _props.approve,
-          deny = _props.deny,
-          user = _props.user;
+          deny = _props.deny;
 
-      if (data === null) return _react2.default.createElement(
-        "div",
-        { className: "request-item null-request" },
-        _react2.default.createElement(
-          "p",
-          null,
-          "No new requests"
-        )
-      );
-      return _react2.default.createElement(
-        "div",
-        { className: "request-item" },
-        _react2.default.createElement(
-          "div",
-          { className: "modal-user-info" },
-          _react2.default.createElement("img", { src: user.profileImgUrl, className: "modal-img" }),
+      if (request === null) {
+        return _react2.default.createElement(
+          'div',
+          { className: 'request-item null-request' },
           _react2.default.createElement(
-            "p",
-            { className: "modal-user-name" },
+            'p',
+            null,
+            'No new requests'
+          )
+        );
+      }
+      var user = request.user;
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'request-item' },
+        _react2.default.createElement(
+          'div',
+          { className: 'modal-user-info' },
+          _react2.default.createElement('img', { src: user.profileImgUrl, className: 'modal-img' }),
+          _react2.default.createElement(
+            'p',
+            { className: 'modal-user-name' },
             user.firstname,
-            " ",
+            ' ',
             user.lastname
           )
         ),
         _react2.default.createElement(
-          "div",
-          { className: "modal-buttons-container" },
+          'div',
+          { className: 'modal-buttons-container' },
           _react2.default.createElement(
-            "button",
+            'button',
             {
-              className: "modal-btn modal-approve-btn",
+              className: 'modal-btn modal-approve-btn',
               onClick: function onClick() {
-                return approve(data.id);
+                return approve(request.id);
               }
             },
-            "+ Approve",
+            '+ Approve',
             ' '
           ),
           _react2.default.createElement(
-            "button",
-            { className: "modal-btn", onClick: function onClick() {
-                return deny(data.id);
+            'button',
+            { className: 'modal-btn', onClick: function onClick() {
+                return deny(request.id);
               } },
             ' ',
-            "Remove",
+            'Remove',
             ' '
           )
         )
@@ -30225,7 +30134,18 @@ var FriendRequestItem = function (_Component) {
   return FriendRequestItem;
 }(_react.Component);
 
-exports.default = FriendRequestItem;
+var mdp = function mdp(dispatch) {
+  return {
+    approve: function approve(id) {
+      return dispatch((0, _friendship.approveFriendship)(id));
+    },
+    deny: function deny(id) {
+      return dispatch((0, _friendship.denyFriendship)(id));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mdp)(FriendRequestItem);
 
 /***/ }),
 /* 178 */
@@ -30586,20 +30506,19 @@ var PhotoForm = function (_Component) {
   return PhotoForm;
 }(_react.Component);
 
-var mspPhoto = function mspPhoto(_ref) {
-  var currentUser = _ref.session.currentUser;
+var mspPhoto = function mspPhoto(state) {
+  var currentUser = state.entities.users[state.session.id];
   return {
     type: "photo",
     formType: "Update Profile Picture",
     userPhoto: currentUser.profileImgUrl,
     default: _img_util.NULL_PROFILE,
     id: currentUser.id
-
   };
 };
 
-var mspCover = function mspCover(_ref2) {
-  var currentUser = _ref2.session.currentUser;
+var mspCover = function mspCover(state) {
+  var currentUser = state.entities.users[state.session.id];
   return {
     type: "cover",
     formType: "Update Cover Photo",
@@ -30642,8 +30561,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var updatePhoto = exports.updatePhoto = function updatePhoto(form, id) {
   return function (dispatch) {
-    return API.updatePhoto(form, id).then(function (user) {
-      return dispatch({ type: _session.RECEIVE_CURRENT_USER, user: user });
+    return API.updatePhoto(form, id).then(function (payload) {
+      return dispatch({ type: _session.RECEIVE_CURRENT_USER, payload: payload });
     });
   };
 };
@@ -30801,33 +30720,19 @@ var _PostsList = __webpack_require__(58);
 
 var _PostsList2 = _interopRequireDefault(_PostsList);
 
+var _selectors = __webpack_require__(198);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var sort = function sort(posts) {
-  return posts.sort(function (p1, p2) {
-    if (p1.createdAt < p2.createdAt) return 1;
-    return -1;
-  });
-};
-
-var mapStateToProps = function mapStateToProps(state) {
-  var _state$entities = state.entities,
-      users = _state$entities.users,
-      feed = _state$entities.feed;
-
-  var posts = sort(Object.values(feed));
-  var id = state.session.id;
-
-  var currentUser = users[id];
+var msp = function msp(state) {
   return {
-    posts: posts,
-    users: users,
-    currentUser: currentUser,
-    user: currentUser
+    posts: (0, _selectors.sortFeed)(state),
+    currentUser: (0, _selectors.currentUser)(state),
+    user: (0, _selectors.currentUser)(state)
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     fetchAction: function fetchAction(id) {
       return dispatch((0, _post.fetchFeed)(id));
@@ -30835,7 +30740,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_PostsList2.default);
+exports.default = (0, _reactRedux.connect)(msp, mdp)(_PostsList2.default);
 
 /***/ }),
 /* 189 */
@@ -30888,12 +30793,12 @@ var Trending = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       //comment in to enable requests
-      if (this.props.articles.length === 0) this.props.fetchArticles();
+      if (this.props.trending.length === 0) this.props.fetchArticles();
     }
   }, {
     key: 'render',
     value: function render() {
-      if (!this.props.articles || window.innerWidth < 1100) return null;
+      if (!this.props.trending || window.innerWidth < 1100) return null;
       return _react2.default.createElement(
         'div',
         { className: 'item-container trending' },
@@ -30906,7 +30811,7 @@ var Trending = function (_Component) {
         _react2.default.createElement(
           'ul',
           null,
-          this.props.articles.slice(0, 12).map(function (article) {
+          this.props.trending.slice(0, 12).map(function (article) {
             return _react2.default.createElement(
               'li',
               { key: article.title, className: 'trending-article' },
@@ -30936,13 +30841,12 @@ var Trending = function (_Component) {
   return Trending;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var articles = _ref.entities.trending;
+var msp = function msp(state) {
   return {
-    articles: articles
+    trending: state.entities.trending
   };
 };
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mdp = function mdp(dispatch) {
   return {
     fetchArticles: function fetchArticles() {
       return dispatch((0, _trending.fetchArticles)());
@@ -30950,7 +30854,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Trending);
+exports.default = (0, _reactRedux.connect)(msp, mdp)(Trending);
 
 /***/ }),
 /* 190 */
@@ -31061,10 +30965,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var DeadLink = function DeadLink(_ref) {
   var icon = _ref.icon,
-      label = _ref.label;
+      label = _ref.label,
+      disabled = _ref.disabled;
   return _react2.default.createElement(
     'li',
-    null,
+    { className: disabled ? 'disabled' : '' },
     _react2.default.createElement(
       'div',
       { className: 'feed-link-left' },
@@ -31115,11 +31020,15 @@ var FeedSidebarLinks = function FeedSidebarLinks(_ref2) {
         )
       ),
       _react2.default.createElement(DeadLink, { icon: 'far fa-newspaper', label: 'News Feed' }),
-      _react2.default.createElement(DeadLink, { icon: 'far fa-comment', label: 'Messenger' }),
-      _react2.default.createElement(DeadLink, { icon: 'fas fa-camera', label: 'Photos' }),
-      _react2.default.createElement(DeadLink, { icon: 'far fa-calendar', label: 'Events' }),
-      _react2.default.createElement(DeadLink, { icon: 'far fa-file-alt', label: 'Pages' }),
-      _react2.default.createElement(DeadLink, { icon: 'fab fa-github', label: 'Github' })
+      _react2.default.createElement(
+        'a',
+        { href: 'https://github.com/andywynkoop', target: '_blank' },
+        _react2.default.createElement(DeadLink, { icon: 'fab fa-github', label: 'Github' })
+      ),
+      _react2.default.createElement(DeadLink, { icon: 'far fa-comment', label: 'Messenger', disabled: true }),
+      _react2.default.createElement(DeadLink, { icon: 'fas fa-camera', label: 'Photos', disabled: true }),
+      _react2.default.createElement(DeadLink, { icon: 'far fa-calendar', label: 'Events', disabled: true }),
+      _react2.default.createElement(DeadLink, { icon: 'far fa-file-alt', label: 'Pages', disabled: true })
     )
   );
 };
@@ -31137,10 +31046,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
 var _reactRedux = __webpack_require__(1);
 
 var _session = __webpack_require__(7);
@@ -31149,24 +31054,26 @@ var _SignUp = __webpack_require__(193);
 
 var _SignUp2 = _interopRequireDefault(_SignUp);
 
+var _selectors = __webpack_require__(198);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var currentUser = _ref.session.currentUser,
-      errors = _ref.errors;
+var msp = function msp(state) {
   return {
-    currentUser: currentUser,
-    errors: errors
+    currentUser: (0, _selectors.currentUser)(state),
+    errors: state.errors
   };
 };
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+
+var mdp = function mdp(dispatch) {
   return {
     signup: function signup(user) {
       return dispatch((0, _session.signup)(user));
     }
   };
 };
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_SignUp2.default);
+
+exports.default = (0, _reactRedux.connect)(msp, mdp)(_SignUp2.default);
 
 /***/ }),
 /* 193 */
@@ -31721,6 +31628,198 @@ var LoginNewAccount = function (_Component) {
 }(_react.Component);
 
 exports.default = LoginNewAccount;
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var windowState = exports.windowState = function windowState(store) {
+  return function (next) {
+    return function (action) {
+      var state = store.getState();
+      window.s = state;
+      next(action);
+    };
+  };
+};
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var currentUser = exports.currentUser = function currentUser(_ref) {
+  var entities = _ref.entities,
+      session = _ref.session;
+  return entities.users[session.id];
+};
+
+var userByUserUrl = exports.userByUserUrl = function userByUserUrl(_ref2, userUrl) {
+  var _ref2$entities = _ref2.entities,
+      users = _ref2$entities.users,
+      userIdMap = _ref2$entities.userIdMap;
+  return users[userIdMap[userUrl]];
+};
+
+var userByUserId = exports.userByUserId = function userByUserId(_ref3, userId) {
+  var users = _ref3.entities.users;
+  return users[userId];
+};
+
+var friendsByUserId = exports.friendsByUserId = function friendsByUserId(_ref4, id) {
+  var _ref4$entities = _ref4.entities,
+      users = _ref4$entities.users,
+      userFriendshipMap = _ref4$entities.userFriendshipMap;
+  return (userFriendshipMap[id] || []).map(function (id) {
+    return users[id];
+  });
+};
+
+var sort = function sort(posts) {
+  return posts.sort(function (p1, p2) {
+    if (p1.createdAt < p2.createdAt) return 1;
+    return -1;
+  });
+};
+
+var sortFeed = exports.sortFeed = function sortFeed(state) {
+  return sort(Object.values(state.entities.feed));
+};
+
+var commentsByPostId = exports.commentsByPostId = function commentsByPostId(state, id) {
+  return (state.entities.postCommentMap[id] || []).map(function (commentId) {
+    return state.entities.comments[commentId];
+  });
+};
+
+var userHasRequestedFriendship = exports.userHasRequestedFriendship = function userHasRequestedFriendship(state, userId) {
+  if (!userId) return false;
+  var requestedUserIds = Object.values(state.entities.friendRequestTo).map(function (req) {
+    return req.id;
+  });
+  if (requestedUserIds.includes(userId)) return true;
+  return false;
+};
+
+var userHasRequestFrom = exports.userHasRequestFrom = function userHasRequestFrom(state, userId) {
+  if (!userId) return false;
+  var pendingRequests = state.entities.friendRequestFrom;
+  var friendAskingIds = Object.values(pendingRequests).map(function (req) {
+    return req.id;
+  });
+  if (friendAskingIds.includes(userId)) return pendingRequests[userId];
+  return false;
+};
+var userIsFriendsWith = exports.userIsFriendsWith = function userIsFriendsWith(state, userId) {
+  if (!userId) return false;
+  var currentUserId = state.session.id;
+  if (currentUserId == userId) return true;
+  var friendIds = state.entities.userFriendshipMap[currentUserId];
+  if (friendIds.includes(userId)) return true;
+  return false;
+};
+
+var friendRequests = exports.friendRequests = function friendRequests(state) {
+  var _state$entities = state.entities,
+      users = _state$entities.users,
+      friendRequestFrom = _state$entities.friendRequestFrom;
+
+  var requests = Object.values(friendRequestFrom);
+  return requests.map(function (request) {
+    request.user = users[request.requestorId];
+    return request;
+  });
+};
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _post = __webpack_require__(8);
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments[1];
+
+  switch (action.type) {
+    case _post.RECEIVE_POST:
+    case _post.RECEIVE_FEED_POSTS:
+    case _post.RECEIVE_WALL_POSTS:
+      return Object.assign({}, state, action.payload.postCommentMap);
+    default:
+      return state;
+  }
+};
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _session = __webpack_require__(7);
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments[1];
+
+  switch (action.type) {
+    case _session.RECEIVE_CURRENT_USER:
+      var friendRequests = action.payload.friendRequests || {};
+      return friendRequests.requestsTo || {};
+    default:
+      return state;
+  }
+};
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _session = __webpack_require__(7);
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments[1];
+
+  switch (action.type) {
+    case _session.RECEIVE_CURRENT_USER:
+      var friendRequests = action.payload.friendRequests || {};
+      return friendRequests.requestsFrom || {};
+    default:
+      return state;
+  }
+};
 
 /***/ })
 /******/ ]);

@@ -45,9 +45,9 @@ class NavMainSearch extends Component {
   }
 }
 
-const mapStateToProps = ({ ui }) => ({ ui });
-const mapDispatchToProps = dispatch => ({
+const msp = ({ ui }) => ({ ui });
+const mdp = dispatch => ({
   setQuery: query => dispatch(setQuery(query))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavMainSearch);
+export default connect(msp, mdp)(NavMainSearch);

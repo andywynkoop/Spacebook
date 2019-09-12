@@ -17,7 +17,7 @@ class SearchModal extends Component {
       .map(user => <SearchModalUser key={user.id} data={user} />);
   }
   render() {
-    const { ui, status, close, users } = this.props;
+    const { ui, status, close } = this.props;
     if (!status || !ui) return <div />;
     return (
       <div onClick={close} className="modal-main">
@@ -31,8 +31,6 @@ class SearchModal extends Component {
   }
 }
 
-const mapStateToProps = ({ entities: { users }, ui }) => ({
-  users,
-  ui
-});
-export default connect(mapStateToProps)(SearchModal);
+const msp = ({ ui }) => ({ ui });
+
+export default connect(msp)(SearchModal);

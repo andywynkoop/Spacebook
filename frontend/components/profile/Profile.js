@@ -12,6 +12,7 @@ import NavMain from '../NavMain';
 import { fetchUser } from '../../actions/user';
 import MissingPage from './MissingPage';
 import { ChangeProfilePhoto, ChangeCoverPhoto } from './PhotoForm';
+import { currentUser, friendsByUserId, userByUserUrl } from '../../util/selectors';
 
 class Profile extends Component {
   constructor(props) {
@@ -59,8 +60,8 @@ class Profile extends Component {
   }
   render() {
     const { user, currentUser, errors, friends } = this.props;
-    if (!user && errors.length === 0) return <NavMain />;
-    if (!user) return <MissingPage />;
+    if (!user.id && errors.length === 0) return <NavMain />;
+    if (!user.id) return <MissingPage />;
 
     return (
       <div>
@@ -89,25 +90,20 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const { errors, session, entities } = state;
-  const { id } = session;
-  const { users, userFriendshipMap, userIdMap } = entities;
-  const currentUser = users[id];
-  const userId = userIdMap[props.match.params.userUrl];
-  const user = users[userId];
-  const userFriendIds = userFriendshipMap[userId] || [];
-  const friends = (userFriendIds).map(id => users[id]);
+const msp = (state, props) => {
+  const user = userByUserUrl(state, props.match.params.userUrl) || {};
+
+  const friends = friendsByUserId(state, user.id)
   return {
-    currentUser,
+    currentUser: currentUser(state),
     user,
-    errors,
+    errors: state.errors,
     friends
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => ({
+const mdp = (dispatch, props) => ({
   fetchUser: () => dispatch(fetchUser(props.match.params.userUrl))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(msp, mdp)(Profile);

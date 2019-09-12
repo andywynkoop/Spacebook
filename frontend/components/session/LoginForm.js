@@ -68,9 +68,9 @@ class LoginForm extends Component {
     );
   }
 }
-const mapStateToProps = ({ errors }) => ({ errors });
-const mapDispatchToProps = dispatch => ({
+const msp = ({ errors }) => ({ errors });
+const mdp = dispatch => ({
   login: user => dispatch(login(user))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default connect(msp, mdp)(LoginForm);

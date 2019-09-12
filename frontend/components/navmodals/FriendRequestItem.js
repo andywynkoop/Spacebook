@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { approveFriendship, denyFriendship } from '../../actions/friendship';
 
 class FriendRequestItem extends Component {
   render() {
-    const { data, approve, deny, user } = this.props;
-    if (data === null)
+    const { request, approve, deny } = this.props;
+    if (request === null) {
       return (
         <div className="request-item null-request">
           <p>No new requests</p>
         </div>
       );
+    }
+    const { user } = request;
     return (
       <div className="request-item">
         <div className="modal-user-info">
@@ -20,11 +24,11 @@ class FriendRequestItem extends Component {
         <div className="modal-buttons-container">
           <button
             className="modal-btn modal-approve-btn"
-            onClick={() => approve(data.id)}
+            onClick={() => approve(request.id)}
           >
             + Approve{' '}
           </button>
-          <button className="modal-btn" onClick={() => deny(data.id)}>
+          <button className="modal-btn" onClick={() => deny(request.id)}>
             {' '}
             Remove{' '}
           </button>
@@ -34,4 +38,9 @@ class FriendRequestItem extends Component {
   }
 }
 
-export default FriendRequestItem;
+const mdp = dispatch => ({
+  approve: id => dispatch(approveFriendship(id)),
+  deny: id => dispatch(denyFriendship(id))
+});
+
+export default connect(null, mdp)(FriendRequestItem);

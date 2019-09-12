@@ -12,7 +12,7 @@
     <%= javascript_include_tag 'application' %>
     <script>
       <% if current_user %>
-        window.currentUser = <%= render("api/users/user.json.jbuilder", user: current_user).html_safe %>
+        window.preloaded = <%= render("api/users/bootstrap.json.jbuilder", user: current_user).html_safe %>
       <% end %>
     </script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const DeadLink = ({ icon, label }) => 
-  <li>
+const DeadLink = ({ icon, label, disabled }) => 
+  <li className={disabled ? 'disabled': ''}>
     <div className="feed-link-left">
       <i className={icon} /> <span>{label}</span>
     </div>
@@ -20,11 +20,13 @@ const FeedSidebarLinks = ({ currentUser: user }) =>
         <span className="feed-ellipse">···</span>
       </li>
       <DeadLink icon="far fa-newspaper" label="News Feed" />
-      <DeadLink icon="far fa-comment" label="Messenger" />
-      <DeadLink icon="fas fa-camera" label="Photos" />
-      <DeadLink icon="far fa-calendar" label="Events" />
-      <DeadLink icon="far fa-file-alt" label="Pages" />
-      <DeadLink icon="fab fa-github" label="Github" />
+      <a href="https://github.com/andywynkoop" target="_blank">
+        <DeadLink icon="fab fa-github" label="Github"/>
+      </a>
+      <DeadLink icon="far fa-comment" label="Messenger" disabled/>
+      <DeadLink icon="fas fa-camera" label="Photos" disabled/>
+      <DeadLink icon="far fa-calendar" label="Events" disabled/>
+      <DeadLink icon="far fa-file-alt" label="Pages" disabled/>
     </ul>
   </div>;
 

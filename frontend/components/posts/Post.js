@@ -6,6 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deletePost, fetchWallPosts, fetchFeed } from '../../actions/post';
 import { NULL_PROFILE } from '../../util/img_util';
+import { currentUser, userByUserId, commentsByPostId } from '../../util/selectors';
 
 class Post extends Component {
   constructor(props) {
@@ -137,21 +138,15 @@ class Post extends Component {
   }
 }
 
-const msp = ({ entities, session }, { data }) => {
-  const { users, comments:allComments } = entities;
-  const currentUser = users[session.id];
-  const author = users[data.authorId];
-  const wall = users[data.wallId];
-  const comments = Object
-    .values(allComments)
-    .filter(comment => comment.postId === data.id)
+const msp = (state, { data }) => {
   return ({
-    currentUser,
-    author,
-    wall,
-    comments
+    currentUser: currentUser(state),
+    author: userByUserId(state, data.authorId),
+    wall: userByUserId(state, data.wallId),
+    comments: commentsByPostId(state, data.id)
   });
 }
+
 
 const mdp = dispatch => ({
   destroy: id => dispatch(deletePost(id))

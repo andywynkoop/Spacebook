@@ -6,6 +6,9 @@ import posts from './posts_reducer';
 import trending from './trending_reducer';
 import userFriendshipMap from './user_friendship_map_reducer';
 import comments from './comments_reducer';
+import postCommentMap from './post_comment_map_reducer';
+import friendRequestTo from './friend_request_to_reducer';
+import friendRequestFrom from './friend_request_from_reducer';
 
 export default combineReducers({
   users,
@@ -14,5 +17,8 @@ export default combineReducers({
   feed,
   posts,
   trending,
-  comments
+  comments,
+  postCommentMap,
+  friendRequestTo,
+  friendRequestFrom
 });

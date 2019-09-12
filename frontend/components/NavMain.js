@@ -7,6 +7,7 @@ import NavIcon from './NavIcon';
 import NavMainSearch from './NavMainSearch';
 import { NULL_PROFILE } from '../util/img_util';
 import NavModal from './navmodals/NavModal';
+import { currentUser } from '../util/selectors';
 
 const NavMain = ({ currentUser, history }) => {
   if (!currentUser) return <NavSession />;
@@ -57,14 +58,10 @@ const NavMain = ({ currentUser, history }) => {
   );
 }
 
-const mapStateToProps = state => {
-  const { users } = state.entities;
-  const { session: { id } } = state;
-  return ({
-    currentUser: users[id]
-  });
-}
+const msp = state => ({
+  currentUser: currentUser(state)
+});
 
-export default connect(mapStateToProps)(
+export default connect(msp)(
   withRouter(NavMain)
 );

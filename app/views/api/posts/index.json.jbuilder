@@ -6,6 +6,12 @@ json.posts do
   end
 end
 
+json.post_comment_map do
+  @posts.each do |post|
+    json.set! post.id, post.comments.map(&:id)
+  end
+end
+
 json.comments do
   @posts.each do |post|
     post.comments.each do |comment|

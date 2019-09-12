@@ -12,17 +12,17 @@ class Trending extends Component {
   }
   componentDidMount() {
     //comment in to enable requests
-    if (this.props.articles.length === 0) this.props.fetchArticles();
+    if (this.props.trending.length === 0) this.props.fetchArticles();
   }
   render() {
-    if (!this.props.articles || window.innerWidth < 1100) return null;
+    if (!this.props.trending || window.innerWidth < 1100) return null;
     return (
       <div className="item-container trending">
         <h3>
           Trending <i className="fas fa-flask" />
         </h3>
         <ul>
-          {this.props.articles.slice(0, 12).map(article => (
+          {this.props.trending.slice(0, 12).map(article => (
             <li key={article.title} className="trending-article">
               <h5>
                 <a href={article.url} target="_blank">
@@ -39,11 +39,11 @@ class Trending extends Component {
   }
 }
 
-const mapStateToProps = ({ entities: { trending:articles } }) => ({
-  articles
+const msp = state => ({
+  trending: state.entities.trending
 });
-const mapDispatchToProps = dispatch => ({
+const mdp = dispatch => ({
   fetchArticles: () => dispatch(fetchArticles())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Trending);
+export default connect(msp, mdp)(Trending);

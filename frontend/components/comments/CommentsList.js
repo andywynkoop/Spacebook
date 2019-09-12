@@ -7,8 +7,7 @@ class CommentsList extends Component {
     const { comments, post } = this.props;
     return (
       <ul>
-        {Object.values(comments)
-          .map(comment => (
+        {comments.map(comment => (
             <Comment 
               data={comment} 
               post={post} 

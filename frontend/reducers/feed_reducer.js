@@ -1,4 +1,4 @@
-import { RECEIVE_FEED_POSTS, RECEIVE_POST } from '../actions/post';
+import { RECEIVE_FEED_POSTS, RECEIVE_POST, REMOVE_POST } from '../actions/post';
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -7,6 +7,10 @@ export default (state = {}, action) => {
       return Object.assign({}, state, { [post.id]: post });
     case RECEIVE_FEED_POSTS:
       return action.payload.posts || {};
+    case REMOVE_POST:
+      const newState = Object.assign({}, state);
+      delete newState[action.payload.post.id];
+      return newState;
     default:
       return state;
   }

@@ -1,89 +1,68 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import {
   requestFriendship,
-  approveFriendship,
   denyFriendship
 } from '../../actions/friendship';
+import { 
+  currentUser, 
+  userHasRequestFrom, 
+  userHasRequestedFriendship, 
+  userIsFriendsWith
+} from '../../util/selectors';
 
 class FriendButton extends Component {
-  constructor(props) {
-    super(props);
-    this.buttonAttributes = this.buttonAttributes.bind(this);
-  }
-  buttonAttributes() {
-    const {
-      currentUser,
-      match: { params: { userUrl } },
-      user: { id },
-      requestFriendship,
-      approveFriendship,
-      cancelRequest
-    } = this.props;
-    if (!currentUser) return <div />;
-    const { friendshipData: data } = currentUser;
-
-    // debug
-    //the current user is looking at their own page
-    if (userUrl === currentUser.userUrl) {
-      return {
-        label: 'Update Info',
-        action: () => {}
-      };
-    } else if (data.friends[id]) {
-      // the current uses is looking at a friend's page
-      return {
-        label: '✓ Friends',
-        action: () => {}
-      };
-    } else if (data.requestsTo[id]) {
-      //the current user is looking at a person they've requested
-      return {
-        label: '✓ Requested',
-        action: () => cancelRequest(data.requestsTo[id].id)
-      };
-    } else if (data.requestsFrom[id]) {
-      //the current user is looking at a person who's requested them
-      return {
-        label: '+ Approve',
-        action: () => approveFriendship(data.requestsFrom[id].id)
-      };
-    } else {
-      //the current user has no requests associated with this user
-      return {
-        label: '+ Add Friend',
-        action: () =>
-          requestFriendship({
-            requesting_user_id: currentUser.id,
-            requested_user_id: id
-          })
-      };
-    }
-  }
-
-  render() {
-    const { label, action } = this.buttonAttributes();
-    if (!this.props.currentUser) return null;
-    if (!label) return <div />;
+  friendButton(label, action) {
     return (
       <div className="gray-page-button friend-button" onClick={action}>
         {label}
       </div>
     );
   }
+
+  render() {
+    const {
+      pending,
+      approvableRequest,
+      alreadyFriends,
+      ownPage,
+      userId,
+      loading,
+      currentUser,
+      request,
+      cancel
+    } = this.props;
+
+    if (loading) return false;
+    if (!currentUser) return null;
+
+    if (ownPage) {
+      return this.friendButton('Update Info', () => { })
+    } else if (alreadyFriends) {
+      return this.friendButton('✓ Friends', () => { })
+    } else if (pending) {
+      return this.friendButton('✓ Requested', () => cancel(data.requestsTo[id].id))
+    } else if (approvableRequest) {
+      return this.friendButton('+ Approve', () => request(approvableRequest.requestorId))
+    } else {
+      return this.friendButton('+ Add Friend', () => request(userId))
+    }  
+  }
 }
 
-const mapStateToProps = ({ session: { currentUser } }) => ({
-  currentUser
+const msp = (state, { user: { id }}) => ({
+  currentUser: currentUser(state),
+  pending: userHasRequestedFriendship(state, id),
+  approvableRequest: userHasRequestFrom(state, id),
+  alreadyFriends: userIsFriendsWith(state, id),
+  ownPage: state.session.id === id,
+  loading: !id,
+  userId: id
 });
 
-const mapDispatchToProps = dispatch => ({
-  requestFriendship: friendship => dispatch(requestFriendship(friendship)),
-  approveFriendship: friendshipId => dispatch(approveFriendship(friendshipId)),
-  cancelRequest: friendshipId => dispatch(denyFriendship(friendshipId))
+const mdp = dispatch => ({
+  request: targetUserId => dispatch(requestFriendship(targetUserId)),
+  cancel: friendshipId => dispatch(denyFriendship(friendshipId))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withRouter(FriendButton)
-);
+export default connect(msp, mdp)(FriendButton);

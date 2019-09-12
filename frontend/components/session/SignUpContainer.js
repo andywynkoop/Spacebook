@@ -1,13 +1,15 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { signup } from '../../actions/session';
 import SignUp from './SignUp';
+import { currentUser } from '../../util/selectors';
 
-const mapStateToProps = ({ session: { currentUser }, errors }) => ({
-  currentUser,
-  errors
+const msp = state => ({
+  currentUser: currentUser(state),
+  errors: state.errors
 });
-const mapDispatchToProps = dispatch => ({
+
+const mdp = dispatch => ({
   signup: user => dispatch(signup(user))
 });
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+
+export default connect(msp, mdp)(SignUp);

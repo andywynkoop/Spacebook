@@ -4,16 +4,26 @@ import Root from './components/Root';
 
 document.addEventListener('DOMContentLoaded', () => {
   let preloadedState = {};
-  if (window.currentUser) {
-    const user = Object.values(window.currentUser)[0];
+  if (window.preloaded) {
+    const { user } = window.preloaded;
+    const id = Object.keys(user)[0];
+    const userFriendships = window.preloaded.userFriendships || {};
+    const friendMap = userFriendships.friendMap || {};
+    const friends = userFriendships.friends || {};
+    const friendRequests = window.preloaded.friendRequests || {};
+    const friendRequestTo = friendRequests.requestsTo || {};
+    const friendRequestFrom = friendRequests.requestsFrom || {};
+    const requestors = friendRequests.users || {};
+    const users = Object.assign({}, requestors, friends, user);
     preloadedState = {
       session: {
-        id: user.id
+        id
       },
       entities: {
-        users: {
-          [user.id]: user
-        }
+        users,
+        userFriendshipMap: friendMap,
+        friendRequestTo,
+        friendRequestFrom
       }
     }
   }

@@ -69,22 +69,27 @@ class PhotoForm extends Component {
   }
 }
 
-const mspPhoto = ({ session: { currentUser }}) => ({
-  type: "photo",
-  formType: "Update Profile Picture",
-  userPhoto: currentUser.profileImgUrl,
-  default: NULL_PROFILE,
-  id: currentUser.id
-  
-});
+const mspPhoto = state => {
+  const currentUser = state.entities.users[state.session.id]
+  return ({
+    type: "photo",
+    formType: "Update Profile Picture",
+    userPhoto: currentUser.profileImgUrl,
+    default: NULL_PROFILE,
+    id: currentUser.id
+  });
+}
 
-const mspCover = ({ session: { currentUser } }) => ({
+const mspCover = state => {
+  const currentUser = state.entities.users[state.session.id];
+  return ({
   type: "cover",
   formType: "Update Cover Photo",
   userPhoto: currentUser.coverPhotoUrl,
   default: NULL_COVER,
   id: currentUser.id
 });
+}
 
 const mdp = dispatch => ({
   submit: (form, id) => dispatch(updatePhoto(form, id))

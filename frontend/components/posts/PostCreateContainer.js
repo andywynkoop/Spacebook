@@ -1,28 +1,25 @@
 import { connect } from 'react-redux';
 import { createPost, fetchWallPosts, fetchFeed } from '../../actions/post';
+import { currentUser, userIsFriendsWith } from '../../util/selectors';
+
 import PostForm from './PostForm';
 
-const mapStateToProps = (
-  { session: { currentUser } },
-  { postAuthorId, author, wall }
-) => {
-    return ({
-    currentUser,
-    post: { body: '' },
-    postAuthorId,
-    author,
-    wall,
-    formType: 'Make Post',
-    message: 'Post',
-    close: () => {},
-    isFriend: "IMPLEMENT SOON"
-  })
-}
+const msp = (state, { postAuthorId, author, wall }) => ({
+  currentUser: currentUser(state),
+  post: { body: '' },
+  postAuthorId,
+  author,
+  wall,
+  formType: 'Make Post',
+  message: 'Post',
+  close: () => { },
+  isFriend: userIsFriendsWith(state, wall.id)
+})
 
-const mapDispatchToProps = dispatch => ({
+const mdp = dispatch => ({
   action: post => dispatch(createPost(post)),
   fetchPosts: id => dispatch(fetchWallPosts(id)),
   fetchFeed: id => dispatch(fetchFeed(id))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostForm);
+export default connect(msp, mdp)(PostForm);
