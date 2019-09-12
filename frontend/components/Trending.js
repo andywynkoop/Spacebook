@@ -4,16 +4,10 @@ import { connect } from 'react-redux';
 import { fetchArticles } from '../actions/trending';
 
 class Trending extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      articles: []
-    };
-  }
   componentDidMount() {
-    //comment in to enable requests
-    if (this.props.trending.length === 0) this.props.fetchArticles();
+    this.props.fetchArticles();
   }
+  
   render() {
     if (!this.props.trending || window.innerWidth < 1100) return null;
     return (
@@ -42,6 +36,7 @@ class Trending extends Component {
 const msp = state => ({
   trending: state.entities.trending
 });
+
 const mdp = dispatch => ({
   fetchArticles: () => dispatch(fetchArticles())
 });

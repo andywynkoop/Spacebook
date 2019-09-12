@@ -56,7 +56,7 @@ class PostActionModal extends Component {
   }
 
   render() {
-    const { type, swap, edit, destroy } = this.props;
+    const { type } = this.props;
     if (!type) return <div />;
     return (
       <div className="post-action-modal-container">

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Cover from './Cover';
 import ProfileNav from './ProfileNav';
-import MainPage from './MainPage';
-import SidePanel from './SidePanel';
 import ProfilePostsContainer from '../posts/ProfilePostsContainer';
 import About from './About';
 import Friends from '../friends/Friends';
@@ -74,15 +71,14 @@ class Profile extends Component {
             profile={user.profileImgUrl}
             name={`${user.firstname} ${user.lastname}`}
             user={user}
-            currentUser={currentUser}
           />
-          <MainPage>
-            <SidePanel>
+          <div className="main-content">
+            <aside className="profile-main-aside">
               <About user={user} />
               <Friends friends={friends} />
-            </SidePanel>
+            </aside>
             <ProfilePostsContainer user={user} currentUser={currentUser} />
-          </MainPage>
+          </div>
           {this.photoModal()}
         </div>
       </div>
@@ -92,13 +88,11 @@ class Profile extends Component {
 
 const msp = (state, props) => {
   const user = userByUserUrl(state, props.match.params.userUrl) || {};
-
-  const friends = friendsByUserId(state, user.id)
   return {
     currentUser: currentUser(state),
     user,
     errors: state.errors,
-    friends
+    friends: friendsByUserId(state, user.id)
   };
 };
 

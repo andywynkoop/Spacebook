@@ -69,6 +69,7 @@ class LoginForm extends Component {
   }
 }
 const msp = ({ errors }) => ({ errors });
+
 const mdp = dispatch => ({
   login: user => dispatch(login(user))
 });

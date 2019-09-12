@@ -11,6 +11,7 @@ class PostOptionsModal extends Component {
         </p>
       );
   }
+  
   canDelete() {
     const {
       currentUser: { id },
@@ -28,6 +29,7 @@ class PostOptionsModal extends Component {
         </p>
       );
   }
+
   render() {
     const { status, comment } = this.props;
     if (!status) return <div />;

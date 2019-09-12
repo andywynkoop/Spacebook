@@ -4,7 +4,7 @@ import PostOptionsModal from './PostOptionsModal';
 import PostActionModal from './PostActionModal';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { deletePost, fetchWallPosts, fetchFeed } from '../../actions/post';
+import { deletePost } from '../../actions/post';
 import { NULL_PROFILE } from '../../util/img_util';
 import { currentUser, userByUserId, commentsByPostId } from '../../util/selectors';
 
@@ -86,7 +86,7 @@ class Post extends Component {
   }
   render() {
     const { data, author, currentUser, comments } = this.props;
-    const { swapType, edit, destroy, close } = this;
+    const { swapType, destroy, close } = this;
     if (!author) return <div />;
     return (
       <li
@@ -128,7 +128,6 @@ class Post extends Component {
           data={data}
           type={this.state.actionType}
           swap={swapType}
-          edit={edit}
           destroy={destroy}
           close={close}
           author={author}

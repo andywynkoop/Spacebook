@@ -46,6 +46,7 @@ class NavMainSearch extends Component {
 }
 
 const msp = ({ ui }) => ({ ui });
+
 const mdp = dispatch => ({
   setQuery: query => dispatch(setQuery(query))
 });

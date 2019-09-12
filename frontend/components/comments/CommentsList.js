@@ -1,22 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Comment from './Comment';
-import { withRouter } from 'react-router-dom';
 
-class CommentsList extends Component {
-  render() {
-    const { comments, post } = this.props;
-    return (
-      <ul>
-        {comments.map(comment => (
-            <Comment 
-              data={comment} 
-              post={post} 
-              key={comment.id} 
-            />
-          ))}
-      </ul>
-    );
-  }
-}
+const CommentsList = ({ comments, post }) => 
+  <ul>
+    {comments.map(comment => (
+      <Comment
+        comment={comment}
+        post={post}
+        key={comment.id}
+      />
+    ))}
+  </ul>;
 
-export default withRouter(CommentsList);
+export default CommentsList;

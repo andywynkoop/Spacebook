@@ -14,8 +14,9 @@ class SearchModal extends Component {
     );
     return results
       .slice(0, 10)
-      .map(user => <SearchModalUser key={user.id} data={user} />);
+      .map(user => <SearchModalUser key={user.id} user={user} />);
   }
+  
   render() {
     const { ui, status, close } = this.props;
     if (!status || !ui) return <div />;

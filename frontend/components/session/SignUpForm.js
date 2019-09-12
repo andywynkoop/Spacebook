@@ -7,7 +7,7 @@ import {
 } from '../../util/signup_form_util';
 import ErrorModal from './ErrorModal';
 
-class LoginNewAccount extends Component {
+class SignUpForm extends Component {
   constructor(props) {
     super(props);
 
@@ -196,4 +196,4 @@ class LoginNewAccount extends Component {
   }
 }
 
-export default LoginNewAccount;
+export default SignUpForm;

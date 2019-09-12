@@ -4,10 +4,6 @@ import FriendRequestItem from './FriendRequestItem';
 import { friendRequests } from '../../util/selectors';
 
 class FriendRequestModal extends Component {
-  constructor(props) {
-    super(props);
-    this.renderRequestList = this.renderRequestList.bind(this);
-  }
   renderRequestList() {
     const { requests } = this.props;
     if (requests.length === 0) return <FriendRequestItem request={null} />;
@@ -36,6 +32,5 @@ class FriendRequestModal extends Component {
 const msp = state => ({
   requests: friendRequests(state)
 });
-
 
 export default connect(msp)(FriendRequestModal);

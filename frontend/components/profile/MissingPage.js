@@ -1,7 +1,7 @@
 import React from 'react';
 import NavMain from '../NavMain';
 
-export default props => (
+export default () => (
   <div>
     <NavMain />
     <div style={{ position: 'relative', width: '100%' }}>

@@ -18,6 +18,9 @@ const sort = posts => posts.sort((p1, p2) => {
 export const sortFeed = state => 
   sort(Object.values(state.entities.feed));
 
+export const sortPosts = state => 
+  sort(Object.values(state.entities.posts));
+
 export const commentsByPostId = (state, id) => {
   return (state.entities.postCommentMap[id] || [])
     .map(commentId => state.entities.comments[commentId])

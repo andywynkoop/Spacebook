@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { updatePost, fetchPost } from '../../actions/post';
 import PostForm from './PostForm';
@@ -24,11 +23,5 @@ const mdp = dispatch => ({
   action: post => dispatch(updatePost(post)),
   fetchPost: id => dispatch(fetchPost(id))
 });
-
-class EditForm extends React.Component {
-  componentDidMount() {
-    this.props.fetchPost(this.props.post)
-  }
-}
 
 export default connect(msp, mdp)(PostForm);

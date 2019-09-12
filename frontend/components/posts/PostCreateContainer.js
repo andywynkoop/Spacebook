@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { createPost, fetchWallPosts, fetchFeed } from '../../actions/post';
 import { currentUser, userIsFriendsWith } from '../../util/selectors';
-
 import PostForm from './PostForm';
 
 const msp = (state, { postAuthorId, author, wall }) => ({

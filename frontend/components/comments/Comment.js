@@ -4,7 +4,6 @@ import CommentHoverModal from './CommentHoverModal';
 import CommentOptionsModal from '../posts/PostOptionsModal';
 import CommentForm from './CommentForm';
 import { deleteComment } from '../../actions/comment';
-import { fetchWallPosts, fetchFeed } from '../../actions/post';
 import { Link, withRouter } from 'react-router-dom';
 import { NULL_PROFILE } from '../../util/img_util';
 import { userByUserId, currentUser } from '../../util/selectors';
@@ -21,6 +20,7 @@ class Comment extends Component {
     this.setType = this.setType.bind(this);
     this.hideForm = this.hideForm.bind(this);
   }
+
   handleClick(e) {
     const { target: { className } } = e;
     if (className === 'comment-modal-btn') {
@@ -29,35 +29,39 @@ class Comment extends Component {
       this.setState({ modal: false });
     }
   }
+
   setType(type) {
     if (type === 'edit') {
       this.setState({ edit: true });
     }
     if (type === 'destroy') {
-      const { id: commentId } = this.props.data;
+      const { id: commentId } = this.props.comment;
       this.props.destroy(commentId);
     }
   }
+
   hideForm() {
     this.setState({ edit: false });
   }
+
   commentModalBtn() {
-    const { currentUser, data, post } = this.props;
-    if (currentUser.id === data.authorId) {
+    const { currentUser, comment, post } = this.props;
+    if (currentUser.id === comment.authorId) {
       return <CommentHoverModal message={'Edit or delete this'} version="v2" />;
     } else if (currentUser.id === post.wallId) {
       return <CommentHoverModal message={'Remove this'} />;
     }
   }
+
   render() {
-    const { data, author, currentUser, post } = this.props;
+    const { comment, author, currentUser, post } = this.props;
     if (this.state.edit)
       return (
         <CommentForm
           post={post}
           formType="edit"
-          commentId={data.id}
-          body={data.body}
+          commentId={comment.id}
+          body={comment.body}
           hideForm={this.hideForm}
         />
       );
@@ -70,7 +74,7 @@ class Comment extends Component {
               {author.firstname} {author.lastname}
             </span>
           </Link>{' '}
-          {data.body}
+          {comment.body}
         </p>
         <div className="comment-modal-container">
           {this.commentModalBtn()}
@@ -79,7 +83,7 @@ class Comment extends Component {
             destroy={() => this.setType('destroy')}
             status={this.state.modal}
             currentUser={currentUser}
-            authorId={data.authorId}
+            authorId={comment.authorId}
             postAuthorId={author.id}
             wallId={post.wallId}
             comment={'comment-option'}
@@ -92,8 +96,8 @@ class Comment extends Component {
   }
 }
 
-const msp = (state, { data }) => ({
-  author: userByUserId(state, data.authorId),
+const msp = (state, { comment }) => ({
+  author: userByUserId(state, comment.authorId),
   currentUser: currentUser(state)
 });
 
