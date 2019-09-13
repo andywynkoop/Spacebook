@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { updatePost, fetchPost } from '../../actions/post';
+import { updatePost } from '../../actions/post';
 import PostForm from './PostForm';
 import { userByUserId, currentUser } from '../../util/selectors';
 
@@ -20,8 +20,7 @@ const msp = (
 });
 
 const mdp = dispatch => ({
-  action: post => dispatch(updatePost(post)),
-  fetchPost: id => dispatch(fetchPost(id))
+  action: post => dispatch(updatePost(post))
 });
 
 export default connect(msp, mdp)(PostForm);

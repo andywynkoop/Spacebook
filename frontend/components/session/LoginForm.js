@@ -9,36 +9,19 @@ class LoginForm extends Component {
 
     this.state = {
       email: '',
-      password: '',
-      message: ''
+      password: ''
     };
   }
-  componentWillReceiveProps() {
-    const { errors } = this.props;
-    let message = '';
-    if (errors.length > 0) {
-      message = 'The email or password you entered is incorrect.';
-    }
-    this.setState({ message });
-  }
+
   onSubmit(e) {
     e.preventDefault();
-    const { message, email, password } = this.state;
-    if (email && password) {
-      this.props.login({ email, password }).then(
-        res => null,
-        err =>
-          this.setState({
-            message: 'The email or password you entered is incorrect.'
-          })
-      );
-    } else {
-      this.setState({
-        message: 'The email or password you entered is incorrect.'
-      });
-    }
+    this.props.login(this.state);
   }
+
+  update = field => e => this.setState({ [field]: e.target.value })
+
   render() {
+    const message = this.props.errors.length > 0 ? 'The email or password you entered is incorrect.' : '';
     return (
       <div className="nav-login-container">
         <form className="nav-login-form" onSubmit={this.onSubmit.bind(this)}>
@@ -48,7 +31,7 @@ class LoginForm extends Component {
             <input
               type="text"
               value={this.state.email}
-              onChange={e => this.setState({ email: e.target.value })}
+              onChange={this.update('email')}
             />
           </div>
           <div>
@@ -57,13 +40,13 @@ class LoginForm extends Component {
             <input
               type="password"
               value={this.state.password}
-              onChange={e => this.setState({ password: e.target.value })}
+              onChange={this.update('password')}
             />
           </div>
           <button type="submit">Log In</button>
         </form>
         <a href="#">Forgot Account?</a>
-        <ErrorModal field={'nav-session'} message={this.state.message} />
+        <ErrorModal field={'nav-session'} message={message} />
       </div>
     );
   }
