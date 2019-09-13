@@ -43,6 +43,7 @@
   width: 445px;
   box-sizing: border-box;
   padding: 5px;
+  overflow: scroll;
 }
 .search-modal-user {
   height: 30px;

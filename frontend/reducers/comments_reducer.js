@@ -6,7 +6,8 @@ export default (state={}, action) => {
       return Object.assign({}, state, action.payload.comments || {});
     case RECEIVE_WALL_POSTS:
     case RECEIVE_FEED_POSTS:
-      return action.payload.comments || {};
+      const comments = action.payload.comments || {};
+      return Object.assign({}, state, comments);
     default:
       return state;
   }

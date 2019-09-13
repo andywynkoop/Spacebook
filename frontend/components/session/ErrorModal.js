@@ -4,8 +4,7 @@ import {
   getXPositionOfErrorModal
 } from '../../util/signup_form_util';
 
-export default () => {
-  const { field, message } = this.props;
+export default ({ field, message }) => {
   const YPos = getYPositionOfErrorModal(field);
   const XPos = getXPositionOfErrorModal(field);
   if (!message) return <div />;

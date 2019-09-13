@@ -10,8 +10,3 @@ export const openModal = modalType => ({
   type: OPEN_MODAL,
   modalType
 });
-
-export const setQuery = query => ({
-  type: SET_QUERY,
-  query
-});

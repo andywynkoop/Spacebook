@@ -61,3 +61,6 @@ export const friendRequests = state => {
     return request;
   });
 }
+
+export const searchResults = state => 
+  state.entities.search.map(id => state.entities.users[id]);

@@ -44,7 +44,7 @@ class Post extends Component {
   destroy() {
     const {
       destroy,
-      data: { id }
+      post: { id }
     } = this.props;
 
     this.setState({ actionType: null }, () => {
@@ -55,8 +55,8 @@ class Post extends Component {
     this.setState({ actionType: null });
   }
   postModalBtn() {
-    const { currentUser, data } = this.props;
-    if (currentUser.id === data.authorId || currentUser.id === data.wallId)
+    const { currentUser, post } = this.props;
+    if (currentUser.id === post.authorId || currentUser.id === post.wallId)
       return <button className="post-modal-btn">···</button>;
   }
   renderAuthorDetails() {
@@ -85,7 +85,7 @@ class Post extends Component {
     }
   }
   render() {
-    const { data, author, currentUser, comments } = this.props;
+    const { post, author, currentUser, comments } = this.props;
     const { swapType, destroy, close } = this;
     if (!author) return <div />;
     return (
@@ -108,24 +108,24 @@ class Post extends Component {
               {this.renderAuthorDetails()}
             </h3>
             <p className="post-date">
-              {new Date(data.createdAt).toDateString()}
+              {new Date(post.createdAt).toDateString()}
             </p>
           </div>
         </div>
-        <p className="post-body">{data.body}</p>
-        <Comments post={data} comments={comments} />
+        <p className="post-body">{post.body}</p>
+        <Comments post={post} comments={comments} />
         <PostOptionsModal
           edit={() => this.setType('edit')}
           destroy={() => this.setType('destroy')}
           status={this.state.modal}
           currentUser={currentUser}
-          authorId={data.authorId}
-          postAuthorId={data.wallId}
+          authorId={post.authorId}
+          postAuthorId={post.wallId}
           comment={''}
         />
         {this.postModalBtn()}
         <PostActionModal
-          data={data}
+          post={post}
           type={this.state.actionType}
           swap={swapType}
           destroy={destroy}
@@ -137,12 +137,12 @@ class Post extends Component {
   }
 }
 
-const msp = (state, { data }) => {
+const msp = (state, { post }) => {
   return ({
     currentUser: currentUser(state),
-    author: userByUserId(state, data.authorId),
-    wall: userByUserId(state, data.wallId),
-    comments: commentsByPostId(state, data.id)
+    author: userByUserId(state, post.authorId),
+    wall: userByUserId(state, post.wallId),
+    comments: commentsByPostId(state, post.id)
   });
 }
 

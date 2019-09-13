@@ -19,7 +19,7 @@ class PostsList extends Component {
           wall={user}
         />
         <ul>
-          {posts.map(post => <Post key={post.id} data={post} />)}
+          {posts.map(post => <Post key={post.id} post={post} />)}
         </ul>
       </div>
     );

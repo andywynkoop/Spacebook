@@ -9,6 +9,7 @@ import comments from './comments_reducer';
 import postCommentMap from './post_comment_map_reducer';
 import friendRequestTo from './friend_request_to_reducer';
 import friendRequestFrom from './friend_request_from_reducer';
+import search from './users_search_reducer';
 
 export default combineReducers({
   users,
@@ -20,5 +21,6 @@ export default combineReducers({
   comments,
   postCommentMap,
   friendRequestTo,
-  friendRequestFrom
+  friendRequestFrom,
+  search
 });

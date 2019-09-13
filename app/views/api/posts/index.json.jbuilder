@@ -21,3 +21,10 @@ json.comments do
     end
   end
 end
+
+json.users do 
+  @posts.each do |post|
+    json.partial! 'api/users/user.json.jbuilder', user: post.author
+    json.partial! 'api/users/user.json.jbuilder', user: post.wall
+  end
+end

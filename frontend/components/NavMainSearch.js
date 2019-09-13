@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import SearchModal from './navmodals/SearchModal';
 import { connect } from 'react-redux';
-import { setQuery } from '../actions/ui';
+import { search } from '../actions/search';
+
+Function.prototype.debounce = function(interval) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => this(...args), interval);
+  }
+}
 
 class NavMainSearch extends Component {
   constructor(props) {
@@ -10,45 +18,54 @@ class NavMainSearch extends Component {
       query: '',
       modal: false
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+
     this.update = this.update.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.search = this.search.bind(this).debounce(500);
   }
-  update(field) {
-    return e => {
-      let query = e.target.value;
-      this.setState({ modal: true, query });
-      this.props.setQuery(query);
-    };
+
+  search() {
+    this.props.search(this.state.query);
   }
-  handleSubmit(e) {
-    e.preventDefault();
-  }
+  
+  update(e) {
+    const query = e.target.value;
+    const modal = query !== ""
+    this.setState({ 
+      modal, 
+      query
+    }, () => {
+      if (modal) this.search();
+    });
+  };
+
   closeModal() {
     this.setState({ modal: false });
   }
+
   render() {
     return (
-      <form className="nav-search" onSubmit={this.handleSubmit}>
+      <form className="nav-search">
         <input
           type="text"
           value={this.props.query}
-          onChange={this.update('query')}
+          onChange={this.update}
           placeholder="Search Users"
         />
         <button type="submit" className={this.state.modal ? 'blue-button' : ''}>
           <i className="fas fa-search" />
         </button>
-        <SearchModal status={this.state.modal} close={this.closeModal} />
+        {this.state.modal 
+          ? <SearchModal close={this.closeModal} /> 
+          : null
+        }
       </form>
     );
   }
 }
 
-const msp = ({ ui }) => ({ ui });
-
 const mdp = dispatch => ({
-  setQuery: query => dispatch(setQuery(query))
+  search: query => dispatch(search(query))
 });
 
-export default connect(msp, mdp)(NavMainSearch);
+export default connect(null, mdp)(NavMainSearch);
