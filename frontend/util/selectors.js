@@ -40,7 +40,8 @@ export const userHasRequestFrom = (state, userId) => {
   const pendingRequests = state.entities.friendRequestFrom;
   const friendAskingIds = Object
     .values(pendingRequests)
-    .map(req => req.id);
+    .map(req => req.requestorId);
+  
   if (friendAskingIds.includes(userId)) return pendingRequests[userId];
   return false;
 }

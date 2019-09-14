@@ -1,6 +1,6 @@
 json.requests_to do
   user.requests_to.each do |request|
-    json.set! request.id do
+    json.set! request.requestee_id do
       json.extract! request, :id, :requestee_id, :requestor_id
     end
   end
@@ -8,7 +8,7 @@ end
 
 json.requests_from do
   user.requests_from.each do |request|
-    json.set! request.id do
+    json.set! request.requestor_id do
       json.extract! request, :id, :requestee_id, :requestor_id
     end
   end

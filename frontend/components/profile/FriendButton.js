@@ -35,7 +35,6 @@ class FriendButton extends Component {
 
     if (loading) return false;
     if (!currentUser) return null;
-
     if (ownPage) {
       return this.friendButton('Update Info', () => { })
     } else if (alreadyFriends) {

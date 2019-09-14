@@ -1711,6 +1711,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_friendship__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/friendship */ "./frontend/actions/friendship.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
 
 
 
@@ -1734,9 +1736,11 @@ var FriendRequestItem = function FriendRequestItem(_ref) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: user.profileImgUrl,
     className: "modal-img"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Link"], {
+    to: "/".concat(user.userUrl)
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
     className: "modal-user-name"
-  }, user.firstname, " ", user.lastname)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, user.firstname, " ", user.lastname))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "modal-buttons-container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "modal-btn modal-approve-btn",
@@ -5226,7 +5230,7 @@ var userHasRequestFrom = function userHasRequestFrom(state, userId) {
   if (!userId) return false;
   var pendingRequests = state.entities.friendRequestFrom;
   var friendAskingIds = Object.values(pendingRequests).map(function (req) {
-    return req.id;
+    return req.requestorId;
   });
   if (friendAskingIds.includes(userId)) return pendingRequests[userId];
   return false;

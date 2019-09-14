@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { approveFriendship, denyFriendship } from '../../actions/friendship';
+import { Link } from 'react-router-dom';
 
 const FriendRequestItem = ({ request, approve, deny }) => {
   if (request === null) {
@@ -15,9 +16,11 @@ const FriendRequestItem = ({ request, approve, deny }) => {
     <div className="request-item">
       <div className="modal-user-info">
         <img src={user.profileImgUrl} className="modal-img" />
-        <p className="modal-user-name">
-          {user.firstname} {user.lastname}
-        </p>
+        <Link to={`/${user.userUrl}`}>
+          <p className="modal-user-name">
+            {user.firstname} {user.lastname}
+          </p>
+        </Link>
       </div>
       <div className="modal-buttons-container">
         <button
