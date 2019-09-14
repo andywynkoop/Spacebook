@@ -57,12 +57,13 @@ class SignUpForm extends Component {
     }
   }
 
-  render = () =>
-    <div className="signup">
+  render = () => {
+    const { errors } = this.state;
+    return <div className="signup">
       <h2>Sign Up</h2>
       <h4>{"It's free and always will be."}</h4>
-      {this.serverErrors.bind(this)()}
-      <form onSubmit={this.handleSubmit.bind(this)}>
+      {this.serverErrors()}
+      <form onSubmit={this.handleSubmit}>
         <input
           type="text"
           className={errors.firstname ? 'input-small error' : 'input-small'}
@@ -187,7 +188,7 @@ class SignUpForm extends Component {
         />
       </form>
     </div>
-  
+  }
 }
 
 export default SignUpForm;

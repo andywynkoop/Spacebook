@@ -4139,10 +4139,11 @@ function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "render", function () {
+      var errors = _this.state.errors;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "signup"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Sign Up"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "It's free and always will be."), _this.serverErrors.bind(_assertThisInitialized(_this))(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: _this.handleSubmit.bind(_assertThisInitialized(_this))
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Sign Up"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "It's free and always will be."), _this.serverErrors(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        onSubmit: _this.handleSubmit
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         className: errors.firstname ? 'input-small error' : 'input-small',
