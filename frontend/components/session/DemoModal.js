@@ -13,9 +13,10 @@ const DemoModal = ({ loginUser }) =>
     }}
   >
     <h1>
-      Want to try the site before registering? Click here to sign in as a demo
+      Want to try the site before registering? 
+      Click here to sign in as a demo
       user.
-      </h1>
+    </h1>
   </div>;
   
 const mapDispatchToProps = dispatch => ({

@@ -12,56 +12,47 @@ Function.prototype.debounce = function(interval) {
 }
 
 class NavMainSearch extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: '',
-      modal: false
-    };
+  state = {
+    query: '',
+    modal: false
+  };
 
-    this.update = this.update.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.search = this.search.bind(this).debounce(500);
-  }
-
-  search() {
-    this.props.search(this.state.query);
-  }
+  search = () => this.props.search(this.state.query)
   
-  update(e) {
+  update = e => {
     const query = e.target.value;
     const modal = query !== ""
     this.setState({ 
       modal, 
       query
     }, () => {
-      if (modal) this.search();
+      if (modal) this.search.debounce(500)();
     });
   };
 
-  closeModal() {
-    this.setState({ modal: false });
+  closeModal = () => this.setState({ modal: false })
+
+  submit = e => {
+    e.preventDefault();
+    if (this.state.query !== "") this.search();
   }
 
-  render() {
-    return (
-      <form className="nav-search">
-        <input
-          type="text"
-          value={this.props.query}
-          onChange={this.update}
-          placeholder="Search Users"
-        />
-        <button type="submit" className={this.state.modal ? 'blue-button' : ''}>
-          <i className="fas fa-search" />
-        </button>
-        {this.state.modal 
-          ? <SearchModal close={this.closeModal} /> 
-          : null
-        }
-      </form>
-    );
-  }
+  render = () =>
+    <form className="nav-search" onSubmit={this.submit}>
+      <input
+        type="text"
+        value={this.props.query}
+        onChange={this.update}
+        placeholder="Search Users"
+      />
+      <button type="submit" className={this.state.modal ? 'blue-button' : ''}>
+        <i className="fas fa-search" />
+      </button>
+      {this.state.modal 
+        ? <SearchModal close={this.closeModal} /> 
+        : null
+      }
+    </form>
 }
 
 const mdp = dispatch => ({

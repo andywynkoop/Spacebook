@@ -9,37 +9,36 @@ import NavMain from '../NavMain';
 import { fetchUser } from '../../actions/user';
 import MissingPage from './MissingPage';
 import { ChangeProfilePhoto, ChangeCoverPhoto } from './PhotoForm';
-import { currentUser, friendsByUserId, userByUserUrl } from '../../util/selectors';
+import { currentUser, friendsByUserId, userByUserUrl, shuffleAndTakeNine } from '../../util/selectors';
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.state = {
-      photoModal: false
-    }
+  state = {
+    photoModal: false,
+    friends: null
   }
+
   componentDidMount() {
     this.props.fetchUser()
   }
 
   componentDidUpdate(oldProps) {
-    if (this.props.match.params.userUrl !== oldProps.match.params.userUrl) {
+    const { match, user, friends } = this.props;
+    if (match.params.userUrl !== oldProps.match.params.userUrl) {
       this.props.fetchUser();
+    }
+    if(!this.state.friends && user) {
+      this.setState({ friends: shuffleAndTakeNine(friends) })
     }
   }
 
-  openModal(type) {
+  openModal = type => {
     if (this.props.currentUser.id !== this.props.user.id) {
       return () => this.setState({ photoModal: `view-${type}`});
     }
     return () => this.setState({ photoModal: type })
   }
 
-  closeModal(e) {
-    this.setState({ photoModal: false });
-  }
+  closeModal = () => this.setState({ photoModal: false })
 
   photoModal() {
     switch(this.state.photoModal) {
@@ -55,8 +54,11 @@ class Profile extends Component {
         return null;
     }
   }
+  
   render() {
-    const { user, currentUser, errors, friends } = this.props;
+    const { user, currentUser, errors, count } = this.props;
+    const { friends } = this.state;
+
     if (!user.id && errors.length === 0) return <NavMain />;
     if (!user.id) return <MissingPage />;
 
@@ -65,7 +67,6 @@ class Profile extends Component {
         <NavMain />
         <div style={{ paddingTop: '42px' }}>
           <Cover cover={user.coverPhotoUrl} change={this.openModal('cover')} />
-
           <ProfileNav
             change={this.openModal('photo')}
             profile={user.profileImgUrl}
@@ -75,7 +76,7 @@ class Profile extends Component {
           <div className="main-content">
             <aside className="profile-main-aside">
               <About user={user} />
-              <Friends friends={friends} />
+              <Friends friends={friends} count={count} />
             </aside>
             <ProfilePostsContainer user={user} currentUser={currentUser} />
           </div>
@@ -88,11 +89,14 @@ class Profile extends Component {
 
 const msp = (state, props) => {
   const user = userByUserUrl(state, props.match.params.userUrl) || {};
+  const friends = friendsByUserId(state, user.id);
+  const count = Object.values(friends).length;
   return {
     currentUser: currentUser(state),
     user,
     errors: state.errors,
-    friends: friendsByUserId(state, user.id)
+    friends,
+    count
   };
 };
 

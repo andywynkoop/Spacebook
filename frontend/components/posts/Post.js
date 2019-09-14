@@ -9,21 +9,12 @@ import { NULL_PROFILE } from '../../util/img_util';
 import { currentUser, userByUserId, commentsByPostId } from '../../util/selectors';
 
 class Post extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false,
-      actionType: null
-    };
-    this.handleClick = this.handleClick.bind(this);
-    this.setType = this.setType.bind(this);
-    this.swapType = this.swapType.bind(this);
-    this.edit = this.edit.bind(this);
-    this.destroy = this.destroy.bind(this);
-    this.close = this.close.bind(this);
-    this.postModalBtn = this.postModalBtn.bind(this);
+  state = {
+    modal: false,
+    actionType: null
   }
-  handleClick(e) {
+
+  handleClick = e => {
     const { target: { className } } = e;
     if (className === 'post-modal-btn') {
       this.setState({ modal: !this.state.modal });
@@ -31,17 +22,15 @@ class Post extends Component {
       this.setState({ modal: false });
     }
   }
-  setType(actionType) {
-    this.setState({ actionType });
-  }
-  swapType() {
+
+  setType = actionType => this.setState({ actionType });
+
+  swapType = () => {
     const actionType = this.state.actionType === 'edit' ? 'delete' : 'edit';
     this.setState({ actionType });
   }
-  edit() {
-    // edit
-  }
-  destroy() {
+
+  destroy = () => {
     const {
       destroy,
       post: { id }
@@ -51,15 +40,16 @@ class Post extends Component {
       destroy(id)
     });
   }
-  close() {
-    this.setState({ actionType: null });
-  }
-  postModalBtn() {
+
+  close = () => this.setState({ actionType: null })
+
+  postModalBtn = () => {
     const { currentUser, post } = this.props;
     if (currentUser.id === post.authorId || currentUser.id === post.wallId)
       return <button className="post-modal-btn">···</button>;
   }
-  renderAuthorDetails() {
+
+  renderAuthorDetails = () => {
     const { author, wall } = this.props;
     if (this.props.history.location.pathname !== '/' || author.id === wall.id) {
       return (
@@ -84,6 +74,7 @@ class Post extends Component {
       );
     }
   }
+
   render() {
     const { post, author, currentUser, comments } = this.props;
     const { swapType, destroy, close } = this;

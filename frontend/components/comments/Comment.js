@@ -9,19 +9,12 @@ import { NULL_PROFILE } from '../../util/img_util';
 import { userByUserId, currentUser } from '../../util/selectors';
 
 class Comment extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    modal: false,
+    edit: false
+  };
 
-    this.state = {
-      modal: false,
-      edit: false
-    };
-    this.handleClick = this.handleClick.bind(this);
-    this.setType = this.setType.bind(this);
-    this.hideForm = this.hideForm.bind(this);
-  }
-
-  handleClick(e) {
+  handleClick = e => {
     const { target: { className } } = e;
     if (className === 'comment-modal-btn') {
       this.setState({ modal: !this.state.modal });
@@ -30,19 +23,15 @@ class Comment extends Component {
     }
   }
 
-  setType(type) {
-    if (type === 'edit') {
-      this.setState({ edit: true });
-    }
+  setType = type => () => {
+    if (type === 'edit') this.setState({ edit: true });
     if (type === 'destroy') {
       const { id: commentId } = this.props.comment;
       this.props.destroy(commentId);
     }
   }
 
-  hideForm() {
-    this.setState({ edit: false });
-  }
+  hideForm = () => this.setState({ edit: false })
 
   commentModalBtn() {
     const { currentUser, comment, post } = this.props;
@@ -79,8 +68,8 @@ class Comment extends Component {
         <div className="comment-modal-container">
           {this.commentModalBtn()}
           <CommentOptionsModal
-            edit={() => this.setType('edit')}
-            destroy={() => this.setType('destroy')}
+            edit={this.setType('edit')}
+            destroy={this.setType('destroy')}
             status={this.state.modal}
             currentUser={currentUser}
             authorId={comment.authorId}

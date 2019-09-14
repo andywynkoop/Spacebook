@@ -6,20 +6,12 @@ import { withRouter } from 'react-router-dom';
 import { currentUser } from '../../util/selectors';
 
 class CommentForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      body: this.props.body
-    };
-
-    this.update = this.update.bind(this);
-    this.submit = this.submit.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+  state = {
+    body: this.props.body
   }
-  update(field) {
-    return e => this.setState({ [field]: e.target.value });
-  }
+
+  update= field => e => this.setState({ [field]: e.target.value })
+
   submit() {
     const {
       post: { id: post_id },
@@ -43,21 +35,21 @@ class CommentForm extends Component {
       }
     })
   }
-  handleKeyPress(e) {
+
+  handleKeyPress = e => {
     if (e.key === 'Enter') {
       e.preventDefault();
       this.submit();
     }
   }
+
   render() {
     const { user } = this.props;
+    const img = user.profileImgUrl || NULL_PROFILE;
+    const style = { backgroundImage: `url("${img}")` }
     return (
       <form className="comment-form">
-        <div
-          style={{
-            backgroundImage: `url("${user.profileImgUrl || NULL_PROFILE}")`
-          }}
-        />
+        <div style={style} />
         <textarea
           type="text"
           rows={1}

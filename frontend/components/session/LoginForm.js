@@ -13,7 +13,7 @@ class LoginForm extends Component {
     };
   }
 
-  onSubmit(e) {
+  onSubmit = e => {
     e.preventDefault();
     this.props.login(this.state);
   }
@@ -21,10 +21,11 @@ class LoginForm extends Component {
   update = field => e => this.setState({ [field]: e.target.value })
 
   render() {
-    const message = this.props.errors.length > 0 ? 'The email or password you entered is incorrect.' : '';
+    const message = this.props.errors.length > 0 
+      ? 'The email or password you entered is incorrect.' : '';
     return (
       <div className="nav-login-container">
-        <form className="nav-login-form" onSubmit={this.onSubmit.bind(this)}>
+        <form className="nav-login-form" onSubmit={this.onSubmit}>
           <div>
             <label>Email or Phone</label>
             <br />
@@ -51,6 +52,7 @@ class LoginForm extends Component {
     );
   }
 }
+
 const msp = ({ errors }) => ({ errors });
 
 const mdp = dispatch => ({

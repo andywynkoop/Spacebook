@@ -4,15 +4,12 @@ import { updatePhoto } from '../../actions/photo';
 import { connect } from 'react-redux';
 
 class PhotoForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      photo: null,
-      photoUrl: ""
-    }
+  state = {
+    photo: null,
+    photoUrl: ""
   }
-  
-  onSubmit(e) {
+
+  onSubmit = e => {
     e.preventDefault();
     const { photo } = this.state;
     if (photo === null) {
@@ -25,20 +22,16 @@ class PhotoForm extends Component {
     this.props.close();
   }
 
-  handleChange(e) {
+  handleChange = e => {
     const reader = new FileReader();
     const file = e.currentTarget.files[0];
     reader.onloadend = () =>
       this.setState({ photoUrl: reader.result, photo: file });
 
-    if (file) {
-      reader.readAsDataURL(file);
-    } else {
-      this.setState({ photoUrl: "", photo: null });
-    }
+    if (file) reader.readAsDataURL(file)
   }
   
-  close(e) {
+  close = e => {
     if (["cancel", "photo-form-modal"].includes(e.target.className)) {
       e.preventDefault();
       this.props.close();

@@ -64,3 +64,16 @@ export const friendRequests = state => {
 
 export const searchResults = state => 
   state.entities.search.map(id => state.entities.users[id]);
+
+const shuffle = arr => {
+  for(let i = 0; i < arr.length; i++) {
+    let j = Math.floor(Math.random() * (arr.length - 1));
+    let f1 = arr[i];
+    arr[i] = arr[j];
+    arr[j] = f1;
+  }
+  return arr;
+}
+
+export const shuffleAndTakeNine = friends => 
+  shuffle(Object.values(friends)).slice(0, 9);
