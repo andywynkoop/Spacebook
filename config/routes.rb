@@ -6,6 +6,10 @@ Rails.application.routes.draw do
     resources :posts, only: [:create, :update, :destroy]
     resources :comments, only: [:create, :update, :destroy]
 
+    resources :messages, only: [:create]
+    resources :chats, only: [:index, :create]
+    mount ActionCable.server => '/cable'
+
     # Fetch posts on a user's wall
     get '/users/:id/wall', to: 'posts#index_wall'
     #Fetch posts from a user's friends

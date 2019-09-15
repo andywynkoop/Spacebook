@@ -9,14 +9,19 @@ class Trending extends Component {
   }
   
   render() {
-    if (!this.props.trending || window.innerWidth < 1100) return null;
+    const { trending, chatModalOpen } = this.props;
+    if (
+      !trending 
+      || window.innerWidth < 1100 
+      || chatModalOpen
+    ) return null;
     return (
       <div className="item-container trending">
         <h3>
           Trending <i className="fas fa-flask" />
         </h3>
         <ul>
-          {this.props.trending.slice(0, 12).map(article => (
+          {trending.slice(0, 12).map(article => (
             <li key={article.title} className="trending-article">
               <h5>
                 <a href={article.url} target="_blank">
@@ -34,7 +39,8 @@ class Trending extends Component {
 }
 
 const msp = state => ({
-  trending: state.entities.trending
+  trending: state.entities.trending,
+  chatModalOpen: state.ui.chatModal
 });
 
 const mdp = dispatch => ({

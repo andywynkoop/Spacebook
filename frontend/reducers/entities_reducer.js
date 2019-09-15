@@ -10,6 +10,8 @@ import postCommentMap from './post_comment_map_reducer';
 import friendRequestTo from './friend_request_to_reducer';
 import friendRequestFrom from './friend_request_from_reducer';
 import search from './users_search_reducer';
+import chats from './chats_reducer';
+import messages from './messages_reducer';
 
 export default combineReducers({
   users,
@@ -22,5 +24,7 @@ export default combineReducers({
   postCommentMap,
   friendRequestTo,
   friendRequestFrom,
-  search
+  search,
+  chats,
+  messages
 });

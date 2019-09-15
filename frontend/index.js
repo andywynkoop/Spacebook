@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Root from './components/Root';
+import { ActionCableProvider } from 'react-actioncable-provider';
 
 document.addEventListener('DOMContentLoaded', () => {
   let preloadedState = {};
@@ -28,8 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  window.API_WS = process.env.NODE_ENV === "production"
+    ? "ws://space--book/cable"
+    : "ws://localhost:3000/cable"
+
   ReactDOM.render(
-    <Root preloadedState={preloadedState} />,
+    <ActionCableProvider url={API_WS}>
+      <Root preloadedState={preloadedState} />
+    </ActionCableProvider>,
     document.querySelector('#root')
   );
 });

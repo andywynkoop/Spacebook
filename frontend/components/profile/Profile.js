@@ -56,14 +56,15 @@ class Profile extends Component {
   }
   
   render() {
-    const { user, currentUser, errors, count } = this.props;
+    const { user, currentUser, errors, count, chatModalOpen } = this.props;
     const { friends } = this.state;
+    const chatStyle = chatModalOpen ? "chat-modal-offset" : ""
 
     if (!user.id && errors.length === 0) return <NavMain />;
     if (!user.id) return <MissingPage />;
 
     return (
-      <div>
+      <div className={chatStyle}>
         <NavMain />
         <div style={{ paddingTop: '42px' }}>
           <Cover cover={user.coverPhotoUrl} change={this.openModal('cover')} />
@@ -96,7 +97,8 @@ const msp = (state, props) => {
     user,
     errors: state.errors,
     friends,
-    count
+    count,
+    chatModalOpen: state.ui.chatModal
   };
 };
 

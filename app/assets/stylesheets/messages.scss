@@ -1,0 +1,132 @@
+.chat-modal {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  border-radius: 3px 3px 0px 0px;
+  box-shadow: 0px 0px 5px #ccc;
+  width: 180px;
+  height: 35px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  cursor: pointer;
+  padding: 10px;
+  box-sizing: border-box;
+  background: white;
+}
+
+.chat-sidebar {
+  position: fixed;
+  width: 180px;
+  right: 0;
+  top: 42px;
+  height: 100vh;
+  border-left: solid 1px #ccc;
+  background: #eee;
+  padding: 30px 0px 8px 0px;
+
+  h4 {
+    color: #333;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 0px 8px;
+  }
+}
+
+.chat-sidebar > button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.chat-sidebar > button::after {
+  content: '×';
+  background: #eee;
+}
+
+.friend-chat-item {
+  display: flex;
+  position: relative;
+  padding: 5px 8px;
+
+  img {
+    height: 30px;
+    width: 30px;
+    border-radius: 100%;
+    object-fit: cover;
+  }
+  
+  p {
+    font-size: 12px;
+    color: #333;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 5px;
+  }
+
+  span {
+    position:absolute;
+    right: 5px;
+    font-size: 55px;
+    color: rgb(29, 231, 29);
+    top: calc(50% - 35px);
+  }
+}
+
+.friend-chat-item:hover {
+  background: #ddd;
+  cursor: pointer;
+}
+
+.chat-modals {
+  display: flex;
+  flex-direction: row-reverse;
+  position: fixed;
+  width: calc(100% - 200px);
+  bottom: 0;
+  left: 0;
+  overflow-x: scroll;
+  padding-top: 5px;
+
+  li {
+    display: flex;
+    height: 35px;
+    border-radius: 3px 3px 0px 0px;
+    box-shadow: 0px 0px 4px #777;
+    background: white;
+    padding: 8px 10px 10px 12px;
+    box-sizing: border-box;
+    width: 180px;
+    position: relative;
+    font-weight: 700;
+    font-size: 13px;
+    margin: 0px 5px;
+    cursor: pointer;
+
+    img {
+      height:20px;
+      width: 20px;
+      border-radius: 100%;
+      margin-right: 5px;
+    }
+
+    p {
+      color: #444;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    button {
+      position: absolute;
+      right: 5px;
+      top: 3px;
+      font-size: 25px;
+      font-weight: 100;
+      color: #555;
+    }
+
+    button::after {
+      content: '×';
+    }
+  }
+}

@@ -86,4 +86,15 @@ class User < ApplicationRecord
     class_name: :Comment,
     dependent: :destroy
 
+  has_many :messages
+
+  has_many :created_chats,
+    foreign_key: :creator_id,
+    class_name: :Chat
+  
+  has_many :chat_memberships
+
+  has_many :chats,
+    through: :chat_memberships,
+    source: :chat
 end

@@ -78,3 +78,27 @@ const shuffle = arr => {
 
 export const shuffleAndTakeNine = friends => 
   shuffle(Object.values(friends)).slice(0, 9);
+
+export const chatList = state =>
+  Object.values(state.entities.chats)
+
+export const messagesUnderChatId = state => {
+  const allMessages = Object.values(state.entities.messages);
+  const chatObj = {};
+  allMessages.forEach(message => {
+    const { chatId } = message;
+    if (!chatObj[chatId]) chatObj[chatId] = [];
+    chatObj[chatId].push(message);
+  });
+  return chatObj;
+}
+
+export const friendsOfCurrentUser = state => 
+  friendsByUserId(state, currentUser(state).id);
+
+
+export const openChats = state => {
+  const allFriendIds = Object.keys(state.ui.chatModalList);
+  // refactor me to use real chats later
+  return allFriendIds.map(id => state.entities.users[id]);
+}

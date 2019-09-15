@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_11_013136) do
+ActiveRecord::Schema.define(version: 2019_09_14_051739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,14 @@ ActiveRecord::Schema.define(version: 2019_09_11_013136) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "chats", force: :cascade do |t|
+    t.integer "creator_id", null: false
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_chats_on_creator_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.integer "author_id", null: false
     t.integer "post_id", null: false
@@ -58,6 +66,23 @@ ActiveRecord::Schema.define(version: 2019_09_11_013136) do
     t.integer "requestee_id", null: false
     t.index ["requestee_id"], name: "index_friendships_on_requestee_id"
     t.index ["requestor_id"], name: "index_friendships_on_requestor_id"
+  end
+
+  create_table "message_memberships", force: :cascade do |t|
+    t.integer "chat_id", null: false
+    t.integer "user_id", null: false
+    t.index ["chat_id"], name: "index_message_memberships_on_chat_id"
+    t.index ["user_id"], name: "index_message_memberships_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "chat_id", null: false
+    t.integer "user_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
