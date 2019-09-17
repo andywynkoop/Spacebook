@@ -90,16 +90,14 @@
 /*!**********************************!*\
   !*** ./frontend/actions/chat.js ***!
   \**********************************/
-/*! exports provided: RECEIVE_CHATS, RECEIVE_CHAT, RECEIVE_MESSAGE, fetchChats, startChat, receiveChat, sendMessage, receiveMessage */
+/*! exports provided: RECEIVE_CHATS, RECEIVE_CHAT, fetchChats, receiveChat, sendMessage, receiveMessage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_CHATS", function() { return RECEIVE_CHATS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_CHAT", function() { return RECEIVE_CHAT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_MESSAGE", function() { return RECEIVE_MESSAGE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchChats", function() { return fetchChats; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "startChat", function() { return startChat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveChat", function() { return receiveChat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendMessage", function() { return sendMessage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveMessage", function() { return receiveMessage; });
@@ -107,33 +105,35 @@ __webpack_require__.r(__webpack_exports__);
 
 var RECEIVE_CHATS = "RECEIVE_CHATS";
 var RECEIVE_CHAT = "RECEIVE_CHAT";
-var RECEIVE_MESSAGE = "RECEIVE_MESSAGE";
 var fetchChats = function fetchChats() {
   return function (dispatch) {
     return _util_chat_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchChats"]().then(function (payload) {
-      return dispatch({
+      dispatch({
         type: RECEIVE_CHATS,
         payload: payload
       });
     });
   };
 };
-var startChat = function startChat(chat) {
-  return _util_chat_api_util__WEBPACK_IMPORTED_MODULE_0__["startChat"](chat);
-};
 var receiveChat = function receiveChat(payload) {
-  return {
-    type: RECEIVE_CHAT,
-    payload: payload
+  return function (dispatch, getState) {
+    dispatch({
+      type: RECEIVE_CHAT,
+      payload: JSON.parse(payload),
+      id: getState().session.id
+    });
   };
 };
 var sendMessage = function sendMessage(message) {
   return _util_chat_api_util__WEBPACK_IMPORTED_MODULE_0__["sendMessage"](message);
 };
 var receiveMessage = function receiveMessage(payload) {
-  return {
-    type: RECEIVE_MESSAGE,
-    payload: payload
+  return function (dispatch, getState) {
+    dispatch({
+      type: RECEIVE_CHAT,
+      payload: JSON.parse(payload),
+      id: getState().session.id
+    });
   };
 };
 
@@ -564,6 +564,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+var NullComponent = function NullComponent() {
+  return null;
+};
+
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "app"
@@ -577,9 +582,221 @@ __webpack_require__.r(__webpack_exports__);
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_3__["ConditionalRoute"], {
     path: "/",
     loggedIn: _Chat__WEBPACK_IMPORTED_MODULE_6__["default"],
-    loggedOut: null
+    loggedOut: NullComponent
   }))));
 });
+
+/***/ }),
+
+/***/ "./frontend/components/Chat/ChatModalItem.js":
+/*!***************************************************!*\
+  !*** ./frontend/components/Chat/ChatModalItem.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _reducers_chat_modal_list_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../reducers/chat_modal_list_reducer */ "./frontend/reducers/chat_modal_list_reducer.js");
+/* harmony import */ var _MessageForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MessageForm */ "./frontend/components/Chat/MessageForm.js");
+/* harmony import */ var _Message__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Message */ "./frontend/components/Chat/Message.js");
+/* harmony import */ var _util_selectors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../util/selectors */ "./frontend/util/selectors.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+
+
+var CollapsedChat = function CollapsedChat(_ref) {
+  var friend = _ref.friend,
+      expand = _ref.expand,
+      remove = _ref.remove;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    onClick: expand,
+    className: "collapsed"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: friend.profileImgUrl
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, friend.firstname, " ", friend.lastname), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    onClick: remove
+  }));
+};
+
+var ExpandedChat =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(ExpandedChat, _Component);
+
+  function ExpandedChat() {
+    _classCallCheck(this, ExpandedChat);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ExpandedChat).apply(this, arguments));
+  }
+
+  _createClass(ExpandedChat, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (this.end) this.end.scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      if (this.end) this.end.scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      var _this$props = this.props,
+          friend = _this$props.friend,
+          chat = _this$props.chat,
+          collapse = _this$props.collapse,
+          messages = _this$props.messages,
+          visit = _this$props.visit,
+          remove = _this$props.remove;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        className: "expanded"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        onClick: collapse
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: friend.profileImgUrl
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        onClick: visit
+      }, friend.firstname, " ", friend.lastname), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: remove
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "messages-list"
+      }, messages.map(function (message) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Message__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          key: message.id,
+          message: message
+        });
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        ref: function ref(el) {
+          return _this.end = el;
+        }
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_MessageForm__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        chat: chat,
+        friend: friend
+      }));
+    }
+  }]);
+
+  return ExpandedChat;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+var ChatModalItem =
+/*#__PURE__*/
+function (_Component2) {
+  _inherits(ChatModalItem, _Component2);
+
+  function ChatModalItem() {
+    _classCallCheck(this, ChatModalItem);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ChatModalItem).apply(this, arguments));
+  }
+
+  _createClass(ChatModalItem, [{
+    key: "render",
+    value: function render() {
+      var _this$props2 = this.props,
+          isCollapsed = _this$props2.isCollapsed,
+          friend = _this$props2.friend,
+          expand = _this$props2.expand,
+          remove = _this$props2.remove,
+          collapse = _this$props2.collapse,
+          chat = _this$props2.chat,
+          messages = _this$props2.messages,
+          visit = _this$props2.visit;
+      var collapsedProps = {
+        friend: friend,
+        expand: expand,
+        remove: remove
+      };
+      var expandedProps = {
+        friend: friend,
+        collapse: collapse,
+        messages: messages,
+        chat: chat,
+        visit: visit,
+        remove: remove
+      };
+      if (isCollapsed) return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CollapsedChat, collapsedProps);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ExpandedChat, expandedProps);
+    }
+  }]);
+
+  return ChatModalItem;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+var msp = function msp(state, _ref2) {
+  var friend = _ref2.friend;
+  return {
+    isCollapsed: !state.ui.chatModalList[friend.id],
+    chat: Object(_util_selectors__WEBPACK_IMPORTED_MODULE_6__["chatByFriendId"])(state, friend.id),
+    messages: Object(_util_selectors__WEBPACK_IMPORTED_MODULE_6__["messagesByFriendId"])(state, friend.id)
+  };
+};
+
+var mdp = function mdp(dispatch, _ref3) {
+  var friend = _ref3.friend,
+      history = _ref3.history;
+  return {
+    expand: function expand() {
+      return dispatch({
+        type: _reducers_chat_modal_list_reducer__WEBPACK_IMPORTED_MODULE_3__["ADD_CHAT_MODAL"],
+        id: friend.id
+      });
+    },
+    collapse: function collapse() {
+      return dispatch({
+        type: _reducers_chat_modal_list_reducer__WEBPACK_IMPORTED_MODULE_3__["COLLAPSE_CHAT_MODAL"],
+        id: friend.id
+      });
+    },
+    remove: function remove(e) {
+      e.stopPropagation();
+      dispatch({
+        type: _reducers_chat_modal_list_reducer__WEBPACK_IMPORTED_MODULE_3__["REMOVE_CHAT_MODAL"],
+        id: friend.id
+      });
+    },
+    visit: function visit(e) {
+      e.stopPropagation();
+      history.push(friend.userUrl);
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(msp, mdp)(ChatModalItem)));
 
 /***/ }),
 
@@ -596,27 +813,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _util_selectors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../util/selectors */ "./frontend/util/selectors.js");
-/* harmony import */ var _reducers_chat_modal_list_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../reducers/chat_modal_list_reducer */ "./frontend/reducers/chat_modal_list_reducer.js");
+/* harmony import */ var _ChatModalItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ChatModalItem */ "./frontend/components/Chat/ChatModalItem.js");
 
 
 
 
 
 var ChatModalList = function ChatModalList(_ref) {
-  var openChats = _ref.openChats,
-      remove = _ref.remove;
+  var openChats = _ref.openChats;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "chat-modals"
   }, openChats.map(function (friend) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-      key: friend.id
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-      src: friend.profileImgUrl
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, friend.firstname, " ", friend.lastname), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-      onClick: function onClick() {
-        return remove(friend.id);
-      }
-    }));
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ChatModalItem__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      key: friend.id,
+      friend: friend
+    });
   }));
 };
 
@@ -626,18 +837,7 @@ var msp = function msp(state) {
   };
 };
 
-var mdp = function mdp(dispatch) {
-  return {
-    remove: function remove(id) {
-      return dispatch({
-        type: _reducers_chat_modal_list_reducer__WEBPACK_IMPORTED_MODULE_3__["REMOVE_CHAT_MODAL"],
-        id: id
-      });
-    }
-  };
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(msp, mdp)(ChatModalList));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(msp)(ChatModalList));
 
 /***/ }),
 
@@ -741,6 +941,139 @@ var mdp = function mdp(dispatch, _ref2) {
 
 /***/ }),
 
+/***/ "./frontend/components/Chat/Message.js":
+/*!*********************************************!*\
+  !*** ./frontend/components/Chat/Message.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var Message = function Message(_ref) {
+  var message = _ref.message;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    key: message.id,
+    className: message.side
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: message.authorImg
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, message.body));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Message);
+
+/***/ }),
+
+/***/ "./frontend/components/Chat/MessageForm.js":
+/*!*************************************************!*\
+  !*** ./frontend/components/Chat/MessageForm.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _actions_chat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/chat */ "./frontend/actions/chat.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var MessageForm =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(MessageForm, _Component);
+
+  function MessageForm() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, MessageForm);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(MessageForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_this), "state", {
+      body: ''
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "update", function (e) {
+      return _this.setState({
+        body: e.target.value
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "submit", function (e) {
+      e.preventDefault();
+      var chatId = _this.props.chat ? _this.props.chat.id : null;
+      var message = {
+        body: _this.state.body,
+        chat_id: chatId,
+        friend_id: _this.props.friend.id
+      };
+
+      _this.setState({
+        body: ''
+      }, function () {
+        return _this.props.sendMessage(message);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "render", function () {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        onSubmit: _this.submit
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "text",
+        value: _this.state.body,
+        onChange: _this.update,
+        placeholder: "Type a message..."
+      }));
+    });
+
+    return _this;
+  }
+
+  return MessageForm;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+var mdp = function mdp(dispatch) {
+  return {
+    sendMessage: function sendMessage(message) {
+      return Object(_actions_chat__WEBPACK_IMPORTED_MODULE_2__["sendMessage"])(message);
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(null, mdp)(MessageForm));
+
+/***/ }),
+
 /***/ "./frontend/components/Chat/index.js":
 /*!*******************************************!*\
   !*** ./frontend/components/Chat/index.js ***!
@@ -757,6 +1090,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reducers_chat_modal_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../reducers/chat_modal_reducer */ "./frontend/reducers/chat_modal_reducer.js");
 /* harmony import */ var _ChatSidebar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ChatSidebar */ "./frontend/components/Chat/ChatSidebar.js");
 /* harmony import */ var _ChatModalList__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ChatModalList */ "./frontend/components/Chat/ChatModalList.js");
+/* harmony import */ var react_actioncable_provider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-actioncable-provider */ "./node_modules/react-actioncable-provider/lib/index.js");
+/* harmony import */ var react_actioncable_provider__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_actioncable_provider__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _actions_chat__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../actions/chat */ "./frontend/actions/chat.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
 
@@ -764,29 +1117,84 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var Chat = function Chat(_ref) {
-  var chatModalOpen = _ref.chatModalOpen,
-      openChatModal = _ref.openChatModal,
-      numFriends = _ref.numFriends;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, chatModalOpen ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ChatSidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "chat-modal",
-    onClick: openChatModal
-  }, "Chat (", numFriends, ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ChatModalList__WEBPACK_IMPORTED_MODULE_5__["default"], null));
-};
+
+
+
+var Chat =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Chat, _Component);
+
+  function Chat() {
+    _classCallCheck(this, Chat);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Chat).apply(this, arguments));
+  }
+
+  _createClass(Chat, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.props.fetchChats();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      var _this$props = this.props,
+          chatModalOpen = _this$props.chatModalOpen,
+          openChatModal = _this$props.openChatModal,
+          numFriends = _this$props.numFriends,
+          receiveChat = _this$props.receiveChat,
+          allChats = _this$props.allChats,
+          receiveMessage = _this$props.receiveMessage;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_actioncable_provider__WEBPACK_IMPORTED_MODULE_6__["ActionCableConsumer"], {
+        channel: {
+          channel: 'ChatsChannel'
+        },
+        onReceived: receiveChat
+      }), chatModalOpen ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ChatSidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chat-modal",
+        onClick: openChatModal
+      }, "Chat (", numFriends, ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ChatModalList__WEBPACK_IMPORTED_MODULE_5__["default"], null), allChats.map(function (chat) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_actioncable_provider__WEBPACK_IMPORTED_MODULE_6__["ActionCableConsumer"], {
+          key: chat.id,
+          channel: {
+            channel: 'MessagesChannel',
+            chat: chat.id
+          },
+          onReceived: _this.props.receiveMessage
+        });
+      }));
+    }
+  }]);
+
+  return Chat;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 var msp = function msp(state) {
   return {
     chatModalOpen: state.ui.chatModal,
-    numFriends: Object(_util_selectors__WEBPACK_IMPORTED_MODULE_2__["friendsOfCurrentUser"])(state).length
+    numFriends: Object(_util_selectors__WEBPACK_IMPORTED_MODULE_2__["friendsOfCurrentUser"])(state).length,
+    allChats: Object.values(state.entities.chats)
   };
 };
 
 var mdp = function mdp(dispatch) {
   return {
+    fetchChats: function fetchChats() {
+      return dispatch(Object(_actions_chat__WEBPACK_IMPORTED_MODULE_7__["fetchChats"])());
+    },
     openChatModal: function openChatModal() {
       return dispatch({
         type: _reducers_chat_modal_reducer__WEBPACK_IMPORTED_MODULE_3__["OPEN_CHAT_MODAL"]
       });
+    },
+    receiveChat: function receiveChat(payload) {
+      return dispatch(Object(_actions_chat__WEBPACK_IMPORTED_MODULE_7__["receiveChat"])(payload));
+    },
+    receiveMessage: function receiveMessage(payload) {
+      return dispatch(Object(_actions_chat__WEBPACK_IMPORTED_MODULE_7__["receiveMessage"])(payload));
     }
   };
 };
@@ -1240,7 +1648,7 @@ var mdp = function mdp(dispatch) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js");
 /* harmony import */ var redux_logger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux-logger */ "./node_modules/redux-logger/dist/redux-logger.js");
@@ -4706,21 +5114,67 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /***/ }),
 
+/***/ "./frontend/reducers/chat_friend_map_reducer.js":
+/*!******************************************************!*\
+  !*** ./frontend/reducers/chat_friend_map_reducer.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_chat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/chat */ "./frontend/actions/chat.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHATS"]:
+      return Object.assign({}, state, action.payload.chatFriendMap || {});
+
+    case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHAT"]:
+      var id = action.id,
+          payload = action.payload;
+      var _payload$chatFriendMa = payload.chatFriendMap,
+          senderId = _payload$chatFriendMa.senderId,
+          chatId = _payload$chatFriendMa.chatId,
+          receiverId = _payload$chatFriendMa.receiverId;
+
+      if (id == senderId) {
+        return Object.assign({}, state, _defineProperty({}, receiverId, chatId));
+      } else {
+        return Object.assign({}, state, _defineProperty({}, senderId, chatId));
+      }
+
+    default:
+      return state;
+  }
+});
+
+/***/ }),
+
 /***/ "./frontend/reducers/chat_modal_list_reducer.js":
 /*!******************************************************!*\
   !*** ./frontend/reducers/chat_modal_list_reducer.js ***!
   \******************************************************/
-/*! exports provided: ADD_CHAT_MODAL, REMOVE_CHAT_MODAL, default */
+/*! exports provided: ADD_CHAT_MODAL, REMOVE_CHAT_MODAL, COLLAPSE_CHAT_MODAL, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_CHAT_MODAL", function() { return ADD_CHAT_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_CHAT_MODAL", function() { return REMOVE_CHAT_MODAL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "COLLAPSE_CHAT_MODAL", function() { return COLLAPSE_CHAT_MODAL; });
+/* harmony import */ var _actions_chat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/chat */ "./frontend/actions/chat.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 var ADD_CHAT_MODAL = "ADD_CHAT_MODAL";
 var REMOVE_CHAT_MODAL = "REMOVE_CHAT_MODAL";
+var COLLAPSE_CHAT_MODAL = "COLLAPSE_CHAT_MODAL";
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments.length > 1 ? arguments[1] : undefined;
@@ -4729,10 +5183,22 @@ var REMOVE_CHAT_MODAL = "REMOVE_CHAT_MODAL";
     case ADD_CHAT_MODAL:
       return Object.assign({}, state, _defineProperty({}, action.id, true));
 
+    case COLLAPSE_CHAT_MODAL:
+      return Object.assign({}, state, _defineProperty({}, action.id, false));
+
     case REMOVE_CHAT_MODAL:
       var newState = Object.assign({}, state);
       delete newState[action.id];
       return newState;
+
+    case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHAT"]:
+      var id = action.id,
+          payload = action.payload;
+      var senderId = payload.chatFriendMap.senderId;
+
+      if (id != senderId) {
+        return Object.assign({}, state, _defineProperty({}, senderId, true));
+      }
 
     default:
       return state;
@@ -4752,6 +5218,8 @@ var REMOVE_CHAT_MODAL = "REMOVE_CHAT_MODAL";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OPEN_CHAT_MODAL", function() { return OPEN_CHAT_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_CHAT_MODAL", function() { return CLOSE_CHAT_MODAL; });
+/* harmony import */ var _actions_chat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/chat */ "./frontend/actions/chat.js");
+
 var OPEN_CHAT_MODAL = "OPEN_CHAT_MODAL";
 var CLOSE_CHAT_MODAL = "CLOSE_CHAT_MODAL";
 /* harmony default export */ __webpack_exports__["default"] = (function () {
@@ -4764,6 +5232,9 @@ var CLOSE_CHAT_MODAL = "CLOSE_CHAT_MODAL";
 
     case CLOSE_CHAT_MODAL:
       return false;
+
+    case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHAT"]:
+      return true;
 
     default:
       return state;
@@ -4789,10 +5260,10 @@ __webpack_require__.r(__webpack_exports__);
 
   switch (action.type) {
     case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHATS"]:
-      return action.payload.chats;
+      return action.payload.chats || {};
 
     case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHAT"]:
-      return Object.assign({}, state, action.payload.chat);
+      return Object.assign({}, state, action.payload.chat || {});
 
     default:
       return state;
@@ -4841,7 +5312,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _users_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./users_reducer */ "./frontend/reducers/users_reducer.js");
 /* harmony import */ var _user_id_map_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user_id_map_reducer */ "./frontend/reducers/user_id_map_reducer.js");
 /* harmony import */ var _feed_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./feed_reducer */ "./frontend/reducers/feed_reducer.js");
@@ -4855,6 +5326,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _users_search_reducer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./users_search_reducer */ "./frontend/reducers/users_search_reducer.js");
 /* harmony import */ var _chats_reducer__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./chats_reducer */ "./frontend/reducers/chats_reducer.js");
 /* harmony import */ var _messages_reducer__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./messages_reducer */ "./frontend/reducers/messages_reducer.js");
+/* harmony import */ var _chat_friend_map_reducer__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./chat_friend_map_reducer */ "./frontend/reducers/chat_friend_map_reducer.js");
+/* harmony import */ var _message_chat_map_reducer__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./message_chat_map_reducer */ "./frontend/reducers/message_chat_map_reducer.js");
+
+
 
 
 
@@ -4882,7 +5357,9 @@ __webpack_require__.r(__webpack_exports__);
   friendRequestFrom: _friend_request_from_reducer__WEBPACK_IMPORTED_MODULE_10__["default"],
   search: _users_search_reducer__WEBPACK_IMPORTED_MODULE_11__["default"],
   chats: _chats_reducer__WEBPACK_IMPORTED_MODULE_12__["default"],
-  messages: _messages_reducer__WEBPACK_IMPORTED_MODULE_13__["default"]
+  messages: _messages_reducer__WEBPACK_IMPORTED_MODULE_13__["default"],
+  chatFriendMap: _chat_friend_map_reducer__WEBPACK_IMPORTED_MODULE_14__["default"],
+  messageChatMap: _message_chat_map_reducer__WEBPACK_IMPORTED_MODULE_15__["default"]
 }));
 
 /***/ }),
@@ -5014,7 +5491,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _session_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./session_reducer */ "./frontend/reducers/session_reducer.js");
 /* harmony import */ var _errors_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./errors_reducer */ "./frontend/reducers/errors_reducer.js");
 /* harmony import */ var _entities_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./entities_reducer */ "./frontend/reducers/entities_reducer.js");
@@ -5031,6 +5508,33 @@ __webpack_require__.r(__webpack_exports__);
   errors: _errors_reducer__WEBPACK_IMPORTED_MODULE_2__["default"],
   ui: _ui_reducer__WEBPACK_IMPORTED_MODULE_4__["default"]
 }));
+
+/***/ }),
+
+/***/ "./frontend/reducers/message_chat_map_reducer.js":
+/*!*******************************************************!*\
+  !*** ./frontend/reducers/message_chat_map_reducer.js ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_chat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/chat */ "./frontend/actions/chat.js");
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHATS"]:
+    case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHAT"]:
+      return Object.assign({}, state, action.payload.messageChatMap || {});
+
+    default:
+      return state;
+  }
+});
 
 /***/ }),
 
@@ -5052,9 +5556,8 @@ __webpack_require__.r(__webpack_exports__);
   switch (action.type) {
     case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHATS"]:
     case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_CHAT"]:
-      return action.payload.messages;
+      return Object.assign({}, state, action.payload.messages || {});
 
-    case _actions_chat__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_MESSAGE"]:
     default:
       return state;
   }
@@ -5115,7 +5618,7 @@ __webpack_require__.r(__webpack_exports__);
     case _actions_post__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_POST"]:
     case _actions_post__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_FEED_POSTS"]:
     case _actions_post__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_WALL_POSTS"]:
-      return Object.assign({}, state, action.payload.postCommentMap);
+      return Object.assign({}, state, action.payload.postCommentMap || {});
 
     default:
       return state;
@@ -5231,7 +5734,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _modal_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal_reducer */ "./frontend/reducers/modal_reducer.js");
 /* harmony import */ var _chat_modal_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chat_modal_reducer */ "./frontend/reducers/chat_modal_reducer.js");
 /* harmony import */ var _chat_modal_list_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chat_modal_list_reducer */ "./frontend/reducers/chat_modal_list_reducer.js");
@@ -5387,27 +5890,17 @@ __webpack_require__.r(__webpack_exports__);
 /*!****************************************!*\
   !*** ./frontend/util/chat_api_util.js ***!
   \****************************************/
-/*! exports provided: fetchChats, startChat, sendMessage */
+/*! exports provided: fetchChats, sendMessage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchChats", function() { return fetchChats; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "startChat", function() { return startChat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendMessage", function() { return sendMessage; });
 var fetchChats = function fetchChats() {
   return $.ajax({
     method: 'GET',
     url: "/api/chats"
-  });
-};
-var startChat = function startChat(chat) {
-  return $.ajax({
-    method: "POST",
-    url: "/api/chats",
-    data: {
-      chat: chat
-    }
   });
 };
 var sendMessage = function sendMessage(message) {
@@ -5528,6 +6021,11 @@ var windowState = function windowState(store) {
     return function (action) {
       var state = store.getState();
       window.s = state;
+
+      window.gs = function () {
+        return window.s = store.getState();
+      };
+
       next(action);
     };
   };
@@ -5695,7 +6193,7 @@ var search = function search(query) {
 /*!************************************!*\
   !*** ./frontend/util/selectors.js ***!
   \************************************/
-/*! exports provided: currentUser, userByUserUrl, userByUserId, friendsByUserId, sortFeed, sortPosts, commentsByPostId, userHasRequestedFriendship, userHasRequestFrom, userIsFriendsWith, friendRequests, searchResults, shuffleAndTakeNine, chatList, messagesUnderChatId, friendsOfCurrentUser, openChats */
+/*! exports provided: currentUser, userByUserUrl, userByUserId, friendsByUserId, sortFeed, sortPosts, commentsByPostId, userHasRequestedFriendship, userHasRequestFrom, userIsFriendsWith, friendRequests, searchResults, shuffleAndTakeNine, chatList, messagesUnderChatId, friendsOfCurrentUser, openChats, chatByFriendId, messagesByFriendId */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5717,6 +6215,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "messagesUnderChatId", function() { return messagesUnderChatId; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "friendsOfCurrentUser", function() { return friendsOfCurrentUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "openChats", function() { return openChats; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "chatByFriendId", function() { return chatByFriendId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "messagesByFriendId", function() { return messagesByFriendId; });
 var currentUser = function currentUser(_ref) {
   var entities = _ref.entities,
       session = _ref.session;
@@ -5835,6 +6335,29 @@ var openChats = function openChats(state) {
 
   return allFriendIds.map(function (id) {
     return state.entities.users[id];
+  });
+};
+var chatByFriendId = function chatByFriendId(_ref5, friendId) {
+  var _ref5$entities = _ref5.entities,
+      chatFriendMap = _ref5$entities.chatFriendMap,
+      chats = _ref5$entities.chats;
+  return chats[chatFriendMap[friendId]] || null;
+};
+var messagesByFriendId = function messagesByFriendId(_ref6, friendId) {
+  var entities = _ref6.entities,
+      session = _ref6.session;
+  var messageChatMap = entities.messageChatMap,
+      messages = entities.messages,
+      chatFriendMap = entities.chatFriendMap,
+      users = entities.users;
+  var currentUserId = session.id;
+  var messageIds = messageChatMap[chatFriendMap[friendId]] || [];
+  return messageIds.map(function (id) {
+    var message = messages[id];
+    message.authorImg = users[message.userId].profileImgUrl;
+    var isCurrentUser = message.userId == currentUserId;
+    message.side = isCurrentUser ? "right" : "left";
+    return message;
   });
 };
 
@@ -9065,374 +9588,6 @@ module.exports = invariant;
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/_Symbol.js":
-/*!*******************************************!*\
-  !*** ./node_modules/lodash-es/_Symbol.js ***!
-  \*******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _root_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_root.js */ "./node_modules/lodash-es/_root.js");
-
-
-/** Built-in value references. */
-var Symbol = _root_js__WEBPACK_IMPORTED_MODULE_0__["default"].Symbol;
-
-/* harmony default export */ __webpack_exports__["default"] = (Symbol);
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/_baseGetTag.js":
-/*!***********************************************!*\
-  !*** ./node_modules/lodash-es/_baseGetTag.js ***!
-  \***********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Symbol_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_Symbol.js */ "./node_modules/lodash-es/_Symbol.js");
-/* harmony import */ var _getRawTag_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_getRawTag.js */ "./node_modules/lodash-es/_getRawTag.js");
-/* harmony import */ var _objectToString_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_objectToString.js */ "./node_modules/lodash-es/_objectToString.js");
-
-
-
-
-/** `Object#toString` result references. */
-var nullTag = '[object Null]',
-    undefinedTag = '[object Undefined]';
-
-/** Built-in value references. */
-var symToStringTag = _Symbol_js__WEBPACK_IMPORTED_MODULE_0__["default"] ? _Symbol_js__WEBPACK_IMPORTED_MODULE_0__["default"].toStringTag : undefined;
-
-/**
- * The base implementation of `getTag` without fallbacks for buggy environments.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-function baseGetTag(value) {
-  if (value == null) {
-    return value === undefined ? undefinedTag : nullTag;
-  }
-  return (symToStringTag && symToStringTag in Object(value))
-    ? Object(_getRawTag_js__WEBPACK_IMPORTED_MODULE_1__["default"])(value)
-    : Object(_objectToString_js__WEBPACK_IMPORTED_MODULE_2__["default"])(value);
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (baseGetTag);
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/_freeGlobal.js":
-/*!***********************************************!*\
-  !*** ./node_modules/lodash-es/_freeGlobal.js ***!
-  \***********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
-/* harmony default export */ __webpack_exports__["default"] = (freeGlobal);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/_getPrototype.js":
-/*!*************************************************!*\
-  !*** ./node_modules/lodash-es/_getPrototype.js ***!
-  \*************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _overArg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_overArg.js */ "./node_modules/lodash-es/_overArg.js");
-
-
-/** Built-in value references. */
-var getPrototype = Object(_overArg_js__WEBPACK_IMPORTED_MODULE_0__["default"])(Object.getPrototypeOf, Object);
-
-/* harmony default export */ __webpack_exports__["default"] = (getPrototype);
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/_getRawTag.js":
-/*!**********************************************!*\
-  !*** ./node_modules/lodash-es/_getRawTag.js ***!
-  \**********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Symbol_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_Symbol.js */ "./node_modules/lodash-es/_Symbol.js");
-
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString = objectProto.toString;
-
-/** Built-in value references. */
-var symToStringTag = _Symbol_js__WEBPACK_IMPORTED_MODULE_0__["default"] ? _Symbol_js__WEBPACK_IMPORTED_MODULE_0__["default"].toStringTag : undefined;
-
-/**
- * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the raw `toStringTag`.
- */
-function getRawTag(value) {
-  var isOwn = hasOwnProperty.call(value, symToStringTag),
-      tag = value[symToStringTag];
-
-  try {
-    value[symToStringTag] = undefined;
-    var unmasked = true;
-  } catch (e) {}
-
-  var result = nativeObjectToString.call(value);
-  if (unmasked) {
-    if (isOwn) {
-      value[symToStringTag] = tag;
-    } else {
-      delete value[symToStringTag];
-    }
-  }
-  return result;
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (getRawTag);
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/_objectToString.js":
-/*!***************************************************!*\
-  !*** ./node_modules/lodash-es/_objectToString.js ***!
-  \***************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString = objectProto.toString;
-
-/**
- * Converts `value` to a string using `Object.prototype.toString`.
- *
- * @private
- * @param {*} value The value to convert.
- * @returns {string} Returns the converted string.
- */
-function objectToString(value) {
-  return nativeObjectToString.call(value);
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (objectToString);
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/_overArg.js":
-/*!********************************************!*\
-  !*** ./node_modules/lodash-es/_overArg.js ***!
-  \********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/**
- * Creates a unary function that invokes `func` with its argument transformed.
- *
- * @private
- * @param {Function} func The function to wrap.
- * @param {Function} transform The argument transform.
- * @returns {Function} Returns the new function.
- */
-function overArg(func, transform) {
-  return function(arg) {
-    return func(transform(arg));
-  };
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (overArg);
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/_root.js":
-/*!*****************************************!*\
-  !*** ./node_modules/lodash-es/_root.js ***!
-  \*****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _freeGlobal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_freeGlobal.js */ "./node_modules/lodash-es/_freeGlobal.js");
-
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = _freeGlobal_js__WEBPACK_IMPORTED_MODULE_0__["default"] || freeSelf || Function('return this')();
-
-/* harmony default export */ __webpack_exports__["default"] = (root);
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/isObjectLike.js":
-/*!************************************************!*\
-  !*** ./node_modules/lodash-es/isObjectLike.js ***!
-  \************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (isObjectLike);
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash-es/isPlainObject.js":
-/*!*************************************************!*\
-  !*** ./node_modules/lodash-es/isPlainObject.js ***!
-  \*************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _baseGetTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_baseGetTag.js */ "./node_modules/lodash-es/_baseGetTag.js");
-/* harmony import */ var _getPrototype_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_getPrototype.js */ "./node_modules/lodash-es/_getPrototype.js");
-/* harmony import */ var _isObjectLike_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./isObjectLike.js */ "./node_modules/lodash-es/isObjectLike.js");
-
-
-
-
-/** `Object#toString` result references. */
-var objectTag = '[object Object]';
-
-/** Used for built-in method references. */
-var funcProto = Function.prototype,
-    objectProto = Object.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var funcToString = funcProto.toString;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/** Used to infer the `Object` constructor. */
-var objectCtorString = funcToString.call(Object);
-
-/**
- * Checks if `value` is a plain object, that is, an object created by the
- * `Object` constructor or one with a `[[Prototype]]` of `null`.
- *
- * @static
- * @memberOf _
- * @since 0.8.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
- * @example
- *
- * function Foo() {
- *   this.a = 1;
- * }
- *
- * _.isPlainObject(new Foo);
- * // => false
- *
- * _.isPlainObject([1, 2, 3]);
- * // => false
- *
- * _.isPlainObject({ 'x': 0, 'y': 0 });
- * // => true
- *
- * _.isPlainObject(Object.create(null));
- * // => true
- */
-function isPlainObject(value) {
-  if (!Object(_isObjectLike_js__WEBPACK_IMPORTED_MODULE_2__["default"])(value) || Object(_baseGetTag_js__WEBPACK_IMPORTED_MODULE_0__["default"])(value) != objectTag) {
-    return false;
-  }
-  var proto = Object(_getPrototype_js__WEBPACK_IMPORTED_MODULE_1__["default"])(value);
-  if (proto === null) {
-    return true;
-  }
-  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
-  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
-    funcToString.call(Ctor) == objectCtorString;
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (isPlainObject);
 
 
 /***/ }),
@@ -38725,7 +38880,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "whenMapDispatchToPropsIsFunction", function() { return whenMapDispatchToPropsIsFunction; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "whenMapDispatchToPropsIsMissing", function() { return whenMapDispatchToPropsIsMissing; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "whenMapDispatchToPropsIsObject", function() { return whenMapDispatchToPropsIsObject; });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _wrapMapToProps__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./wrapMapToProps */ "./node_modules/react-redux/es/connect/wrapMapToProps.js");
 
 
@@ -43086,333 +43241,22 @@ thunk.withExtraArgument = createThunkMiddleware;
 
 /***/ }),
 
-/***/ "./node_modules/redux/es/applyMiddleware.js":
-/*!**************************************************!*\
-  !*** ./node_modules/redux/es/applyMiddleware.js ***!
-  \**************************************************/
-/*! exports provided: default */
+/***/ "./node_modules/redux/es/redux.js":
+/*!****************************************!*\
+  !*** ./node_modules/redux/es/redux.js ***!
+  \****************************************/
+/*! exports provided: __DO_NOT_USE__ActionTypes, applyMiddleware, bindActionCreators, combineReducers, compose, createStore */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return applyMiddleware; });
-/* harmony import */ var _compose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./compose */ "./node_modules/redux/es/compose.js");
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-/**
- * Creates a store enhancer that applies middleware to the dispatch method
- * of the Redux store. This is handy for a variety of tasks, such as expressing
- * asynchronous actions in a concise manner, or logging every action payload.
- *
- * See `redux-thunk` package as an example of the Redux middleware.
- *
- * Because middleware is potentially asynchronous, this should be the first
- * store enhancer in the composition chain.
- *
- * Note that each middleware will be given the `dispatch` and `getState` functions
- * as named arguments.
- *
- * @param {...Function} middlewares The middleware chain to be applied.
- * @returns {Function} A store enhancer applying the middleware.
- */
-function applyMiddleware() {
-  for (var _len = arguments.length, middlewares = Array(_len), _key = 0; _key < _len; _key++) {
-    middlewares[_key] = arguments[_key];
-  }
-
-  return function (createStore) {
-    return function (reducer, preloadedState, enhancer) {
-      var store = createStore(reducer, preloadedState, enhancer);
-      var _dispatch = store.dispatch;
-      var chain = [];
-
-      var middlewareAPI = {
-        getState: store.getState,
-        dispatch: function dispatch(action) {
-          return _dispatch(action);
-        }
-      };
-      chain = middlewares.map(function (middleware) {
-        return middleware(middlewareAPI);
-      });
-      _dispatch = _compose__WEBPACK_IMPORTED_MODULE_0__["default"].apply(undefined, chain)(store.dispatch);
-
-      return _extends({}, store, {
-        dispatch: _dispatch
-      });
-    };
-  };
-}
-
-/***/ }),
-
-/***/ "./node_modules/redux/es/bindActionCreators.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/redux/es/bindActionCreators.js ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return bindActionCreators; });
-function bindActionCreator(actionCreator, dispatch) {
-  return function () {
-    return dispatch(actionCreator.apply(undefined, arguments));
-  };
-}
-
-/**
- * Turns an object whose values are action creators, into an object with the
- * same keys, but with every function wrapped into a `dispatch` call so they
- * may be invoked directly. This is just a convenience method, as you can call
- * `store.dispatch(MyActionCreators.doSomething())` yourself just fine.
- *
- * For convenience, you can also pass a single function as the first argument,
- * and get a function in return.
- *
- * @param {Function|Object} actionCreators An object whose values are action
- * creator functions. One handy way to obtain it is to use ES6 `import * as`
- * syntax. You may also pass a single function.
- *
- * @param {Function} dispatch The `dispatch` function available on your Redux
- * store.
- *
- * @returns {Function|Object} The object mimicking the original object, but with
- * every action creator wrapped into the `dispatch` call. If you passed a
- * function as `actionCreators`, the return value will also be a single
- * function.
- */
-function bindActionCreators(actionCreators, dispatch) {
-  if (typeof actionCreators === 'function') {
-    return bindActionCreator(actionCreators, dispatch);
-  }
-
-  if (typeof actionCreators !== 'object' || actionCreators === null) {
-    throw new Error('bindActionCreators expected an object or a function, instead received ' + (actionCreators === null ? 'null' : typeof actionCreators) + '. ' + 'Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?');
-  }
-
-  var keys = Object.keys(actionCreators);
-  var boundActionCreators = {};
-  for (var i = 0; i < keys.length; i++) {
-    var key = keys[i];
-    var actionCreator = actionCreators[key];
-    if (typeof actionCreator === 'function') {
-      boundActionCreators[key] = bindActionCreator(actionCreator, dispatch);
-    }
-  }
-  return boundActionCreators;
-}
-
-/***/ }),
-
-/***/ "./node_modules/redux/es/combineReducers.js":
-/*!**************************************************!*\
-  !*** ./node_modules/redux/es/combineReducers.js ***!
-  \**************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return combineReducers; });
-/* harmony import */ var _createStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createStore */ "./node_modules/redux/es/createStore.js");
-/* harmony import */ var lodash_es_isPlainObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash-es/isPlainObject */ "./node_modules/lodash-es/isPlainObject.js");
-/* harmony import */ var _utils_warning__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/warning */ "./node_modules/redux/es/utils/warning.js");
-
-
-
-
-function getUndefinedStateErrorMessage(key, action) {
-  var actionType = action && action.type;
-  var actionName = actionType && '"' + actionType.toString() + '"' || 'an action';
-
-  return 'Given action ' + actionName + ', reducer "' + key + '" returned undefined. ' + 'To ignore an action, you must explicitly return the previous state. ' + 'If you want this reducer to hold no value, you can return null instead of undefined.';
-}
-
-function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, unexpectedKeyCache) {
-  var reducerKeys = Object.keys(reducers);
-  var argumentName = action && action.type === _createStore__WEBPACK_IMPORTED_MODULE_0__["ActionTypes"].INIT ? 'preloadedState argument passed to createStore' : 'previous state received by the reducer';
-
-  if (reducerKeys.length === 0) {
-    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
-  }
-
-  if (!Object(lodash_es_isPlainObject__WEBPACK_IMPORTED_MODULE_1__["default"])(inputState)) {
-    return 'The ' + argumentName + ' has unexpected type of "' + {}.toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
-  }
-
-  var unexpectedKeys = Object.keys(inputState).filter(function (key) {
-    return !reducers.hasOwnProperty(key) && !unexpectedKeyCache[key];
-  });
-
-  unexpectedKeys.forEach(function (key) {
-    unexpectedKeyCache[key] = true;
-  });
-
-  if (unexpectedKeys.length > 0) {
-    return 'Unexpected ' + (unexpectedKeys.length > 1 ? 'keys' : 'key') + ' ' + ('"' + unexpectedKeys.join('", "') + '" found in ' + argumentName + '. ') + 'Expected to find one of the known reducer keys instead: ' + ('"' + reducerKeys.join('", "') + '". Unexpected keys will be ignored.');
-  }
-}
-
-function assertReducerShape(reducers) {
-  Object.keys(reducers).forEach(function (key) {
-    var reducer = reducers[key];
-    var initialState = reducer(undefined, { type: _createStore__WEBPACK_IMPORTED_MODULE_0__["ActionTypes"].INIT });
-
-    if (typeof initialState === 'undefined') {
-      throw new Error('Reducer "' + key + '" returned undefined during initialization. ' + 'If the state passed to the reducer is undefined, you must ' + 'explicitly return the initial state. The initial state may ' + 'not be undefined. If you don\'t want to set a value for this reducer, ' + 'you can use null instead of undefined.');
-    }
-
-    var type = '@@redux/PROBE_UNKNOWN_ACTION_' + Math.random().toString(36).substring(7).split('').join('.');
-    if (typeof reducer(undefined, { type: type }) === 'undefined') {
-      throw new Error('Reducer "' + key + '" returned undefined when probed with a random type. ' + ('Don\'t try to handle ' + _createStore__WEBPACK_IMPORTED_MODULE_0__["ActionTypes"].INIT + ' or other actions in "redux/*" ') + 'namespace. They are considered private. Instead, you must return the ' + 'current state for any unknown actions, unless it is undefined, ' + 'in which case you must return the initial state, regardless of the ' + 'action type. The initial state may not be undefined, but can be null.');
-    }
-  });
-}
-
-/**
- * Turns an object whose values are different reducer functions, into a single
- * reducer function. It will call every child reducer, and gather their results
- * into a single state object, whose keys correspond to the keys of the passed
- * reducer functions.
- *
- * @param {Object} reducers An object whose values correspond to different
- * reducer functions that need to be combined into one. One handy way to obtain
- * it is to use ES6 `import * as reducers` syntax. The reducers may never return
- * undefined for any action. Instead, they should return their initial state
- * if the state passed to them was undefined, and the current state for any
- * unrecognized action.
- *
- * @returns {Function} A reducer function that invokes every reducer inside the
- * passed object, and builds a state object with the same shape.
- */
-function combineReducers(reducers) {
-  var reducerKeys = Object.keys(reducers);
-  var finalReducers = {};
-  for (var i = 0; i < reducerKeys.length; i++) {
-    var key = reducerKeys[i];
-
-    if (true) {
-      if (typeof reducers[key] === 'undefined') {
-        Object(_utils_warning__WEBPACK_IMPORTED_MODULE_2__["default"])('No reducer provided for key "' + key + '"');
-      }
-    }
-
-    if (typeof reducers[key] === 'function') {
-      finalReducers[key] = reducers[key];
-    }
-  }
-  var finalReducerKeys = Object.keys(finalReducers);
-
-  var unexpectedKeyCache = void 0;
-  if (true) {
-    unexpectedKeyCache = {};
-  }
-
-  var shapeAssertionError = void 0;
-  try {
-    assertReducerShape(finalReducers);
-  } catch (e) {
-    shapeAssertionError = e;
-  }
-
-  return function combination() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var action = arguments[1];
-
-    if (shapeAssertionError) {
-      throw shapeAssertionError;
-    }
-
-    if (true) {
-      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
-      if (warningMessage) {
-        Object(_utils_warning__WEBPACK_IMPORTED_MODULE_2__["default"])(warningMessage);
-      }
-    }
-
-    var hasChanged = false;
-    var nextState = {};
-    for (var _i = 0; _i < finalReducerKeys.length; _i++) {
-      var _key = finalReducerKeys[_i];
-      var reducer = finalReducers[_key];
-      var previousStateForKey = state[_key];
-      var nextStateForKey = reducer(previousStateForKey, action);
-      if (typeof nextStateForKey === 'undefined') {
-        var errorMessage = getUndefinedStateErrorMessage(_key, action);
-        throw new Error(errorMessage);
-      }
-      nextState[_key] = nextStateForKey;
-      hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
-    }
-    return hasChanged ? nextState : state;
-  };
-}
-
-/***/ }),
-
-/***/ "./node_modules/redux/es/compose.js":
-/*!******************************************!*\
-  !*** ./node_modules/redux/es/compose.js ***!
-  \******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return compose; });
-/**
- * Composes single-argument functions from right to left. The rightmost
- * function can take multiple arguments as it provides the signature for
- * the resulting composite function.
- *
- * @param {...Function} funcs The functions to compose.
- * @returns {Function} A function obtained by composing the argument functions
- * from right to left. For example, compose(f, g, h) is identical to doing
- * (...args) => f(g(h(...args))).
- */
-
-function compose() {
-  for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
-    funcs[_key] = arguments[_key];
-  }
-
-  if (funcs.length === 0) {
-    return function (arg) {
-      return arg;
-    };
-  }
-
-  if (funcs.length === 1) {
-    return funcs[0];
-  }
-
-  return funcs.reduce(function (a, b) {
-    return function () {
-      return a(b.apply(undefined, arguments));
-    };
-  });
-}
-
-/***/ }),
-
-/***/ "./node_modules/redux/es/createStore.js":
-/*!**********************************************!*\
-  !*** ./node_modules/redux/es/createStore.js ***!
-  \**********************************************/
-/*! exports provided: ActionTypes, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActionTypes", function() { return ActionTypes; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return createStore; });
-/* harmony import */ var lodash_es_isPlainObject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash-es/isPlainObject */ "./node_modules/lodash-es/isPlainObject.js");
-/* harmony import */ var symbol_observable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! symbol-observable */ "./node_modules/symbol-observable/es/index.js");
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__DO_NOT_USE__ActionTypes", function() { return ActionTypes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyMiddleware", function() { return applyMiddleware; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bindActionCreators", function() { return bindActionCreators; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "combineReducers", function() { return combineReducers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "compose", function() { return compose; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createStore", function() { return createStore; });
+/* harmony import */ var symbol_observable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! symbol-observable */ "./node_modules/symbol-observable/es/index.js");
 
 
 /**
@@ -43421,36 +43265,65 @@ __webpack_require__.r(__webpack_exports__);
  * If the current state is undefined, you must return the initial state.
  * Do not reference these action types directly in your code.
  */
-var ActionTypes = {
-  INIT: '@@redux/INIT'
+var randomString = function randomString() {
+  return Math.random().toString(36).substring(7).split('').join('.');
+};
 
-  /**
-   * Creates a Redux store that holds the state tree.
-   * The only way to change the data in the store is to call `dispatch()` on it.
-   *
-   * There should only be a single store in your app. To specify how different
-   * parts of the state tree respond to actions, you may combine several reducers
-   * into a single reducer function by using `combineReducers`.
-   *
-   * @param {Function} reducer A function that returns the next state tree, given
-   * the current state tree and the action to handle.
-   *
-   * @param {any} [preloadedState] The initial state. You may optionally specify it
-   * to hydrate the state from the server in universal apps, or to restore a
-   * previously serialized user session.
-   * If you use `combineReducers` to produce the root reducer function, this must be
-   * an object with the same shape as `combineReducers` keys.
-   *
-   * @param {Function} [enhancer] The store enhancer. You may optionally specify it
-   * to enhance the store with third-party capabilities such as middleware,
-   * time travel, persistence, etc. The only store enhancer that ships with Redux
-   * is `applyMiddleware()`.
-   *
-   * @returns {Store} A Redux store that lets you read the state, dispatch actions
-   * and subscribe to changes.
-   */
-};function createStore(reducer, preloadedState, enhancer) {
+var ActionTypes = {
+  INIT: "@@redux/INIT" + randomString(),
+  REPLACE: "@@redux/REPLACE" + randomString(),
+  PROBE_UNKNOWN_ACTION: function PROBE_UNKNOWN_ACTION() {
+    return "@@redux/PROBE_UNKNOWN_ACTION" + randomString();
+  }
+};
+
+/**
+ * @param {any} obj The object to inspect.
+ * @returns {boolean} True if the argument appears to be a plain object.
+ */
+function isPlainObject(obj) {
+  if (typeof obj !== 'object' || obj === null) return false;
+  var proto = obj;
+
+  while (Object.getPrototypeOf(proto) !== null) {
+    proto = Object.getPrototypeOf(proto);
+  }
+
+  return Object.getPrototypeOf(obj) === proto;
+}
+
+/**
+ * Creates a Redux store that holds the state tree.
+ * The only way to change the data in the store is to call `dispatch()` on it.
+ *
+ * There should only be a single store in your app. To specify how different
+ * parts of the state tree respond to actions, you may combine several reducers
+ * into a single reducer function by using `combineReducers`.
+ *
+ * @param {Function} reducer A function that returns the next state tree, given
+ * the current state tree and the action to handle.
+ *
+ * @param {any} [preloadedState] The initial state. You may optionally specify it
+ * to hydrate the state from the server in universal apps, or to restore a
+ * previously serialized user session.
+ * If you use `combineReducers` to produce the root reducer function, this must be
+ * an object with the same shape as `combineReducers` keys.
+ *
+ * @param {Function} [enhancer] The store enhancer. You may optionally specify it
+ * to enhance the store with third-party capabilities such as middleware,
+ * time travel, persistence, etc. The only store enhancer that ships with Redux
+ * is `applyMiddleware()`.
+ *
+ * @returns {Store} A Redux store that lets you read the state, dispatch actions
+ * and subscribe to changes.
+ */
+
+function createStore(reducer, preloadedState, enhancer) {
   var _ref2;
+
+  if (typeof preloadedState === 'function' && typeof enhancer === 'function' || typeof enhancer === 'function' && typeof arguments[3] === 'function') {
+    throw new Error('It looks like you are passing several store enhancers to ' + 'createStore(). This is not supported. Instead, compose them ' + 'together to a single function.');
+  }
 
   if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
     enhancer = preloadedState;
@@ -43474,22 +43347,33 @@ var ActionTypes = {
   var currentListeners = [];
   var nextListeners = currentListeners;
   var isDispatching = false;
+  /**
+   * This makes a shallow copy of currentListeners so we can use
+   * nextListeners as a temporary list while dispatching.
+   *
+   * This prevents any bugs around consumers calling
+   * subscribe/unsubscribe in the middle of a dispatch.
+   */
 
   function ensureCanMutateNextListeners() {
     if (nextListeners === currentListeners) {
       nextListeners = currentListeners.slice();
     }
   }
-
   /**
    * Reads the state tree managed by the store.
    *
    * @returns {any} The current state tree of your application.
    */
+
+
   function getState() {
+    if (isDispatching) {
+      throw new Error('You may not call store.getState() while the reducer is executing. ' + 'The reducer has already received the state as an argument. ' + 'Pass it down from the top reducer instead of reading it from the store.');
+    }
+
     return currentState;
   }
-
   /**
    * Adds a change listener. It will be called any time an action is dispatched,
    * and some part of the state tree may potentially have changed. You may then
@@ -43513,29 +43397,35 @@ var ActionTypes = {
    * @param {Function} listener A callback to be invoked on every dispatch.
    * @returns {Function} A function to remove this change listener.
    */
+
+
   function subscribe(listener) {
     if (typeof listener !== 'function') {
-      throw new Error('Expected listener to be a function.');
+      throw new Error('Expected the listener to be a function.');
+    }
+
+    if (isDispatching) {
+      throw new Error('You may not call store.subscribe() while the reducer is executing. ' + 'If you would like to be notified after the store has been updated, subscribe from a ' + 'component and invoke store.getState() in the callback to access the latest state. ' + 'See https://redux.js.org/api-reference/store#subscribe(listener) for more details.');
     }
 
     var isSubscribed = true;
-
     ensureCanMutateNextListeners();
     nextListeners.push(listener);
-
     return function unsubscribe() {
       if (!isSubscribed) {
         return;
       }
 
-      isSubscribed = false;
+      if (isDispatching) {
+        throw new Error('You may not unsubscribe from a store listener while the reducer is executing. ' + 'See https://redux.js.org/api-reference/store#subscribe(listener) for more details.');
+      }
 
+      isSubscribed = false;
       ensureCanMutateNextListeners();
       var index = nextListeners.indexOf(listener);
       nextListeners.splice(index, 1);
     };
   }
-
   /**
    * Dispatches an action. It is the only way to trigger a state change.
    *
@@ -43561,8 +43451,10 @@ var ActionTypes = {
    * Note that, if you use a custom middleware, it may wrap `dispatch()` to
    * return something else (for example, a Promise you can await).
    */
+
+
   function dispatch(action) {
-    if (!Object(lodash_es_isPlainObject__WEBPACK_IMPORTED_MODULE_0__["default"])(action)) {
+    if (!isPlainObject(action)) {
       throw new Error('Actions must be plain objects. ' + 'Use custom middleware for async actions.');
     }
 
@@ -43582,6 +43474,7 @@ var ActionTypes = {
     }
 
     var listeners = currentListeners = nextListeners;
+
     for (var i = 0; i < listeners.length; i++) {
       var listener = listeners[i];
       listener();
@@ -43589,7 +43482,6 @@ var ActionTypes = {
 
     return action;
   }
-
   /**
    * Replaces the reducer currently used by the store to calculate the state.
    *
@@ -43600,21 +43492,30 @@ var ActionTypes = {
    * @param {Function} nextReducer The reducer for the store to use instead.
    * @returns {void}
    */
+
+
   function replaceReducer(nextReducer) {
     if (typeof nextReducer !== 'function') {
       throw new Error('Expected the nextReducer to be a function.');
     }
 
-    currentReducer = nextReducer;
-    dispatch({ type: ActionTypes.INIT });
-  }
+    currentReducer = nextReducer; // This action has a similiar effect to ActionTypes.INIT.
+    // Any reducers that existed in both the new and old rootReducer
+    // will receive the previous state. This effectively populates
+    // the new state tree with any relevant data from the old one.
 
+    dispatch({
+      type: ActionTypes.REPLACE
+    });
+  }
   /**
    * Interoperability point for observable/reactive libraries.
    * @returns {observable} A minimal observable of state changes.
    * For more information, see the observable proposal:
    * https://github.com/tc39/proposal-observable
    */
+
+
   function observable() {
     var _ref;
 
@@ -43629,7 +43530,7 @@ var ActionTypes = {
        * emission of values from the observable.
        */
       subscribe: function subscribe(observer) {
-        if (typeof observer !== 'object') {
+        if (typeof observer !== 'object' || observer === null) {
           throw new TypeError('Expected the observer to be an object.');
         }
 
@@ -43641,84 +43542,29 @@ var ActionTypes = {
 
         observeState();
         var unsubscribe = outerSubscribe(observeState);
-        return { unsubscribe: unsubscribe };
+        return {
+          unsubscribe: unsubscribe
+        };
       }
-    }, _ref[symbol_observable__WEBPACK_IMPORTED_MODULE_1__["default"]] = function () {
+    }, _ref[symbol_observable__WEBPACK_IMPORTED_MODULE_0__["default"]] = function () {
       return this;
     }, _ref;
-  }
-
-  // When a store is created, an "INIT" action is dispatched so that every
+  } // When a store is created, an "INIT" action is dispatched so that every
   // reducer returns their initial state. This effectively populates
   // the initial state tree.
-  dispatch({ type: ActionTypes.INIT });
 
+
+  dispatch({
+    type: ActionTypes.INIT
+  });
   return _ref2 = {
     dispatch: dispatch,
     subscribe: subscribe,
     getState: getState,
     replaceReducer: replaceReducer
-  }, _ref2[symbol_observable__WEBPACK_IMPORTED_MODULE_1__["default"]] = observable, _ref2;
+  }, _ref2[symbol_observable__WEBPACK_IMPORTED_MODULE_0__["default"]] = observable, _ref2;
 }
 
-/***/ }),
-
-/***/ "./node_modules/redux/es/index.js":
-/*!****************************************!*\
-  !*** ./node_modules/redux/es/index.js ***!
-  \****************************************/
-/*! exports provided: createStore, combineReducers, bindActionCreators, applyMiddleware, compose */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _createStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createStore */ "./node_modules/redux/es/createStore.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createStore", function() { return _createStore__WEBPACK_IMPORTED_MODULE_0__["default"]; });
-
-/* harmony import */ var _combineReducers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./combineReducers */ "./node_modules/redux/es/combineReducers.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "combineReducers", function() { return _combineReducers__WEBPACK_IMPORTED_MODULE_1__["default"]; });
-
-/* harmony import */ var _bindActionCreators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bindActionCreators */ "./node_modules/redux/es/bindActionCreators.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "bindActionCreators", function() { return _bindActionCreators__WEBPACK_IMPORTED_MODULE_2__["default"]; });
-
-/* harmony import */ var _applyMiddleware__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./applyMiddleware */ "./node_modules/redux/es/applyMiddleware.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "applyMiddleware", function() { return _applyMiddleware__WEBPACK_IMPORTED_MODULE_3__["default"]; });
-
-/* harmony import */ var _compose__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./compose */ "./node_modules/redux/es/compose.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "compose", function() { return _compose__WEBPACK_IMPORTED_MODULE_4__["default"]; });
-
-/* harmony import */ var _utils_warning__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/warning */ "./node_modules/redux/es/utils/warning.js");
-
-
-
-
-
-
-
-/*
-* This is a dummy function to check if the function name has been altered by minification.
-* If the function has been minified and NODE_ENV !== 'production', warn the user.
-*/
-function isCrushed() {}
-
-if ( true && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
-  Object(_utils_warning__WEBPACK_IMPORTED_MODULE_5__["default"])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
-}
-
-
-
-/***/ }),
-
-/***/ "./node_modules/redux/es/utils/warning.js":
-/*!************************************************!*\
-  !*** ./node_modules/redux/es/utils/warning.js ***!
-  \************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return warning; });
 /**
  * Prints a warning in the console if it exists.
  *
@@ -43731,15 +43577,348 @@ function warning(message) {
     console.error(message);
   }
   /* eslint-enable no-console */
+
+
   try {
     // This error was thrown as a convenience so that if you enable
     // "break on all exceptions" in your console,
     // it would pause the execution at this line.
     throw new Error(message);
-    /* eslint-disable no-empty */
-  } catch (e) {}
-  /* eslint-enable no-empty */
+  } catch (e) {} // eslint-disable-line no-empty
+
 }
+
+function getUndefinedStateErrorMessage(key, action) {
+  var actionType = action && action.type;
+  var actionDescription = actionType && "action \"" + String(actionType) + "\"" || 'an action';
+  return "Given " + actionDescription + ", reducer \"" + key + "\" returned undefined. " + "To ignore an action, you must explicitly return the previous state. " + "If you want this reducer to hold no value, you can return null instead of undefined.";
+}
+
+function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, unexpectedKeyCache) {
+  var reducerKeys = Object.keys(reducers);
+  var argumentName = action && action.type === ActionTypes.INIT ? 'preloadedState argument passed to createStore' : 'previous state received by the reducer';
+
+  if (reducerKeys.length === 0) {
+    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
+  }
+
+  if (!isPlainObject(inputState)) {
+    return "The " + argumentName + " has unexpected type of \"" + {}.toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + "\". Expected argument to be an object with the following " + ("keys: \"" + reducerKeys.join('", "') + "\"");
+  }
+
+  var unexpectedKeys = Object.keys(inputState).filter(function (key) {
+    return !reducers.hasOwnProperty(key) && !unexpectedKeyCache[key];
+  });
+  unexpectedKeys.forEach(function (key) {
+    unexpectedKeyCache[key] = true;
+  });
+  if (action && action.type === ActionTypes.REPLACE) return;
+
+  if (unexpectedKeys.length > 0) {
+    return "Unexpected " + (unexpectedKeys.length > 1 ? 'keys' : 'key') + " " + ("\"" + unexpectedKeys.join('", "') + "\" found in " + argumentName + ". ") + "Expected to find one of the known reducer keys instead: " + ("\"" + reducerKeys.join('", "') + "\". Unexpected keys will be ignored.");
+  }
+}
+
+function assertReducerShape(reducers) {
+  Object.keys(reducers).forEach(function (key) {
+    var reducer = reducers[key];
+    var initialState = reducer(undefined, {
+      type: ActionTypes.INIT
+    });
+
+    if (typeof initialState === 'undefined') {
+      throw new Error("Reducer \"" + key + "\" returned undefined during initialization. " + "If the state passed to the reducer is undefined, you must " + "explicitly return the initial state. The initial state may " + "not be undefined. If you don't want to set a value for this reducer, " + "you can use null instead of undefined.");
+    }
+
+    if (typeof reducer(undefined, {
+      type: ActionTypes.PROBE_UNKNOWN_ACTION()
+    }) === 'undefined') {
+      throw new Error("Reducer \"" + key + "\" returned undefined when probed with a random type. " + ("Don't try to handle " + ActionTypes.INIT + " or other actions in \"redux/*\" ") + "namespace. They are considered private. Instead, you must return the " + "current state for any unknown actions, unless it is undefined, " + "in which case you must return the initial state, regardless of the " + "action type. The initial state may not be undefined, but can be null.");
+    }
+  });
+}
+/**
+ * Turns an object whose values are different reducer functions, into a single
+ * reducer function. It will call every child reducer, and gather their results
+ * into a single state object, whose keys correspond to the keys of the passed
+ * reducer functions.
+ *
+ * @param {Object} reducers An object whose values correspond to different
+ * reducer functions that need to be combined into one. One handy way to obtain
+ * it is to use ES6 `import * as reducers` syntax. The reducers may never return
+ * undefined for any action. Instead, they should return their initial state
+ * if the state passed to them was undefined, and the current state for any
+ * unrecognized action.
+ *
+ * @returns {Function} A reducer function that invokes every reducer inside the
+ * passed object, and builds a state object with the same shape.
+ */
+
+
+function combineReducers(reducers) {
+  var reducerKeys = Object.keys(reducers);
+  var finalReducers = {};
+
+  for (var i = 0; i < reducerKeys.length; i++) {
+    var key = reducerKeys[i];
+
+    if (true) {
+      if (typeof reducers[key] === 'undefined') {
+        warning("No reducer provided for key \"" + key + "\"");
+      }
+    }
+
+    if (typeof reducers[key] === 'function') {
+      finalReducers[key] = reducers[key];
+    }
+  }
+
+  var finalReducerKeys = Object.keys(finalReducers); // This is used to make sure we don't warn about the same
+  // keys multiple times.
+
+  var unexpectedKeyCache;
+
+  if (true) {
+    unexpectedKeyCache = {};
+  }
+
+  var shapeAssertionError;
+
+  try {
+    assertReducerShape(finalReducers);
+  } catch (e) {
+    shapeAssertionError = e;
+  }
+
+  return function combination(state, action) {
+    if (state === void 0) {
+      state = {};
+    }
+
+    if (shapeAssertionError) {
+      throw shapeAssertionError;
+    }
+
+    if (true) {
+      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
+
+      if (warningMessage) {
+        warning(warningMessage);
+      }
+    }
+
+    var hasChanged = false;
+    var nextState = {};
+
+    for (var _i = 0; _i < finalReducerKeys.length; _i++) {
+      var _key = finalReducerKeys[_i];
+      var reducer = finalReducers[_key];
+      var previousStateForKey = state[_key];
+      var nextStateForKey = reducer(previousStateForKey, action);
+
+      if (typeof nextStateForKey === 'undefined') {
+        var errorMessage = getUndefinedStateErrorMessage(_key, action);
+        throw new Error(errorMessage);
+      }
+
+      nextState[_key] = nextStateForKey;
+      hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
+    }
+
+    return hasChanged ? nextState : state;
+  };
+}
+
+function bindActionCreator(actionCreator, dispatch) {
+  return function () {
+    return dispatch(actionCreator.apply(this, arguments));
+  };
+}
+/**
+ * Turns an object whose values are action creators, into an object with the
+ * same keys, but with every function wrapped into a `dispatch` call so they
+ * may be invoked directly. This is just a convenience method, as you can call
+ * `store.dispatch(MyActionCreators.doSomething())` yourself just fine.
+ *
+ * For convenience, you can also pass an action creator as the first argument,
+ * and get a dispatch wrapped function in return.
+ *
+ * @param {Function|Object} actionCreators An object whose values are action
+ * creator functions. One handy way to obtain it is to use ES6 `import * as`
+ * syntax. You may also pass a single function.
+ *
+ * @param {Function} dispatch The `dispatch` function available on your Redux
+ * store.
+ *
+ * @returns {Function|Object} The object mimicking the original object, but with
+ * every action creator wrapped into the `dispatch` call. If you passed a
+ * function as `actionCreators`, the return value will also be a single
+ * function.
+ */
+
+
+function bindActionCreators(actionCreators, dispatch) {
+  if (typeof actionCreators === 'function') {
+    return bindActionCreator(actionCreators, dispatch);
+  }
+
+  if (typeof actionCreators !== 'object' || actionCreators === null) {
+    throw new Error("bindActionCreators expected an object or a function, instead received " + (actionCreators === null ? 'null' : typeof actionCreators) + ". " + "Did you write \"import ActionCreators from\" instead of \"import * as ActionCreators from\"?");
+  }
+
+  var boundActionCreators = {};
+
+  for (var key in actionCreators) {
+    var actionCreator = actionCreators[key];
+
+    if (typeof actionCreator === 'function') {
+      boundActionCreators[key] = bindActionCreator(actionCreator, dispatch);
+    }
+  }
+
+  return boundActionCreators;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    keys.push.apply(keys, Object.getOwnPropertySymbols(object));
+  }
+
+  if (enumerableOnly) keys = keys.filter(function (sym) {
+    return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+  });
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(source, true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(source).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+/**
+ * Composes single-argument functions from right to left. The rightmost
+ * function can take multiple arguments as it provides the signature for
+ * the resulting composite function.
+ *
+ * @param {...Function} funcs The functions to compose.
+ * @returns {Function} A function obtained by composing the argument functions
+ * from right to left. For example, compose(f, g, h) is identical to doing
+ * (...args) => f(g(h(...args))).
+ */
+function compose() {
+  for (var _len = arguments.length, funcs = new Array(_len), _key = 0; _key < _len; _key++) {
+    funcs[_key] = arguments[_key];
+  }
+
+  if (funcs.length === 0) {
+    return function (arg) {
+      return arg;
+    };
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0];
+  }
+
+  return funcs.reduce(function (a, b) {
+    return function () {
+      return a(b.apply(void 0, arguments));
+    };
+  });
+}
+
+/**
+ * Creates a store enhancer that applies middleware to the dispatch method
+ * of the Redux store. This is handy for a variety of tasks, such as expressing
+ * asynchronous actions in a concise manner, or logging every action payload.
+ *
+ * See `redux-thunk` package as an example of the Redux middleware.
+ *
+ * Because middleware is potentially asynchronous, this should be the first
+ * store enhancer in the composition chain.
+ *
+ * Note that each middleware will be given the `dispatch` and `getState` functions
+ * as named arguments.
+ *
+ * @param {...Function} middlewares The middleware chain to be applied.
+ * @returns {Function} A store enhancer applying the middleware.
+ */
+
+function applyMiddleware() {
+  for (var _len = arguments.length, middlewares = new Array(_len), _key = 0; _key < _len; _key++) {
+    middlewares[_key] = arguments[_key];
+  }
+
+  return function (createStore) {
+    return function () {
+      var store = createStore.apply(void 0, arguments);
+
+      var _dispatch = function dispatch() {
+        throw new Error('Dispatching while constructing your middleware is not allowed. ' + 'Other middleware would not be applied to this dispatch.');
+      };
+
+      var middlewareAPI = {
+        getState: store.getState,
+        dispatch: function dispatch() {
+          return _dispatch.apply(void 0, arguments);
+        }
+      };
+      var chain = middlewares.map(function (middleware) {
+        return middleware(middlewareAPI);
+      });
+      _dispatch = compose.apply(void 0, chain)(store.dispatch);
+      return _objectSpread2({}, store, {
+        dispatch: _dispatch
+      });
+    };
+  };
+}
+
+/*
+ * This is a dummy function to check if the function name has been altered by minification.
+ * If the function has been minified and NODE_ENV !== 'production', warn the user.
+ */
+
+function isCrushed() {}
+
+if ( true && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
+  warning('You are currently using minified code outside of NODE_ENV === "production". ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or setting mode to production in webpack (https://webpack.js.org/concepts/mode/) ' + 'to ensure you have the correct code for your production build.');
+}
+
+
+
 
 /***/ }),
 

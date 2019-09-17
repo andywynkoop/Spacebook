@@ -26,5 +26,8 @@ json.users do
   @posts.each do |post|
     json.partial! 'api/users/user.json.jbuilder', user: post.author
     json.partial! 'api/users/user.json.jbuilder', user: post.wall
+    post.comments.each do |comment|
+      json.partial! 'api/users/user.json.jbuilder', user: comment.author
+    end
   end
 end

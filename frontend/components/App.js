@@ -6,6 +6,8 @@ import Feed from './Feed';
 import SignUpContainer from '../components/session/SignUpContainer';
 import Chat from './Chat';
 
+const NullComponent = () => null;
+
 export default () => 
   <div className="app">
     <HashRouter>
@@ -14,7 +16,7 @@ export default () =>
         <ProtectedRoute path="/:userUrl" component={Profile} />
         <ConditionalRoute path="/" loggedIn={Feed} loggedOut={SignUpContainer} />
       </Switch>
-      <ConditionalRoute path="/" loggedIn={Chat} loggedOut={null} />
+      <ConditionalRoute path="/" loggedIn={Chat} loggedOut={NullComponent} />
       </div>
     </HashRouter>
   </div>

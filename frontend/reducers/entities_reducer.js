@@ -12,6 +12,8 @@ import friendRequestFrom from './friend_request_from_reducer';
 import search from './users_search_reducer';
 import chats from './chats_reducer';
 import messages from './messages_reducer';
+import chatFriendMap from './chat_friend_map_reducer';
+import messageChatMap from './message_chat_map_reducer';
 
 export default combineReducers({
   users,
@@ -26,5 +28,7 @@ export default combineReducers({
   friendRequestFrom,
   search,
   chats,
-  messages
+  messages,
+  chatFriendMap,
+  messageChatMap
 });

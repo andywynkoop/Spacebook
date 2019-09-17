@@ -1,16 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { openChats } from '../../util/selectors';
-import { REMOVE_CHAT_MODAL } from '../../reducers/chat_modal_list_reducer';
+import ChatModalItem from './ChatModalItem';
 
-const ChatModalList = ({ openChats, remove }) =>
+const ChatModalList = ({ openChats }) =>
   <ul className="chat-modals">
     {openChats.map(friend => (
-      <li key={friend.id}>
-        <img src={friend.profileImgUrl} />
-        <p>{friend.firstname} {friend.lastname}</p>
-        <button onClick={() => remove(friend.id)}></button>
-      </li>
+      <ChatModalItem key={friend.id} friend={friend} />
     ))}
   </ul>
 
@@ -18,8 +14,4 @@ const msp = state => ({
   openChats: openChats(state),
 });
 
-const mdp = dispatch => ({
-  remove: id => dispatch({ type: REMOVE_CHAT_MODAL, id })
-})
-
-export default connect(msp, mdp)(ChatModalList);
+export default connect(msp)(ChatModalList);

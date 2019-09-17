@@ -102,3 +102,27 @@ export const openChats = state => {
   // refactor me to use real chats later
   return allFriendIds.map(id => state.entities.users[id]);
 }
+
+export const chatByFriendId = ({ entities: { chatFriendMap, chats } }, friendId) => {
+  return chats[chatFriendMap[friendId]] || null;
+}
+
+export const messagesByFriendId = ({ entities, session }, friendId) => { 
+  const { 
+    messageChatMap, 
+    messages, 
+    chatFriendMap,
+    users
+  } = entities;
+  const { id:currentUserId } = session;
+  const messageIds = messageChatMap[chatFriendMap[friendId]] || [];
+  return messageIds.map(id => {
+    const message = messages[id];
+    message.authorImg = users[message.userId].profileImgUrl;
+    const isCurrentUser = message.userId == currentUserId;
+    message.side = isCurrentUser ? "right" : "left";
+    return message;
+  });
+  }
+
+  

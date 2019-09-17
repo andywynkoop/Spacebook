@@ -5,7 +5,7 @@ export default (state = {}, action) => {
     case RECEIVE_POST:
     case RECEIVE_FEED_POSTS:
     case RECEIVE_WALL_POSTS:
-      return Object.assign({}, state, action.payload.postCommentMap);
+      return Object.assign({}, state, action.payload.postCommentMap || {});
     default:
       return state;
   }

@@ -92,7 +92,9 @@ class User < ApplicationRecord
     foreign_key: :creator_id,
     class_name: :Chat
   
-  has_many :chat_memberships
+  has_many :chat_memberships,
+    foreign_key: :user_id,
+    class_name: :ChatMembership
 
   has_many :chats,
     through: :chat_memberships,

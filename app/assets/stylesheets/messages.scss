@@ -88,20 +88,15 @@
   overflow-x: scroll;
   padding-top: 5px;
 
-  li {
+  li.expanded, li.collapsed {
     display: flex;
-    height: 35px;
     border-radius: 3px 3px 0px 0px;
     box-shadow: 0px 0px 4px #777;
-    background: white;
-    padding: 8px 10px 10px 12px;
     box-sizing: border-box;
-    width: 180px;
     position: relative;
-    font-weight: 700;
-    font-size: 13px;
+    background: white;
+    overflow:hidden;
     margin: 0px 5px;
-    cursor: pointer;
 
     img {
       height:20px;
@@ -127,6 +122,104 @@
 
     button::after {
       content: '×';
+    }
+  }
+
+  li.collapsed {
+    height: 35px;
+    padding: 8px 10px 10px 12px;
+    width: 180px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  li.expanded {
+    height: 350px;
+    flex-direction: column;
+    width: 280px;
+    border-radius: 8px 8px 0px 0px;
+
+    > div {
+      background: #eee;
+      cursor: pointer;
+      display: flex;
+      padding: 10px;
+      background:white;
+      box-shadow: 0px 2px 2px #ccc;
+      font-size: 12px;
+      font-weight: 700;
+      
+      button {
+        right: 10px;
+        font-weight: 400;
+        color: #0C84FB;
+      }
+    }
+
+    form {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      
+      input {
+        padding: 10px;
+        font-size: 12px;
+        border-top: solid 1px #ddd;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.messages-list {
+  overflow-y: scroll;
+  height: 275px;
+
+  li {
+    display: flex;
+    margin: 5px 0;
+    padding: 0px 5px;
+    
+    p {
+      border-radius: 48px;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+  
+  li.left {
+    flex-direction: row;
+    
+    img {
+      height: 25px;
+      width: 25px;
+      object-fit: cover;
+      border-radius: 100%;
+    }
+    
+    p {
+      height: auto;
+      max-width: 60%;
+      background: #eee;
+      color: #333;
+    }
+
+  }
+
+  li.right {
+    flex-direction: row-reverse; 
+
+    img {
+      display: none;
+    }
+
+    p {
+      height: auto;
+      max-width: 60%;
+      text-align: right;
+      background: #0C84FB;
+      color: white;
     }
   }
 }
