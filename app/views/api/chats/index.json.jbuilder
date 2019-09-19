@@ -5,9 +5,24 @@ json.chats do
 end
 
 json.chat_friend_map do
+  map = {}
   @chats.each do |chat|
     friend_id = chat.users.where.not(id: current_user.id).pluck(:id).first
-    json.set! friend_id, chat.id
+    map[chat.id] = friend_id
+  end
+
+  json.friendToChat do
+    @chats.each do |chat|
+      friend_id = map[chat.id]
+      json.set! friend_id, chat.id
+    end
+  end
+
+  json.chatToFriend do
+    @chats.each do |chat|
+      friend_id = map[chat.id]
+      json.set! chat.id, friend_id
+    end
   end
 end
 

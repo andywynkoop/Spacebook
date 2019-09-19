@@ -14,9 +14,11 @@ class Api::MessagesController < ApplicationController
     if @message.save
       chat_data = render('/api/chats/show.json')
       if new_chat
-        ActionCable.server.broadcast 'chats_channel', chat_data
+        ChatsChannel.broadcast_to @friend, chat_data
+        ChatsChannel.broadcast_to current_user, chat_data
+      else
+        MessagesChannel.broadcast_to @chat, chat_data
       end
-      MessagesChannel.broadcast_to @chat, chat_data
       head :ok
     end
   end

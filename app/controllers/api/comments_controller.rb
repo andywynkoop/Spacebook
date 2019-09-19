@@ -2,22 +2,22 @@ class Api::CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
     if @comment.save
-      @post = @comment.post
+      @post = @comment.post.with_stuff
       render "api/posts/show"
     else
       render json: @comment.errors.full_messages
     end
   end
 
-  def index
-    @post = Post.find(params[:id])
-    @comments = @post.comments
-  end
+  # def index
+  #   @post = Post.includes(:comments).find(params[:id])
+  #   @comments = @post.comments
+  # end
 
   def update
     @comment = Comment.find(params[:id])
     if @comment.update_attributes(comment_params)
-      @post = @comment.post
+      @post = @comment.post.with_stuff
       render "api/posts/show"
     else
       render json: @comment.errors.full_messages
@@ -27,7 +27,7 @@ class Api::CommentsController < ApplicationController
   def destroy
     @comment = Comment.find(params[:id])
     @comment.destroy
-    @post = @comment.post
+    @post = @comment.post.with_stuff
     render "api/posts/show"
   end
 

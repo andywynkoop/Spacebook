@@ -15,6 +15,11 @@ const sort = posts => posts.sort((p1, p2) => {
   return -1;
 });
 
+const sortReverse = posts => posts.sort((p1, p2) => {
+  if (p1.createdAt > p2.createdAt) return 1;
+  return -1;
+});
+
 export const sortFeed = state => 
   sort(Object.values(state.entities.feed));
 
@@ -79,8 +84,20 @@ const shuffle = arr => {
 export const shuffleAndTakeNine = friends => 
   shuffle(Object.values(friends)).slice(0, 9);
 
-export const chatList = state =>
-  Object.values(state.entities.chats)
+export const chatList = state => {
+  const { chats, chatFriendMap, users, messages } = state.entities;
+  const allChats = Object.values(chats);
+  const { chatToFriend } = chatFriendMap;
+  return allChats.map(chat => {
+    chat = Object.assign({}, chat);
+    const friendId = chatToFriend[chat.id];
+    chat.friend = users[friendId];
+    const allMessages = Object.values(messages).filter(m => m.chatId === chat.id);
+    chat.lastMessage = allMessages[allMessages.length - 1];
+    chat.lastMessageIsFromUser = chat.lastMessage.userId == state.session.id;
+    return chat;
+  });
+}
 
 export const messagesUnderChatId = state => {
   const allMessages = Object.values(state.entities.messages);
@@ -104,7 +121,7 @@ export const openChats = state => {
 }
 
 export const chatByFriendId = ({ entities: { chatFriendMap, chats } }, friendId) => {
-  return chats[chatFriendMap[friendId]] || null;
+  return chats[chatFriendMap.friendToChat[friendId]] || null;
 }
 
 export const messagesByFriendId = ({ entities, session }, friendId) => { 
@@ -115,14 +132,19 @@ export const messagesByFriendId = ({ entities, session }, friendId) => {
     users
   } = entities;
   const { id:currentUserId } = session;
-  const messageIds = messageChatMap[chatFriendMap[friendId]] || [];
-  return messageIds.map(id => {
+  const messageIds = messageChatMap[chatFriendMap.friendToChat[friendId]] || [];
+  return sortReverse(messageIds.map(id => {
     const message = messages[id];
     message.authorImg = users[message.userId].profileImgUrl;
     const isCurrentUser = message.userId == currentUserId;
     message.side = isCurrentUser ? "right" : "left";
     return message;
-  });
-  }
+  }));
+}
 
+export const dayAndMonth = dateString => 
+  new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(dateString))
   
+export const dayMonthAndYear = dateString =>
+  dateString =>
+    new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(dateString))

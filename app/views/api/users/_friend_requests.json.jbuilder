@@ -15,10 +15,10 @@ json.requests_from do
 end
 
 json.users do
-  user.friends_asked.each do |friend|
+  user.friends_asked.with_profile.with_cover.each do |friend|
     json.partial! 'api/users/user.json.jbuilder', user: friend
   end
-  user.asking_friends.each do |friend|
+  user.asking_friends.with_profile.with_cover.each do |friend|
     json.partial! 'api/users/user.json.jbuilder', user: friend
   end
 end

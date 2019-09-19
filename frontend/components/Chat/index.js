@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { friendsOfCurrentUser } from '../../util/selectors';
+import { friendsOfCurrentUser, currentUser } from '../../util/selectors';
 import { OPEN_CHAT_MODAL } from '../../reducers/chat_modal_reducer';
 import ChatSidebar from './ChatSidebar';
 import ChatModalList from './ChatModalList';
@@ -14,6 +14,7 @@ class Chat extends Component {
 
   render() {
     const { 
+      currentUser,
       chatModalOpen, 
       openChatModal, 
       numFriends, 
@@ -25,22 +26,22 @@ class Chat extends Component {
     return(
       <div>
         <ActionCableConsumer
-          channel={{ channel: 'ChatsChannel' }}
+          channel={{ channel: 'ChatsChannel', user_id: currentUser.id }}
           onReceived={receiveChat}
         />
+        {allChats.map(chat => (
+          <ActionCableConsumer
+            key={chat.id}
+            channel={{ channel: 'MessagesChannel', chat: chat.id }}
+            onReceived={receiveMessage}
+          />
+        ))}
         {chatModalOpen
           ? <ChatSidebar />
           : <div className="chat-modal" onClick={openChatModal}>
               Chat ({numFriends})
             </div>}
         <ChatModalList />
-        {allChats.map(chat => (
-          <ActionCableConsumer
-            key={chat.id}
-            channel={{ channel: 'MessagesChannel', chat: chat.id }}
-            onReceived={this.props.receiveMessage}
-          />
-        ))}
       </div>
     );
   }
@@ -48,6 +49,7 @@ class Chat extends Component {
 
 
 const msp = state => ({
+  currentUser: currentUser(state),
   chatModalOpen: state.ui.chatModal,
   numFriends: friendsOfCurrentUser(state).length,
   allChats: Object.values(state.entities.chats)

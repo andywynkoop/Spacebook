@@ -38,7 +38,10 @@ class Api::UsersController < ApplicationController
       OR LOWER(lastname) LIKE '%#{query}%'
       OR LOWER(email) LIKE '%#{query}%'
     SQL
-    @users = User.find_by_sql(search).take(20)
+    @users = User
+      .includes(:with_attached_profile_photo, :with_attached_cover_photo)
+      .find_by_sql(search)
+      .take(20)
   end
 
   def user_params

@@ -41,7 +41,9 @@ class User < ApplicationRecord
   end
   # End of Session
   has_one_attached :profile_photo
+  scope :with_profile, -> { eager_load(profile_photo_attachment: :blob) }
   has_one_attached :cover_photo
+  scope :with_cover, -> { eager_load(cover_photo_attachment: :blob) }
 
   has_many :requests_to,
     foreign_key: :requestor_id,

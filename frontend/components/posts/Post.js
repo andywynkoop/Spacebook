@@ -67,7 +67,7 @@ class Post extends Component {
             className="fas fa-caret-right"
             style={{ margin: '0px 5px', textDecoration: 'none' }}
           />{' '}
-          <Link to={`/${wall.user_url}`}>
+          <Link to={`/${wall.userUrl}`}>
             {wall.firstname} {wall.lastname}
           </Link>
         </div>

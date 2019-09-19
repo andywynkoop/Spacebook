@@ -480,19 +480,17 @@ var receiveArticles = function receiveArticles(articles) {
 /*!********************************!*\
   !*** ./frontend/actions/ui.js ***!
   \********************************/
-/*! exports provided: CLOSE_MODAL, OPEN_MODAL, SET_QUERY, closeModal, openModal */
+/*! exports provided: CLOSE_MODAL, OPEN_MODAL, closeModal, openModal */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_MODAL", function() { return CLOSE_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OPEN_MODAL", function() { return OPEN_MODAL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_QUERY", function() { return SET_QUERY; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "closeModal", function() { return closeModal; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "openModal", function() { return openModal; });
 var CLOSE_MODAL = 'CLOSE_MODAL';
 var OPEN_MODAL = 'OPEN_MODAL';
-var SET_QUERY = 'SET_QUERY';
 var closeModal = function closeModal() {
   return {
     type: CLOSE_MODAL
@@ -1139,9 +1137,8 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this = this;
-
       var _this$props = this.props,
+          currentUser = _this$props.currentUser,
           chatModalOpen = _this$props.chatModalOpen,
           openChatModal = _this$props.openChatModal,
           numFriends = _this$props.numFriends,
@@ -1150,22 +1147,23 @@ function (_Component) {
           receiveMessage = _this$props.receiveMessage;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_actioncable_provider__WEBPACK_IMPORTED_MODULE_6__["ActionCableConsumer"], {
         channel: {
-          channel: 'ChatsChannel'
+          channel: 'ChatsChannel',
+          user_id: currentUser.id
         },
         onReceived: receiveChat
-      }), chatModalOpen ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ChatSidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "chat-modal",
-        onClick: openChatModal
-      }, "Chat (", numFriends, ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ChatModalList__WEBPACK_IMPORTED_MODULE_5__["default"], null), allChats.map(function (chat) {
+      }), allChats.map(function (chat) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_actioncable_provider__WEBPACK_IMPORTED_MODULE_6__["ActionCableConsumer"], {
           key: chat.id,
           channel: {
             channel: 'MessagesChannel',
             chat: chat.id
           },
-          onReceived: _this.props.receiveMessage
+          onReceived: receiveMessage
         });
-      }));
+      }), chatModalOpen ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ChatSidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chat-modal",
+        onClick: openChatModal
+      }, "Chat (", numFriends, ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ChatModalList__WEBPACK_IMPORTED_MODULE_5__["default"], null));
     }
   }]);
 
@@ -1174,6 +1172,7 @@ function (_Component) {
 
 var msp = function msp(state) {
   return {
+    currentUser: Object(_util_selectors__WEBPACK_IMPORTED_MODULE_2__["currentUser"])(state),
     chatModalOpen: state.ui.chatModal,
     numFriends: Object(_util_selectors__WEBPACK_IMPORTED_MODULE_2__["friendsOfCurrentUser"])(state).length,
     allChats: Object.values(state.entities.chats)
@@ -2565,13 +2564,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_chat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/chat */ "./frontend/actions/chat.js");
 /* harmony import */ var _util_selectors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../util/selectors */ "./frontend/util/selectors.js");
+/* harmony import */ var _reducers_chat_modal_list_reducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../reducers/chat_modal_list_reducer */ "./frontend/reducers/chat_modal_list_reducer.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
@@ -2584,6 +2580,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -2610,25 +2607,27 @@ function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "render", function () {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "modal-box"
+        className: "modal-box messages"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "white-modal-triangle message-tri"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
         className: "modal-header"
-      }, "Messages"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, _this.props.chats.map(function (chat) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, chat.name);
+      }, "Messages"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "modal-chat-list"
+      }, _this.props.chats.map(function (chat) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          key: chat.id,
+          onClick: function onClick() {
+            return _this.props.open(chat.friend.id);
+          }
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          src: chat.friend.profileImgUrl
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, chat.friend.firstname, " ", chat.friend.lastname), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, chat.lastMessageIsFromUser ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", null) : null, chat.lastMessage.body)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, Object(_util_selectors__WEBPACK_IMPORTED_MODULE_3__["dayAndMonth"])(chat.lastMessage.createdAt)));
       })));
     });
 
     return _this;
   }
-
-  _createClass(MessagesModal, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.props.fetchChats();
-    }
-  }]);
 
   return MessagesModal;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
@@ -2644,6 +2643,12 @@ var mdp = function mdp(dispatch) {
   return {
     fetchChats: function fetchChats() {
       return dispatch(Object(_actions_chat__WEBPACK_IMPORTED_MODULE_2__["fetchChats"])());
+    },
+    open: function open(id) {
+      return dispatch({
+        type: _reducers_chat_modal_list_reducer__WEBPACK_IMPORTED_MODULE_4__["ADD_CHAT_MODAL"],
+        id: id
+      });
     }
   };
 };
@@ -3096,7 +3101,7 @@ function (_Component) {
             textDecoration: 'none'
           }
         }), ' ', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Link"], {
-          to: "/".concat(wall.user_url)
+          to: "/".concat(wall.userUrl)
         }, wall.firstname, " ", wall.lastname));
       }
     });
@@ -5127,8 +5132,12 @@ __webpack_require__.r(__webpack_exports__);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+var defaultState = {
+  friendToChat: {},
+  chatToFriend: {}
+};
 /* harmony default export */ __webpack_exports__["default"] = (function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
@@ -5142,12 +5151,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           senderId = _payload$chatFriendMa.senderId,
           chatId = _payload$chatFriendMa.chatId,
           receiverId = _payload$chatFriendMa.receiverId;
+      var oldFriendToChat = state.friendToChat || {};
+      var oldChatToFriend = state.chatToFriend || {};
+      var friendId;
 
       if (id == senderId) {
-        return Object.assign({}, state, _defineProperty({}, receiverId, chatId));
+        friendId = receiverId;
       } else {
-        return Object.assign({}, state, _defineProperty({}, senderId, chatId));
+        friendId = senderId;
       }
+
+      var friendToChat = Object.assign({}, oldFriendToChat, _defineProperty({}, friendId, chatId));
+      var chatToFriend = Object.assign({}, oldChatToFriend, _defineProperty({}, chatId, friendId));
+      return {
+        friendToChat: friendToChat,
+        chatToFriend: chatToFriend
+      };
 
     default:
       return state;
@@ -6193,7 +6212,7 @@ var search = function search(query) {
 /*!************************************!*\
   !*** ./frontend/util/selectors.js ***!
   \************************************/
-/*! exports provided: currentUser, userByUserUrl, userByUserId, friendsByUserId, sortFeed, sortPosts, commentsByPostId, userHasRequestedFriendship, userHasRequestFrom, userIsFriendsWith, friendRequests, searchResults, shuffleAndTakeNine, chatList, messagesUnderChatId, friendsOfCurrentUser, openChats, chatByFriendId, messagesByFriendId */
+/*! exports provided: currentUser, userByUserUrl, userByUserId, friendsByUserId, sortFeed, sortPosts, commentsByPostId, userHasRequestedFriendship, userHasRequestFrom, userIsFriendsWith, friendRequests, searchResults, shuffleAndTakeNine, chatList, messagesUnderChatId, friendsOfCurrentUser, openChats, chatByFriendId, messagesByFriendId, dayAndMonth, dayMonthAndYear */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6217,6 +6236,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "openChats", function() { return openChats; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "chatByFriendId", function() { return chatByFriendId; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "messagesByFriendId", function() { return messagesByFriendId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dayAndMonth", function() { return dayAndMonth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dayMonthAndYear", function() { return dayMonthAndYear; });
 var currentUser = function currentUser(_ref) {
   var entities = _ref.entities,
       session = _ref.session;
@@ -6244,6 +6265,13 @@ var friendsByUserId = function friendsByUserId(_ref4, id) {
 var sort = function sort(posts) {
   return posts.sort(function (p1, p2) {
     if (p1.createdAt < p2.createdAt) return 1;
+    return -1;
+  });
+};
+
+var sortReverse = function sortReverse(posts) {
+  return posts.sort(function (p1, p2) {
+    if (p1.createdAt > p2.createdAt) return 1;
     return -1;
   });
 };
@@ -6315,7 +6343,24 @@ var shuffleAndTakeNine = function shuffleAndTakeNine(friends) {
   return shuffle(Object.values(friends)).slice(0, 9);
 };
 var chatList = function chatList(state) {
-  return Object.values(state.entities.chats);
+  var _state$entities2 = state.entities,
+      chats = _state$entities2.chats,
+      chatFriendMap = _state$entities2.chatFriendMap,
+      users = _state$entities2.users,
+      messages = _state$entities2.messages;
+  var allChats = Object.values(chats);
+  var chatToFriend = chatFriendMap.chatToFriend;
+  return allChats.map(function (chat) {
+    chat = Object.assign({}, chat);
+    var friendId = chatToFriend[chat.id];
+    chat.friend = users[friendId];
+    var allMessages = Object.values(messages).filter(function (m) {
+      return m.chatId === chat.id;
+    });
+    chat.lastMessage = allMessages[allMessages.length - 1];
+    chat.lastMessageIsFromUser = chat.lastMessage.userId == state.session.id;
+    return chat;
+  });
 };
 var messagesUnderChatId = function messagesUnderChatId(state) {
   var allMessages = Object.values(state.entities.messages);
@@ -6341,7 +6386,7 @@ var chatByFriendId = function chatByFriendId(_ref5, friendId) {
   var _ref5$entities = _ref5.entities,
       chatFriendMap = _ref5$entities.chatFriendMap,
       chats = _ref5$entities.chats;
-  return chats[chatFriendMap[friendId]] || null;
+  return chats[chatFriendMap.friendToChat[friendId]] || null;
 };
 var messagesByFriendId = function messagesByFriendId(_ref6, friendId) {
   var entities = _ref6.entities,
@@ -6351,14 +6396,29 @@ var messagesByFriendId = function messagesByFriendId(_ref6, friendId) {
       chatFriendMap = entities.chatFriendMap,
       users = entities.users;
   var currentUserId = session.id;
-  var messageIds = messageChatMap[chatFriendMap[friendId]] || [];
-  return messageIds.map(function (id) {
+  var messageIds = messageChatMap[chatFriendMap.friendToChat[friendId]] || [];
+  return sortReverse(messageIds.map(function (id) {
     var message = messages[id];
     message.authorImg = users[message.userId].profileImgUrl;
     var isCurrentUser = message.userId == currentUserId;
     message.side = isCurrentUser ? "right" : "left";
     return message;
-  });
+  }));
+};
+var dayAndMonth = function dayAndMonth(dateString) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric"
+  }).format(new Date(dateString));
+};
+var dayMonthAndYear = function dayMonthAndYear(dateString) {
+  return function (dateString) {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(dateString));
+  };
 };
 
 /***/ }),

@@ -11,7 +11,7 @@ class Api::PostsController < ApplicationController
   end
 
   def index_wall
-    @posts = Post.find_by_wall_id(params[:id])
+    @posts = Post.find_by_wall_id(params[:id]).with_stuff
     render :index
   end
 
@@ -39,5 +39,4 @@ class Api::PostsController < ApplicationController
   def post_params
     params.require(:post).permit(:author_id, :wall_id, :body)
   end
-
 end
