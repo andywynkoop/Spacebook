@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.API_WS = process.env.NODE_ENV === "production"
-    ? "ws://space--book/cable"
+    ? "ws://space--book.herokuapp.com/cable"
     : "ws://localhost:3000/cable"
 
   ReactDOM.render(
