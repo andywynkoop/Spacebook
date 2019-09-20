@@ -1,0 +1,50 @@
+.demo-modal {
+	background: linear-gradient(#3a5ea0, #375895);
+	width: 400px;
+	padding: 15px;
+	color: white;
+	font-weight: bold;
+	text-shadow: 1px 1px 4px #2c1fa2;
+	border-radius: 5px;
+	border: solid 1px #2e1b9a;
+	box-shadow: 1px 1px 3px #1b439a;
+	margin-top: 20px;
+
+	p {
+		font-size: 12px;
+	}
+
+	.demo-users {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+
+		li {
+			width: 90px;
+			border: solid 1px #fcf;
+			padding: 10px;
+			margin: 3px;
+			cursor: pointer;
+			border-radius: 3px;
+
+			img {
+				height: 70px;
+				width: 70px;
+				object-fit: cover;
+				margin: auto;
+				margin-bottom: 10px;
+				border-radius: 100%;
+			}
+
+			p {
+				font-size: 14px;
+				font-weight: 400;
+				text-align: center;
+			}
+		}
+
+		li:hover {
+			background: linear-gradient(#607caf, #4f6faa);
+		}
+	}
+}

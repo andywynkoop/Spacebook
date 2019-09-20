@@ -62,7 +62,7 @@ class Profile extends Component {
 
     if (!user.id && errors.length === 0) return <NavMain />;
     if (!user.id) return <MissingPage />;
-
+    
     return (
       <div className={chatStyle}>
         <NavMain />

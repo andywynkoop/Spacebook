@@ -1,6 +1,7 @@
 import React from 'react';
 import FriendButton from './FriendButton';
 import { NULL_PROFILE } from '../../util/img_util';
+import MessageButton from './MessageButton';
 
 const ProfileNav = ({ user, change }) => {
   const { profileImgUrl, firstname, lastname } = user;
@@ -21,7 +22,7 @@ const ProfileNav = ({ user, change }) => {
         </li>
       </ul>
       <FriendButton user={user} />
-      <div className="gray-page-button message-button">Message</div>
+      <MessageButton user={user} />
     </nav>
   );
 }

@@ -7,7 +7,7 @@ end
 json.friends do
   friends.each do |friend|
     json.set! friend.id do
-      json.extract! friend, :id, :firstname, :lastname, :user_url
+      json.extract! friend, :id, :firstname, :lastname, :email, :user_url, :bio, :birthday, :sex
       if friend.profile_photo.attached?
         json.profile_img_url url_for(friend.profile_photo)
       end

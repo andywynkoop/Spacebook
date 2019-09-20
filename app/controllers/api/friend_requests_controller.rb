@@ -36,7 +36,7 @@ class Api::FriendRequestsController < ApplicationController
 
   def destroy
     @friend_request = FriendRequest.find(params[:id])
-    if @friend_request.requestee == current_user
+    if @friend_request.requestor == current_user
       @friend_request.deny
       @user = current_user
       render 'api/users/show'

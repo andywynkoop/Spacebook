@@ -20,6 +20,21 @@ class User < ApplicationRecord
     return user
   end
 
+  def self.demo_users
+    demo_emails = [
+      "demo_user@email.com", 
+      "jesse@email.com", 
+      "ashley@email.com", 
+      "franka@email.com", 
+      "scott@email.com", 
+      "warren@email.com"
+    ]
+    User
+    .where(email: demo_emails)
+    .with_profile
+    .with_cover
+  end
+
   def reset_session_token!
     self.session_token = new_token
     self.save

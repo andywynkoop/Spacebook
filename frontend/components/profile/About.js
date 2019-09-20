@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
-import AboutItem from './AboutItem';
+import React from 'react';
+import { dayMonthAndYear } from '../../util/selectors';
 
-const About = ({ birthday, bio }) =>
+const AboutItem = ({ label, value }) => 
+  <p>
+    <span className="about-label">{label} </span> {value}
+  </p>;
+
+const About = ({ user: { birthday, bio } }) => 
   <div className="item-container about">
     <h1>Intro</h1>
-    <AboutItem label="Birthday" value={new Date(birthday).toDateString()} />
+    <AboutItem label="Birthday" value={dayMonthAndYear(birthday)} />
     <AboutItem label="About Me" value={bio} />
   </div>;
 

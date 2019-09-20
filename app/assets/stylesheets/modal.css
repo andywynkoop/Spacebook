@@ -1,165 +1,172 @@
 .modal-main {
-  position: absolute;
-  top: 42px;
-  left: 0px;
-  right: 0px;
-  height: 100vh;
+	position: absolute;
+	top: 42px;
+	left: 0px;
+	right: 0px;
+	height: 100vh;
 }
 .modal-position-holder {
-  width: 980px;
-  margin: auto;
+	width: 980px;
+	margin: auto;
 }
 .modal-triangle {
-  height: 20px;
-  width: 20px;
-  transform: rotate(45deg);
-  position: absolute;
-  top: -4px;
-  right: 118px;
-  background: #fff;
-  z-index: 4;
+	height: 20px;
+	width: 20px;
+	transform: rotate(45deg);
+	position: absolute;
+	top: -4px;
+	right: 118px;
+	background: #fff;
+	z-index: 4;
 }
 .modal-header {
-  padding: 8px 10px 5px 10px;
-  box-sizing: border-box;
-  font-size: 12.5px;
-  height: 30px;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: solid 1px #ccc;
+	padding: 8px 10px 5px 10px;
+	box-sizing: border-box;
+	font-size: 12.5px;
+	height: 30px;
+	display: flex;
+	justify-content: space-between;
+	border-bottom: solid 1px #ccc;
 }
 
 .modal-box {
-  position: relative;
-  top: 0px;
-  left: 500px;
-  width: 430px;
-  height: 300px;
-  background: #fff;
-  box-shadow: 0px 1px 3px 1px #333;
+	position: relative;
+	top: 0px;
+	left: 500px;
+	width: 430px;
+	height: 300px;
+	background: #fff;
+	box-shadow: 0px 1px 3px 1px #333;
 }
 .modal-box-search {
-  left: 35px;
-  width: 445px;
-  box-sizing: border-box;
-  padding: 5px;
-  overflow: scroll;
+	left: 35px;
+	width: 445px;
+	box-sizing: border-box;
+	overflow: scroll;
 }
+
+.modal-box.modal-box-search {
+	height: auto;
+	max-height: 450px;
+	overflow-y: scroll;
+}
+
 .search-modal-user {
-  height: 30px;
-  display: flex;
-  color: #333;
+	height: 30px;
+	display: flex;
+	color: #333;
 }
-.search-modal-user:hover {
-  color: #fff;
-  background: #315796;
+.search-modal-user:hover,
+.search-modal-user.selected-search {
+	color: #fff;
+	background: #315796;
 }
 .search-modal-user p {
-  height: 30px;
-  padding-top: 5px;
+	height: 30px;
+	padding-top: 5px;
 }
 .search-modal-user-profile {
-  background-size: contain;
-  height: 30px;
-  width: 30px;
-  border-radius: 100%;
-  margin-right: 10px;
+	background-size: contain;
+	height: 30px;
+	width: 30px;
+	border-radius: 100%;
+	margin-right: 10px;
 }
 
 .modal-title {
-  color: #333;
-  font-weight: 500;
+	color: #333;
+	font-weight: 500;
 }
 
 .modal-links {
-  display: flex;
+	display: flex;
 }
 
 .request-item {
-  height: 62px;
-  font-size: 12.5px;
-  width: 100%;
-  box-sizing: border-box;
-  border-bottom: solid 1px #ccc;
-  display: flex;
-  justify-content: space-between;
-  padding: 5px;
+	height: 62px;
+	font-size: 12.5px;
+	width: 100%;
+	box-sizing: border-box;
+	border-bottom: solid 1px #ccc;
+	display: flex;
+	justify-content: space-between;
+	padding: 5px;
 }
 .modal-user-info {
-  display: flex;
+	display: flex;
 }
 .modal-img {
-  border-radius: 100%;
-  height: 50px;
-  width: 50px;
+	border-radius: 100%;
+	height: 50px;
+	width: 50px;
 }
 .modal-user-name {
-  padding: 18px 0px;
-  font-weight: 700;
-  color: #3c66af;
-  height: 50px;
-  margin: 0px 20px;
+	padding: 18px 0px;
+	font-weight: 700;
+	color: #3c66af;
+	height: 50px;
+	margin: 0px 20px;
 }
 
 .modal-buttons-container {
-  height: 50px;
-  display: flex;
-  margin-left: 40px;
+	height: 50px;
+	display: flex;
+	margin-left: 40px;
 }
 .modal-btn {
-  height: 27px;
-  background: #f6f7f9;
-  border-radius: 3px;
-  padding: 5px;
-  margin: 12px 5px 0px 5px;
-  font-weight: 400;
-  border: solid 1px #ddd;
+	height: 27px;
+	background: #f6f7f9;
+	border-radius: 3px;
+	padding: 5px;
+	margin: 12px 5px 0px 5px;
+	font-weight: 400;
+	border: solid 1px #ddd;
 }
 .modal-approve-btn {
-  color: #fff;
-  background: #3c66af;
+	color: #fff;
+	background: #3c66af;
 }
 
 .null-request {
-  background: #f6f7f9;
-  color: #8f949b;
-  padding-top: 20px;
+	background: #f6f7f9;
+	color: #8f949b;
+	padding-top: 20px;
 }
 .null-request p {
-  text-align: center;
-  width: 100%;
+	text-align: center;
+	width: 100%;
 }
 /*DROPDOWN NAV MORE OPTIONS*/
 
 .modal-box.dropdown-modal {
-  left: 729px;
-  width: 250px;
+	left: 729px;
+	width: 250px;
 }
 
 .modal-list-item {
-  padding: 5px 30px;
-  font-size: 12px;
+	padding: 5px 30px;
+	font-size: 12px;
 }
 .modal-list-item:hover {
-  background: #3c66af;
-  color: white;
+	background: #3c66af;
+	color: white;
 }
 
 /*HELP NAV*/
 .modal-box.help-modal {
-  left: 680px;
-  width: 300px;
+	left: 680px;
+	width: 300px;
 }
 .white-modal-triangle.help-tri {
-  right: 45px;
+	right: 45px;
 }
 /*MESSAGE MODAL*/
 .white-modal-triangle.message-tri {
-  right: 88px;
+	right: 88px;
 }
 
 /*NOTIFICATIONS*/
 
 .white-modal-triangle.notification-tri {
-  right: 53px;
+	right: 53px;
 }
