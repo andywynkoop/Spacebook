@@ -38,6 +38,6 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^3.5.1",
-    "webpack-cli": "^3.3.8"
+    "webpack-cli": "^3.3.12"
   }
 }
